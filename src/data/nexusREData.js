@@ -1,4 +1,4 @@
-import { Building2, TrendingUp, FileText, Clock, DollarSign, MapPin, BarChart3, CheckCircle, AlertCircle, ListChecks } from 'lucide-react'
+import { Building2, TrendingUp, FileText, Clock, DollarSign, MapPin, BarChart3, Users, CheckCircle, AlertCircle } from 'lucide-react'
 
 export const nexusREPersonas = [
   { id: 'mgmt',    label: 'Management' },
@@ -9,428 +9,381 @@ export const nexusREPersonas = [
 ]
 
 export const nexusREFilters = [
-  { id: 'city',    label: 'City',    options: ['All Cities', 'Pune', 'Chennai', 'Bangalore', 'Mumbai', 'Gurgaon', 'Hyderabad', 'Noida', 'Kolkata', 'Indore', 'Kochi'] },
-  { id: 'type',    label: 'Agreement Type', options: ['All Types', 'Leave & License', 'Lease Deed', 'MoU', 'Sub-Lease'] },
-  { id: 'status',  label: 'Status',  options: ['All Statuses', 'Active', 'WIP', 'Inactive', 'Expired', 'Expiring Soon'] },
-]
-
-// ─── SHARED GRID: AGREEMENTS (real data from portal export) ───────────────────
-const agreementsColumns = [
-  { key: 'centreName',  label: 'Centre Name' },
-  { key: 'centreCode',  label: 'Centre Code', muted: true },
-  { key: 'city',        label: 'City' },
-  { key: 'building',    label: 'Building' },
-  { key: 'floor',       label: 'Floor', muted: true },
-  { key: 'leaseEnd',    label: 'Lease End' },
-  { key: 'monthlyRent', label: 'Monthly Rent' },
-  { key: 'status',      label: 'Status', type: 'status' },
-  { key: 'action',      label: 'Action', type: 'action', sortable: false },
-]
-const agreementsGrid = [
-  { centreName: 'Emirates Stadium',      centreCode: 'GGN01', city: 'Gurgaon',   building: 'Emirates Stadium',    floor: '3, 4, 5',              leaseEnd: '31 Mar 2029', monthlyRent: '₹142L',  status: 'Active',          action: 'View' },
-  { centreName: 'Highbury Stadium',      centreCode: 'GGN02', city: 'Gurgaon',   building: 'Highbury Stadium',    floor: '5, 6, 7',              leaseEnd: '31 Mar 2028', monthlyRent: '₹118L',  status: 'Active',          action: 'View' },
-  { centreName: 'Grand Canyon',          centreCode: 'GGN03', city: 'Gurgaon',   building: 'Grand Canyon',        floor: '5',                    leaseEnd: '08 Sep 2027', monthlyRent: '₹64L',   status: 'Active',          action: 'View' },
-  { centreName: 'DLF Commercial',        centreCode: 'GGN04', city: 'Gurgaon',   building: 'DLF Commercial',      floor: 'G + 5',                leaseEnd: '31 Oct 2030', monthlyRent: '₹88L',   status: 'Active',          action: 'View' },
-  { centreName: 'RK4 Square',            centreCode: 'GGN05', city: 'Gurgaon',   building: 'RK4 Square',         floor: 'G + 4',                leaseEnd: '25 Nov 2038', monthlyRent: '₹72L',   status: 'Active',          action: 'View' },
-  { centreName: 'Golf View',             centreCode: 'GGN06', city: 'Gurgaon',   building: 'Golf View',           floor: '2, 4 & 5',             leaseEnd: '08 Apr 2026', monthlyRent: '₹54L',   status: 'Expiring Soon',   action: 'Renew' },
-  { centreName: 'Global Foyer',          centreCode: 'GGN07', city: 'Gurgaon',   building: 'Global Foyer',        floor: 'GF, 1, 2, 11',         leaseEnd: '31 Mar 2027', monthlyRent: '₹0',     status: 'Expiring Soon',   action: 'Renew' },
-  { centreName: '43 EQ – Tower E',       centreCode: 'PUN11', city: 'Pune',      building: '43 EQ',               floor: 'Tower E, 4-8 Floors',  leaseEnd: '30 Jun 2029', monthlyRent: '₹149L',  status: 'Active',          action: 'View' },
-  { centreName: 'Amar Tech Center',      centreCode: 'PUN14', city: 'Pune',      building: 'Amar Tech Center',    floor: '12',                   leaseEnd: '30 Jun 2028', monthlyRent: '₹96L',   status: 'Active',          action: 'View' },
-  { centreName: 'Malpani Agile',         centreCode: 'PUN18', city: 'Pune',      building: 'Malpani Agile',       floor: '1st Phase 1-4',        leaseEnd: '01 Sep 2026', monthlyRent: '₹82L',   status: 'Expiring Soon',   action: 'Renew' },
-  { centreName: 'Times Square – Fl 2',   centreCode: 'MUM06', city: 'Mumbai',    building: 'Times Square',        floor: '2 (Unit 1, 2, 3)',     leaseEnd: '31 May 2030', monthlyRent: '₹124L',  status: 'Active',          action: 'View' },
-  { centreName: 'Times Square – Fl 7',   centreCode: 'MUM07', city: 'Mumbai',    building: 'Times Square',        floor: '7 (Unit 1, 2, 3, 4)',  leaseEnd: '15 Dec 2029', monthlyRent: '₹112L',  status: 'Active',          action: 'View' },
-  { centreName: 'Fleet House',           centreCode: 'MUM10', city: 'Mumbai',    building: 'Fleet House',         floor: '1, 2, 4',              leaseEnd: '30 Jun 2029', monthlyRent: '₹98L',   status: 'Active',          action: 'View' },
-  { centreName: 'Intellion Park B1',     centreCode: 'MUM12', city: 'Mumbai',    building: 'Intellion Park Bldg 1', floor: 'Ground',             leaseEnd: '31 Jul 2030', monthlyRent: '₹76L',   status: 'Active',          action: 'View' },
-  { centreName: 'Eastbridge',            centreCode: 'MUM14', city: 'Mumbai',    building: 'Eastbridge',          floor: '2 - 6',                leaseEnd: '30 Nov 2032', monthlyRent: '₹108L',  status: 'Active',          action: 'View' },
-  { centreName: 'Paradigm Tower',        centreCode: 'MUM16', city: 'Mumbai',    building: 'Paradigm Tower',      floor: '8, 9',                 leaseEnd: '26 May 2026', monthlyRent: '₹68L',   status: 'Expiring Soon',   action: 'Renew' },
-  { centreName: 'DLF Cybercity',         centreCode: 'HYD03', city: 'Hyderabad', building: 'DLF Cybercity',       floor: '5 & 9',                leaseEnd: '31 Oct 2034', monthlyRent: '₹134L',  status: 'Active',          action: 'View' },
-  { centreName: 'World Trade Tower',     centreCode: 'NOI04', city: 'Noida',     building: 'World Trade Tower',   floor: 'S1+S2+S3, G+1',        leaseEnd: '31 Dec 2030', monthlyRent: '₹92L',   status: 'Active',          action: 'View' },
-  { centreName: 'Maple Corporate Park',  centreCode: 'NOI06', city: 'Noida',     building: 'Maple Corporate Park', floor: 'G+4',                 leaseEnd: '08 Aug 2026', monthlyRent: '₹62L',   status: 'Expiring Soon',   action: 'Renew' },
-  { centreName: 'Godrej Genesis',        centreCode: 'KOL02', city: 'Kolkata',   building: 'Godrej Genesis',      floor: '7, 701-709',           leaseEnd: '15 Mar 2032', monthlyRent: '₹48L',   status: 'Active',          action: 'View' },
-  { centreName: 'Brilliant Center',      centreCode: 'IND01', city: 'Indore',    building: 'Brilliant Center',    floor: 'Stilt, G-3 + 4-6',    leaseEnd: '01 Jun 2032', monthlyRent: '₹44L',   status: 'Active',          action: 'View' },
-  { centreName: 'KCT Tech Park',         centreCode: 'CBE01', city: 'Coimbatore',building: 'KCT Tech Park',       floor: '3rd Floor, West Wing', leaseEnd: '15 Aug 2034', monthlyRent: '₹28L',   status: 'Active',          action: 'View' },
+  { id: 'city',    label: 'City',    options: ['All Cities', 'Bengaluru', 'Pune', 'Hyderabad', 'Mumbai', 'Delhi', 'Chennai'] },
+  { id: 'type',    label: 'Type',    options: ['All Types', 'New Lease', 'Renewal', 'Expansion', 'Surrender', 'Acquisition'] },
+  { id: 'status',  label: 'Status',  options: ['All Statuses', 'Active', 'In Progress', 'Pending', 'Completed', 'At Risk'] },
 ]
 
 // ─── MANAGEMENT ───────────────────────────────────────────────────────────────
 const mgmtMetrics = [
-  { label: 'Total Cities',              value: '18',      change: '61 centres across India',      trend: 'up',   status: 'positive', icon: MapPin,      highlight: true },
-  { label: 'Active Area (MSF)',         value: '11.64M',  change: 'WIP: 0M | All active',         trend: 'up',   status: 'positive', icon: Building2 },
-  { label: 'Total Leases',             value: '206',     change: '190 active, 16 expiring soon',  trend: 'up',   status: 'positive', icon: FileText },
-  { label: 'Expired Leases',          value: '98',      change: '11 expiring in 3 months',       trend: 'up',   status: 'negative', icon: AlertCircle },
-  { label: 'Unregistered Agreements',  value: '205',     change: 'Only 1 of 206 registered',     trend: 'up',   status: 'warning',  icon: ListChecks },
+  { label: 'Total Portfolio Value',     value: '₹24.6Cr',  change: '+8.4% YoY',           trend: 'up',   status: 'positive', icon: DollarSign, highlight: true },
+  { label: 'Active Transactions',       value: '18',       change: '6 closing this month', trend: 'up',   status: 'info',     icon: Building2 },
+  { label: 'Avg Deal Size',             value: '₹1.37Cr',  change: '+12% vs last quarter', trend: 'up',   status: 'positive', icon: TrendingUp },
+  { label: 'Pipeline Value',            value: '₹8.2Cr',   change: '14 qualified leads',   trend: 'up',   status: 'positive', icon: BarChart3 },
+  { label: 'Lease Renewals Due (90d)',  value: '7',        change: '₹3.4Cr at risk',       trend: 'up',   status: 'warning',  icon: Clock },
 ]
 const mgmtActions = [
-  { priority: 'high',   text: '11 leases expiring within 3 months — initiate renewal or termination notices immediately', due: 'Apr 5', category: 'Lease Renewal' },
-  { priority: 'high',   text: '205 of 206 agreements unregistered — significant legal and compliance risk, review with legal team', due: 'Apr 8', category: 'Compliance' },
-  { priority: 'high',   text: 'Agreement approvals: 40 pending approvals stuck — review backlog and clear', due: 'Apr 4', category: 'Approvals' },
-  { priority: 'medium', text: '6 leases expiring in 6 months — ensure renewal negotiations are in progress', due: 'Apr 15', category: 'Lease Renewal' },
-  { priority: 'low',    text: '98 expired leases in system — audit and close out or document holdover status', due: 'Apr 20', category: 'Audit' },
+  { priority: 'high',   text: '2 lease renewals (₹1.8Cr combined) expiring in 45 days — no negotiation started', due: 'Apr 5', category: 'Renewal' },
+  { priority: 'high',   text: 'BKC site (12,000 sqft) — LOI deadline Apr 8, counter-offer pending sign-off', due: 'Apr 8', category: 'Acquisition' },
+  { priority: 'medium', text: 'Market analysis for Q2 FY26 expansion plan (Hyderabad + Chennai) pending', due: 'Apr 10', category: 'Strategy' },
+  { priority: 'medium', text: 'Vendor due diligence for 3 new landlord partners incomplete', due: 'Apr 12', category: 'Compliance' },
+  { priority: 'low',    text: 'Portfolio valuation report (annual) — coordinate with Finance for submission', due: 'Apr 15', category: 'Reports' },
 ]
 const mgmtTopFive = [
   {
-    title: 'Top 5 Cities by Centre Count',
+    title: 'Top 5 Properties by Value',
     items: [
-      { label: 'Bangalore',  value: '10', change: 1 },
-      { label: 'Pune',       value: '9',  change: 0 },
-      { label: 'Gurgaon',    value: '6',  change: 0 },
-      { label: 'Chennai',    value: '6',  change: 0 },
-      { label: 'Mumbai',     value: '5',  change: 1 },
+      { label: 'Whitefield Towers, Blore',  value: '₹5.8Cr', change: 1 },
+      { label: 'One Indiabulls, Mumbai',     value: '₹4.2Cr', change: 0 },
+      { label: 'Cyber Hub, Gurgaon',         value: '₹3.6Cr', change: 1 },
+      { label: 'Embassy Tech Village, Blore',value: '₹3.1Cr', change: 0 },
+      { label: 'Raheja Mindspace, Hyd',      value: '₹2.9Cr', change: -1 },
     ],
   },
   {
-    title: 'Top 5 Cities by Active Area (Sq Ft)',
+    title: 'Top 5 Cities by Active Deals',
     items: [
-      { label: 'Pune',       value: '3.23M', change: 1 },
-      { label: 'Bangalore',  value: '2.60M', change: 0 },
-      { label: 'Chennai',    value: '1.30M', change: 0 },
-      { label: 'Hyderabad',  value: '1.22M', change: 0 },
-      { label: 'Mumbai',     value: '1.01M', change: 1 },
+      { label: 'Bengaluru',   value: '6', change: 1 },
+      { label: 'Pune',        value: '4', change: 0 },
+      { label: 'Mumbai',      value: '3', change: 1 },
+      { label: 'Hyderabad',   value: '3', change: -1 },
+      { label: 'Delhi NCR',   value: '2', change: 0 },
     ],
   },
 ]
 const mgmtCharts = [
   {
-    type: 'bar', title: 'Leases by City (Active/Expiring/WIP)',
+    type: 'bar', title: 'Deal Closures by Quarter (₹Cr)',
     data: [
-      { name: 'Pune',      active: 79, expiring: 6, wip: 0 }, { name: 'Chennai',   active: 42, expiring: 6, wip: 0 },
-      { name: 'Bangalore', active: 38, expiring: 5, wip: 0 }, { name: 'Mumbai',    active: 42, expiring: 9, wip: 0 },
-      { name: 'Gurgaon',   active: 14, expiring: 6, wip: 2 }, { name: 'Hyderabad', active: 8,  expiring: 3, wip: 0 },
-      { name: 'Noida',     active: 8,  expiring: 2, wip: 0 },
+      { name: 'Q2 FY25', closed: 4.2, target: 5.0 }, { name: 'Q3 FY25', closed: 5.8, target: 5.0 },
+      { name: 'Q4 FY25', closed: 6.1, target: 6.0 }, { name: 'Q1 FY26', closed: 5.4, target: 6.5 },
     ],
-    lines: [{ key: 'active', label: 'Active' }, { key: 'expiring', label: 'Expiring Soon' }, { key: 'wip', label: 'WIP' }],
+    lines: [{ key: 'closed', label: 'Closed (₹Cr)' }, { key: 'target', label: 'Target' }],
   },
   {
-    type: 'pie', title: 'Lease Expiry Status (Portfolio)',
+    type: 'line', title: 'Pipeline Build vs Closures (Monthly)',
     data: [
-      { name: 'Active',           value: 190 },
-      { name: 'Expiring 3M',      value: 11 },
-      { name: 'Expiring 6M',      value: 6 },
-      { name: 'Expiring 12M',     value: 18 },
-      { name: 'Expired',          value: 98 },
+      { name: 'Oct', pipeline: 7.2, closed: 1.8 }, { name: 'Nov', pipeline: 8.4, closed: 2.1 },
+      { name: 'Dec', pipeline: 7.8, closed: 2.8 }, { name: 'Jan', pipeline: 8.8, closed: 1.6 },
+      { name: 'Feb', pipeline: 9.2, closed: 2.4 }, { name: 'Mar', pipeline: 8.2, closed: 2.2 },
+    ],
+    lines: [{ key: 'pipeline', label: 'Pipeline (₹Cr)' }, { key: 'closed', label: 'Closed (₹Cr)' }],
+  },
+  {
+    type: 'pie', title: 'Portfolio Mix by Transaction Type',
+    data: [
+      { name: 'New Lease',   value: 38 }, { name: 'Renewal',   value: 28 },
+      { name: 'Expansion',   value: 18 }, { name: 'Acquisition',value: 10 },
+      { name: 'Surrender',   value: 6  },
     ],
     lines: [],
   },
-  {
-    type: 'bar', title: 'Area (Sq Ft) by City',
-    data: [
-      { name: 'Pune',       area: 3230 }, { name: 'Bangalore', area: 2600 },
-      { name: 'Chennai',    area: 1300 }, { name: 'Hyderabad',  area: 1220 },
-      { name: 'Mumbai',     area: 1010 }, { name: 'Noida',      area: 899 },
-      { name: 'Gurgaon',    area: 787 },  { name: 'Kolkata',    area: 371 },
-    ],
-    lines: [{ key: 'area', label: 'Area (000 Sq Ft)' }],
-  },
 ]
-const mgmtColumns = agreementsColumns
-const mgmtGrid = agreementsGrid
+const mgmtColumns = [
+  { key: 'property',  label: 'Property' },
+  { key: 'city',      label: 'City' },
+  { key: 'type',      label: 'Type' },
+  { key: 'area',      label: 'Area (sqft)', muted: true },
+  { key: 'value',     label: 'Deal Value' },
+  { key: 'stage',     label: 'Stage' },
+  { key: 'closeDate', label: 'Close Date' },
+  { key: 'status',    label: 'Status', type: 'status' },
+  { key: 'action',    label: 'Action', type: 'action', sortable: false },
+]
+const mgmtGrid = [
+  { property: 'BKC Tower, Bandra',          city: 'Mumbai',    type: 'Acquisition',  area: '12,000', value: '₹2.4Cr', stage: 'LOI Stage',     closeDate: 'Apr 8',  status: 'In Progress', action: 'View' },
+  { property: 'Embassy TechVillage Ext.',   city: 'Bengaluru', type: 'Expansion',    area: '8,500',  value: '₹1.8Cr', stage: 'Negotiation',   closeDate: 'Apr 15', status: 'In Progress', action: 'View' },
+  { property: 'Prestige Shantiniketan',     city: 'Bengaluru', type: 'New Lease',    area: '6,200',  value: '₹1.2Cr', stage: 'Due Diligence', closeDate: 'Apr 20', status: 'In Progress', action: 'View' },
+  { property: 'Raheja Mindspace T4',        city: 'Hyderabad', type: 'Renewal',      area: '9,000',  value: '₹1.8Cr', stage: 'Expiring',      closeDate: 'May 1',  status: 'At Risk',     action: 'Renew' },
+  { property: 'One Indiabulls A5',          city: 'Mumbai',    type: 'Renewal',      area: '7,200',  value: '₹1.6Cr', stage: 'Expiring',      closeDate: 'May 15', status: 'Pending',     action: 'Renew' },
+  { property: 'Cybercity Tower B',          city: 'Delhi NCR', type: 'New Lease',    area: '5,400',  value: '₹1.1Cr', stage: 'Final Docs',    closeDate: 'Apr 10', status: 'In Progress', action: 'View' },
+  { property: 'Lakeview Towers, Pune',      city: 'Pune',      type: 'Expansion',    area: '3,800',  value: '₹78L',   stage: 'Signed',        closeDate: 'Closed', status: 'Completed',   action: 'View' },
+  { property: 'Global Infocity, Chennai',   city: 'Chennai',   type: 'New Lease',    area: '4,200',  value: '₹84L',   stage: 'Site Survey',   closeDate: 'May 20', status: 'Pending',     action: 'View' },
+]
 
 // ─── RE HEAD ──────────────────────────────────────────────────────────────────
 const reheadMetrics = [
-  { label: 'Agreement Approvals Pending', value: '40',   change: '40 pending with you',         trend: 'up',   status: 'negative', icon: AlertCircle, highlight: true },
-  { label: 'Leases Expiring in 3M',       value: '11',   change: 'Renewal notices needed',      trend: 'up',   status: 'negative', icon: Clock },
-  { label: 'Active Properties',           value: '65',   change: '206 total agreements',        trend: 'up',   status: 'positive', icon: Building2 },
-  { label: 'Active Leads Pipeline',       value: '8',    change: '3 under negotiation',         trend: 'up',   status: 'info',     icon: TrendingUp },
-  { label: 'Unregistered Agreements',     value: '205',  change: 'Out of 206 total',            trend: 'up',   status: 'warning',  icon: FileText },
+  { label: 'Active Deals in Pipeline',   value: '14',    change: '3 added this week',    trend: 'up',   status: 'info',     icon: Building2, highlight: true },
+  { label: 'Deal Conversion Rate',       value: '38.4%', change: '+2.1% vs last qtr',    trend: 'up',   status: 'positive', icon: TrendingUp },
+  { label: 'Pipeline Coverage',          value: '2.4x',  change: 'Target: 2.0x',         trend: 'up',   status: 'positive', icon: BarChart3 },
+  { label: 'Avg Deal Cycle (days)',       value: '42d',   change: '-6d vs last quarter',  trend: 'down', status: 'positive', icon: Clock },
+  { label: 'Deals Closing This Month',   value: '4',     change: '₹2.8Cr total',         trend: 'up',   status: 'positive', icon: CheckCircle },
 ]
 const reheadActions = [
-  { priority: 'high',   text: '40 agreement edit requests pending your approval (TM stage) — review and clear backlog', due: 'Apr 4', category: 'Approvals' },
-  { priority: 'high',   text: 'Golf View, Gurgaon (₹54L/mo) — lease ending 08 Apr 2026, no renewal notice sent yet', due: 'Apr 3', category: 'Renewal Urgent' },
-  { priority: 'high',   text: 'Paradigm Tower, Mumbai (₹68L/mo, Floors 8+9) — expiring 26 May 2026, negotiation status?', due: 'Apr 8', category: 'Renewal' },
-  { priority: 'medium', text: 'Malpani Agile, Pune (₹82L/mo) — expiring Sep 2026, renewal discussions to begin', due: 'Apr 15', category: 'Renewal' },
-  { priority: 'low',    text: 'New lead: Club 125, Noida — Under Negotiation stage, review proposal terms', due: 'Apr 10', category: 'Lead' },
+  { priority: 'high',   text: 'Embassy TechVillage expansion: landlord wants commercial response within 72hrs', due: 'Apr 4', category: 'Negotiation' },
+  { priority: 'high',   text: 'BKC LOI — legal review incomplete, blocking counter-offer to client', due: 'Apr 5', category: 'Legal' },
+  { priority: 'medium', text: 'Hyderabad site shortlist for new 500-seat GCC client — 3 options ready for presentation', due: 'Apr 7', category: 'Site Selection' },
+  { priority: 'medium', text: 'Market intel: DLF Cybercity offered competitor ₹20/sqft below our rate — respond', due: 'Apr 8', category: 'Market' },
+  { priority: 'low',    text: 'Team velocity review: Rahul K. pipeline stale (>30d no movement on 4 deals)', due: 'Apr 5', category: 'Team' },
 ]
 const reheadTopFive = [
   {
-    title: 'Top 5 Leases Expiring Soonest',
+    title: 'Top 5 Deals by Value',
     items: [
-      { label: 'Golf View, Gurgaon',          value: '6d',   change: -1 },
-      { label: 'Paradigm Tower, Mumbai',      value: '54d',  change: -1 },
-      { label: 'Malpani Agile, Pune',         value: '152d', change: 0 },
-      { label: 'Global Foyer, Gurgaon',       value: '363d', change: 0 },
-      { label: 'Maple Corporate Park, Noida', value: '128d', change: 0 },
+      { label: 'BKC Tower Acquisition',      value: '₹2.4Cr', change: 0 },
+      { label: 'Embassy Extension',          value: '₹1.8Cr', change: 1 },
+      { label: 'Raheja Renewal',             value: '₹1.8Cr', change: -1 },
+      { label: 'One Indiabulls Renewal',     value: '₹1.6Cr', change: 0 },
+      { label: 'Prestige Shantiniketan',     value: '₹1.2Cr', change: 1 },
     ],
   },
   {
-    title: 'Top 5 Properties by Monthly Rent',
+    title: 'Top 5 Deals by Velocity Risk',
     items: [
-      { label: '43 EQ, Pune (PUN11)',       value: '₹149L', change: 0 },
-      { label: 'Emirates Stadium, GGN',     value: '₹142L', change: 0 },
-      { label: 'DLF Cybercity, Hyd',        value: '₹134L', change: 1 },
-      { label: 'Times Square Fl2, Mum',     value: '₹124L', change: 0 },
-      { label: 'Highbury Stadium, GGN',     value: '₹118L', change: -1 },
+      { label: 'Cybercity Delhi (stale 32d)', value: 'High',   change: -1 },
+      { label: 'Chennai Infocity (stale 24d)',value: 'High',   change: 0 },
+      { label: 'Raheja Renewal (42d old)',    value: 'Medium', change: 0 },
+      { label: 'Pune Lakeview (closed)',      value: 'Low',    change: 1 },
+      { label: 'Embassy Ext (fast moving)',   value: 'Low',    change: 1 },
     ],
   },
 ]
 const reheadCharts = [
   {
-    type: 'bar', title: 'Agreement Approval Pipeline',
+    type: 'bar', title: 'Deal Stage Distribution (count)',
     data: [
-      { name: 'Pending w/ Me', count: 40 }, { name: 'All Pending',  count: 40 },
-      { name: 'Approved',      count: 25 }, { name: 'Rejected',     count: 8 },
+      { name: 'Prospecting', count: 4 }, { name: 'Site Survey', count: 3 }, { name: 'Negotiation', count: 3 },
+      { name: 'Due Diligence', count: 2 }, { name: 'LOI Stage', count: 1 }, { name: 'Final Docs', count: 1 },
     ],
-    lines: [{ key: 'count', label: 'Count' }],
+    lines: [{ key: 'count', label: 'Deals' }],
   },
   {
-    type: 'area', title: 'Lease Expiry Timeline (Next 24 Months)',
+    type: 'line', title: 'Win Rate Trend (Monthly %)',
     data: [
-      { name: 'Apr 26', expiring: 3 }, { name: 'May 26', expiring: 8 },
-      { name: 'Jun 26', expiring: 4 }, { name: 'Jul 26', expiring: 2 },
-      { name: 'Aug 26', expiring: 3 }, { name: 'Sep 26', expiring: 2 },
-      { name: 'Q4 FY26', expiring: 5 }, { name: 'Q1 FY27', expiring: 6 },
-      { name: 'Q2 FY27', expiring: 4 }, { name: 'FY28+', expiring: 12 },
+      { name: 'Oct', winRate: 32 }, { name: 'Nov', winRate: 36 }, { name: 'Dec', winRate: 35 },
+      { name: 'Jan', winRate: 38 }, { name: 'Feb', winRate: 36 }, { name: 'Mar', winRate: 38 },
     ],
-    lines: [{ key: 'expiring', label: 'Leases Expiring' }],
+    lines: [{ key: 'winRate', label: 'Win Rate %' }],
   },
 ]
-const reheadColumns = agreementsColumns
-const reheadGrid = agreementsGrid.filter(r => ['Expiring Soon', 'WIP'].includes(r.status) || r.leaseEnd.includes('2026') || r.leaseEnd.includes('2027'))
+const reheadColumns = mgmtColumns
+const reheadGrid = mgmtGrid
 
 // ─── TRANSACTION MANAGER ──────────────────────────────────────────────────────
 const txnmgrMetrics = [
-  { label: 'Active Leads / Deals',    value: '8',      change: '3 under negotiation',           trend: 'up',   status: 'info',     icon: TrendingUp,  highlight: true },
-  { label: 'Approval Requests Sent',  value: '40',     change: '25 approved, 8 rejected',       trend: 'up',   status: 'warning',  icon: CheckCircle },
-  { label: 'Leases to Renew (6M)',    value: '17',     change: '11 in 3M, 6 in 3-6M',           trend: 'up',   status: 'negative', icon: Clock },
-  { label: 'New Agreements (Month)',  value: '4',      change: '2 in WIP stage',                 trend: 'up',   status: 'positive', icon: FileText },
-  { label: 'Deals Closed (Qtr)',      value: '12',     change: '₹8.4Cr MSF signed',              trend: 'up',   status: 'positive', icon: Building2 },
+  { label: 'My Active Deals',           value: '6',    change: '2 closings this month', trend: 'up',   status: 'info',    icon: FileText, highlight: true },
+  { label: 'Next Action Due',           value: 'Today',change: 'BKC LOI counter-offer', trend: 'up',   status: 'negative',icon: AlertCircle },
+  { label: 'Deal Age (avg)',            value: '34d',  change: 'Oldest: 68 days',       trend: 'up',   status: 'warning', icon: Clock },
+  { label: 'Documents Pending',         value: '8',    change: '3 critical for close',  trend: 'up',   status: 'warning', icon: FileText },
+  { label: 'Site Visits Scheduled',     value: '3',    change: 'This week',             trend: 'up',   status: 'info',    icon: MapPin },
 ]
 const txnmgrActions = [
-  { priority: 'high',   text: 'Club 125 (Noida, Under Negotiation) — landlord counter-offer received, respond before Apr 6', due: 'Apr 6', category: 'Negotiation' },
-  { priority: 'high',   text: 'Emirates Stadium renewal (3 agreement edit requests) — submit for TM approval today', due: 'Apr 4', category: 'Agreement Edit' },
-  { priority: 'medium', text: 'Golf View renewal: draft renewal terms for ₹54L/mo lease — coordinate with RE Head', due: 'Apr 5', category: 'Renewal' },
-  { priority: 'medium', text: 'Paradigm Tower (Mumbai, Floors 8+9) — get landlord renewal intent before expiry', due: 'Apr 10', category: 'Renewal' },
-  { priority: 'low',    text: 'Upload signed documents for 2 recently executed agreements — pending in portal', due: 'Apr 7', category: 'Documentation' },
+  { priority: 'high',   text: 'BKC LOI counter-offer: rent ₹2,800/sqft vs asked ₹3,100 — draft response', due: 'Today', category: 'Negotiation' },
+  { priority: 'high',   text: 'Prestige DD: structural report and RERA certificate missing — collect by Apr 5', due: 'Apr 5', category: 'Due Diligence' },
+  { priority: 'medium', text: 'Chennai site visit with client GM scheduled Apr 4 — prep info deck', due: 'Apr 4', category: 'Site Visit' },
+  { priority: 'medium', text: 'Cybercity Delhi: decision-maker not responding for 2 weeks — escalate to RE Head', due: 'Apr 5', category: 'Escalation' },
+  { priority: 'low',    text: 'Update CRM stage and next steps for all 6 active deals — hygiene check', due: 'Apr 3', category: 'CRM Hygiene' },
 ]
 const txnmgrTopFive = [
   {
-    title: 'Active Leads by Stage',
+    title: 'My Deals by Stage',
     items: [
-      { label: 'Under Negotiation',  value: '3',  change: 0 },
-      { label: 'Sourced',            value: '3',  change: 1 },
-      { label: 'LOI Issued',         value: '1',  change: 0 },
-      { label: 'Due Diligence',      value: '1',  change: 0 },
-      { label: 'Lost',               value: '2',  change: -1 },
+      { label: 'BKC Tower – LOI Stage',        value: '68d', change: -1 },
+      { label: 'Embassy Ext – Negotiation',    value: '42d', change: 0 },
+      { label: 'Prestige – Due Diligence',     value: '28d', change: 0 },
+      { label: 'Cybercity Delhi – Final Docs', value: '14d', change: 0 },
+      { label: 'Chennai – Site Survey',        value: '8d',  change: 0 },
     ],
   },
   {
-    title: 'Top 5 Leads by Target Area',
+    title: 'Key Documents by Status',
     items: [
-      { label: 'Club 125, Noida (Renewal)',     value: '39K sqft',  change: 0 },
-      { label: 'Andheri Lead, Mumbai (New)',    value: '28K sqft',  change: 1 },
-      { label: 'Viman Nagar, Pune (Renewal)',   value: '22K sqft',  change: 0 },
-      { label: 'HITEC City, Hyd (Expansion)',   value: '18K sqft',  change: 0 },
-      { label: 'Whitefield, Blore (New)',       value: '14K sqft',  change: 0 },
+      { label: 'BKC – LOI Counter Draft',  value: 'Pending', change: -1 },
+      { label: 'Prestige – RERA Cert',     value: 'Missing', change: -1 },
+      { label: 'Prestige – Struct. Report',value: 'Missing', change: 0 },
+      { label: 'Embassy – Lease Draft v3', value: 'Review',  change: 0 },
+      { label: 'Delhi – Fit-out Spec',     value: 'Ready',   change: 1 },
     ],
   },
 ]
 const txnmgrCharts = [
   {
-    type: 'bar', title: 'Lead Pipeline by Stage',
+    type: 'bar', title: 'My Deal Ages (days)',
     data: [
-      { name: 'Sourced',           count: 3 }, { name: 'Under Negotiation', count: 3 },
-      { name: 'LOI Issued',        count: 1 }, { name: 'Due Diligence',     count: 1 },
-      { name: 'Agreement Signing', count: 2 }, { name: 'Lost',              count: 2 },
+      { name: 'BKC Tower',     age: 68 }, { name: 'Embassy',   age: 42 }, { name: 'Prestige', age: 28 },
+      { name: 'Cybercity',     age: 14 }, { name: 'Chennai',   age: 8  }, { name: 'Pune Ext', age: 5  },
     ],
-    lines: [{ key: 'count', label: 'Leads' }],
+    lines: [{ key: 'age', label: 'Age (days)' }],
   },
   {
-    type: 'line', title: 'Agreement Edits — Approval Cycle Time (Days)',
+    type: 'line', title: 'Deal Progress Score (0–100) by Deal',
     data: [
-      { name: 'Jan', days: 6.2 }, { name: 'Feb', days: 5.8 }, { name: 'Mar', days: 7.4 }, { name: 'Apr', days: 8.1 },
+      { name: 'Week 1', BKC: 20, Embassy: 45, Prestige: 60, Cybercity: 75 },
+      { name: 'Week 2', BKC: 30, Embassy: 55, Prestige: 68, Cybercity: 80 },
+      { name: 'Week 3', BKC: 35, Embassy: 62, Prestige: 72, Cybercity: 85 },
+      { name: 'Week 4', BKC: 40, Embassy: 70, Prestige: 75, Cybercity: 88 },
     ],
-    lines: [{ key: 'days', label: 'Avg Days to Approval' }],
+    lines: [
+      { key: 'BKC', label: 'BKC Tower' }, { key: 'Embassy', label: 'Embassy' },
+      { key: 'Prestige', label: 'Prestige' }, { key: 'Cybercity', label: 'Cybercity' },
+    ],
   },
 ]
 const txnmgrColumns = [
-  { key: 'property',      label: 'Property Name' },
-  { key: 'location',      label: 'Location' },
-  { key: 'stage',         label: 'Stage' },
-  { key: 'type',          label: 'Type', muted: true },
-  { key: 'targetArea',    label: 'Target Area' },
-  { key: 'landlord',      label: 'Landlord', muted: true },
-  { key: 'expectedClose', label: 'Exp. Close' },
-  { key: 'status',        label: 'Status', type: 'status' },
-  { key: 'action',        label: 'Action', type: 'action', sortable: false },
+  { key: 'deal',       label: 'Deal / Property' },
+  { key: 'city',       label: 'City' },
+  { key: 'type',       label: 'Type' },
+  { key: 'value',      label: 'Value' },
+  { key: 'stage',      label: 'Stage' },
+  { key: 'nextAction', label: 'Next Action', muted: true },
+  { key: 'dueDate',    label: 'Due Date' },
+  { key: 'status',     label: 'Status', type: 'status' },
+  { key: 'action',     label: 'Action', type: 'action', sortable: false },
 ]
 const txnmgrGrid = [
-  { property: 'Club 125',             location: 'Noida, Sector 125',    stage: 'Under Negotiation', type: 'Renewal',   targetArea: '39K sqft',  landlord: 'Pawan Impex Pvt',    expectedClose: 'Jun 2026', status: 'Active',    action: 'View' },
-  { property: 'Andheri Skyview',      location: 'Mumbai, Andheri E',    stage: 'Under Negotiation', type: 'New',       targetArea: '28K sqft',  landlord: 'Runwal Group',        expectedClose: 'Jul 2026', status: 'Active',    action: 'View' },
-  { property: 'Viman Nagar Park',     location: 'Pune, Viman Nagar',    stage: 'Under Negotiation', type: 'Renewal',   targetArea: '22K sqft',  landlord: 'Solitaire Group',     expectedClose: 'May 2026', status: 'Active',    action: 'View' },
-  { property: 'HITEC Expansion',      location: 'Hyderabad, HITEC City',stage: 'Sourced',           type: 'Expansion', targetArea: '18K sqft',  landlord: 'TBD',                 expectedClose: 'Sep 2026', status: 'Pending',   action: 'View' },
-  { property: 'Whitefield New',       location: 'Bangalore, Whitefield',stage: 'Sourced',           type: 'New',       targetArea: '14K sqft',  landlord: 'Embassy Group',       expectedClose: 'Aug 2026', status: 'Pending',   action: 'View' },
-  { property: 'Sohna Road Ofc',       location: 'Gurgaon, Sohna Road',  stage: 'LOI Issued',        type: 'New',       targetArea: '12K sqft',  landlord: 'BPTP Ltd',            expectedClose: 'May 2026', status: 'Active',    action: 'View' },
-  { property: 'Anna Nagar Blk A',     location: 'Chennai, Anna Nagar',  stage: 'Due Diligence',     type: 'New',       targetArea: '10K sqft',  landlord: 'CBRE India',          expectedClose: 'Jun 2026', status: 'Active',    action: 'View' },
-  { property: 'Kalyani Magnum',       location: 'Kolkata, Sector V',    stage: 'Sourced',           type: 'New',       targetArea: '8K sqft',   landlord: 'Kalyani Developers',  expectedClose: 'Oct 2026', status: 'Pending',   action: 'View' },
-  { property: 'Prestige Polygon',     location: 'Chennai, Old Madras',  stage: 'Lost',              type: 'Renewal',   targetArea: '18K sqft',  landlord: 'Prestige Group',      expectedClose: 'N/A',      status: 'Inactive',  action: 'Archive' },
-  { property: 'Times Square Fl 3',    location: 'Mumbai, BKC',          stage: 'Expired',           type: 'Renewal',   targetArea: '14K sqft',  landlord: 'Times Developers',    expectedClose: 'N/A',      status: 'Inactive',  action: 'Archive' },
+  { deal: 'BKC Tower, Bandra',        city: 'Mumbai',    type: 'Acquisition',  value: '₹2.4Cr', stage: 'LOI',           nextAction: 'Draft counter-offer',  dueDate: 'Today',  status: 'In Progress', action: 'Edit' },
+  { deal: 'Embassy Extension',        city: 'Bengaluru', type: 'Expansion',    value: '₹1.8Cr', stage: 'Negotiation',   nextAction: 'Commercial response',  dueDate: 'Apr 4',  status: 'In Progress', action: 'Edit' },
+  { deal: 'Prestige Shantiniketan',   city: 'Bengaluru', type: 'New Lease',    value: '₹1.2Cr', stage: 'Due Diligence', nextAction: 'Collect RERA + struct', dueDate: 'Apr 5',  status: 'In Progress', action: 'Edit' },
+  { deal: 'Cybercity Tower B, Delhi', city: 'Delhi',     type: 'New Lease',    value: '₹1.1Cr', stage: 'Final Docs',    nextAction: 'Chase decision-maker', dueDate: 'Apr 5',  status: 'At Risk',     action: 'Escalate' },
+  { deal: 'Global Infocity, Chennai', city: 'Chennai',   type: 'New Lease',    value: '₹84L',   stage: 'Site Survey',   nextAction: 'Client site visit',    dueDate: 'Apr 4',  status: 'In Progress', action: 'View' },
+  { deal: 'Lakeview Towers, Pune',    city: 'Pune',      type: 'Expansion',    value: '₹78L',   stage: 'Signed',        nextAction: 'Handover to Ops',      dueDate: 'Done',   status: 'Completed',   action: 'View' },
 ]
 
 // ─── RE USER ──────────────────────────────────────────────────────────────────
 const reuserMetrics = [
-  { label: 'My Active Agreements',    value: '22',    change: '5 require action',           trend: 'up',   status: 'positive', icon: FileText,   highlight: true },
-  { label: 'Expiring in 3 Months',    value: '4',     change: 'Renewal notices needed',     trend: 'up',   status: 'negative', icon: Clock },
-  { label: 'Upcoming Notices',        value: '6',     change: '2 termination, 4 renewal',   trend: 'up',   status: 'warning',  icon: AlertCircle },
-  { label: 'Agreement Edits Pending', value: '3',     change: '1 rejected, 2 in approval',  trend: 'up',   status: 'warning',  icon: CheckCircle },
-  { label: 'Renewal Pipeline (6M)',   value: '9',     change: '₹4.8Cr rent at stake',       trend: 'up',   status: 'warning',  icon: TrendingUp },
+  { label: 'My Tasks Due Today',     value: '4',    change: '2 critical',           trend: 'up',   status: 'warning', icon: CheckCircle, highlight: true },
+  { label: 'Pending Approvals',      value: '2',    change: '1 awaiting >3 days',   trend: 'up',   status: 'warning', icon: Clock },
+  { label: 'Docs to Collect',        value: '5',    change: '3 for active deals',   trend: 'up',   status: 'negative',icon: FileText },
+  { label: 'Site Visits This Week',  value: '3',    change: '1 completed, 2 due',   trend: 'neutral',status: 'info',  icon: MapPin },
+  { label: 'CRM Records Updated',    value: '78%',  change: '4 deals need update',  trend: 'down', status: 'warning', icon: BarChart3 },
 ]
 const reuserActions = [
-  { priority: 'high',   text: 'Golf View (GGN06) — lease ends 08 Apr 2026, send termination or renewal notice immediately', due: 'Today', category: 'Expiry Action' },
-  { priority: 'high',   text: 'Paradigm Tower (MUM16) — lease ends 26 May 2026, landlord not contacted. Initiate renewal', due: 'Apr 5', category: 'Renewal' },
-  { priority: 'medium', text: 'Agreement edit for Emirates Stadium (GGN01) — rejected by finance, resubmit with corrections', due: 'Apr 5', category: 'Agreement Edit' },
-  { priority: 'medium', text: 'Upload renewal notice letter for Malpani Agile (PUN18) — due in portal before Apr 10', due: 'Apr 10', category: 'Documentation' },
-  { priority: 'low',    text: 'Lease Expiry Calendar report for Q1 FY27 — generate and share with RE Head by Apr 15', due: 'Apr 15', category: 'Reports' },
+  { priority: 'high',   text: 'Site visit report for Chennai Infocity (Apr 2) not submitted yet', due: 'Today', category: 'Report' },
+  { priority: 'high',   text: 'Collect RERA certificate from Prestige developer — follow up email sent 2 days ago', due: 'Today', category: 'Document' },
+  { priority: 'medium', text: 'Prep client brief for Hyderabad site presentation (Apr 7)', due: 'Apr 6', category: 'Presentation' },
+  { priority: 'medium', text: 'Update Cybercity deal stage in CRM — last updated 8 days ago', due: 'Today', category: 'CRM Update' },
+  { priority: 'low',    text: 'Schedule Q2 market survey calls for Bengaluru micro-markets', due: 'Apr 10', category: 'Research' },
 ]
 const reuserTopFive = [
   {
-    title: 'My Leases Expiring Soonest',
+    title: 'My Tasks by Category',
     items: [
-      { label: 'Golf View, Gurgaon',          value: 'Apr 26', change: -1 },
-      { label: 'Paradigm Tower, Mumbai',      value: 'May 26', change: -1 },
-      { label: 'Maple Corporate Park, Noida', value: 'Aug 26', change: 0 },
-      { label: 'Malpani Agile, Pune',         value: 'Sep 26', change: 0 },
-      { label: 'Global Foyer, Gurgaon',       value: 'Mar 27', change: 0 },
+      { label: 'Document Collection', value: '5', change: -1 },
+      { label: 'CRM Updates',         value: '4', change: 0 },
+      { label: 'Site Visit Reports',  value: '3', change: -1 },
+      { label: 'Client Presentations',value: '2', change: 0 },
+      { label: 'Market Research',     value: '2', change: 0 },
     ],
   },
   {
-    title: 'Lease Expiry Calendar — Status',
+    title: 'Deals I Support',
     items: [
-      { label: 'Active',          value: '190', change: 0 },
-      { label: 'Expiring 3M',     value: '11',  change: -1 },
-      { label: 'Expiring 6M',     value: '6',   change: 0 },
-      { label: 'Expiring 12M',    value: '18',  change: 0 },
-      { label: 'Expired (total)', value: '98',  change: -1 },
+      { label: 'Prestige Shantiniketan', value: 'Active', change: 0 },
+      { label: 'Cybercity Tower B',      value: 'Active', change: 0 },
+      { label: 'Chennai Infocity',       value: 'Active', change: 0 },
+      { label: 'Hyderabad – Pipeline',   value: 'Active', change: 0 },
+      { label: 'Pune Lakeview',          value: 'Closed', change: 1 },
     ],
   },
 ]
 const reuserCharts = [
   {
-    type: 'bar', title: 'My Leases by Expiry Status',
+    type: 'bar', title: 'My Task Completion Rate (Weekly)',
     data: [
-      { name: 'Active',       count: 16 }, { name: 'Expiring 3M',  count: 2 },
-      { name: 'Expiring 6M',  count: 2  }, { name: 'Expiring 12M', count: 2 },
+      { name: 'Mar W1', done: 18, total: 22 }, { name: 'Mar W2', done: 21, total: 24 },
+      { name: 'Mar W3', done: 16, total: 20 }, { name: 'Mar W4', done: 19, total: 23 },
+      { name: 'Apr W1', done: 4,  total: 16 },
     ],
-    lines: [{ key: 'count', label: 'Agreements' }],
-  },
-  {
-    type: 'area', title: 'Agreement Edits — Monthly Submissions',
-    data: [
-      { name: 'Oct', submitted: 4, approved: 3 }, { name: 'Nov', submitted: 6, approved: 5 },
-      { name: 'Dec', submitted: 3, approved: 3 }, { name: 'Jan', submitted: 8, approved: 6 },
-      { name: 'Feb', submitted: 5, approved: 4 }, { name: 'Mar', submitted: 7, approved: 5 },
-    ],
-    lines: [{ key: 'submitted', label: 'Submitted' }, { key: 'approved', label: 'Approved' }],
+    lines: [{ key: 'done', label: 'Completed' }, { key: 'total', label: 'Assigned' }],
   },
 ]
 const reuserColumns = [
-  { key: 'city',        label: 'City' },
-  { key: 'location',    label: 'Location' },
-  { key: 'floor',       label: 'Floor', muted: true },
-  { key: 'leaseEnd',    label: 'Lease End Date' },
-  { key: 'currentRent', label: 'Current Rent' },
-  { key: 'escalation',  label: 'Escalation %', muted: true },
-  { key: 'noticeSent',  label: 'Renewal Notice' },
-  { key: 'status',      label: 'Status', type: 'status' },
-  { key: 'action',      label: 'Action', type: 'action', sortable: false },
+  { key: 'task',     label: 'Task' },
+  { key: 'deal',     label: 'Deal / Property' },
+  { key: 'category', label: 'Category', muted: true },
+  { key: 'due',      label: 'Due Date' },
+  { key: 'priority', label: 'Priority', type: 'status' },
+  { key: 'status',   label: 'Status', type: 'status' },
+  { key: 'action',   label: 'Action', type: 'action', sortable: false },
 ]
 const reuserGrid = [
-  { city: 'Gurgaon',    location: 'Golf View',               floor: '2, 4 & 5',                  leaseEnd: '08 Apr 2026', currentRent: '₹54L',  escalation: 'N/A', noticeSent: 'No',  status: 'Expiring Soon', action: 'Send Notice' },
-  { city: 'Mumbai',     location: 'Paradigm Tower',          floor: '8, 9',                       leaseEnd: '26 May 2026', currentRent: '₹68L',  escalation: 'N/A', noticeSent: 'No',  status: 'Expiring Soon', action: 'Send Notice' },
-  { city: 'Noida',      location: 'Maple Corporate Park',    floor: 'G+4',                        leaseEnd: '08 Aug 2026', currentRent: '₹62L',  escalation: 'N/A', noticeSent: 'No',  status: 'Expiring Soon', action: 'Send Notice' },
-  { city: 'Pune',       location: 'Malpani Agile',           floor: '1st Phase 1-4',              leaseEnd: '01 Sep 2026', currentRent: '₹82L',  escalation: 'N/A', noticeSent: 'No',  status: 'Expiring Soon', action: 'Send Notice' },
-  { city: 'Gurgaon',    location: 'Global Foyer',            floor: 'GF, 1, 2, 11',               leaseEnd: '31 Mar 2027', currentRent: '₹0',    escalation: 'N/A', noticeSent: 'No',  status: 'Expiring Soon', action: 'Send Notice' },
-  { city: 'Mumbai',     location: 'Times Square',            floor: 'Ground',                     leaseEnd: '07 Feb 2027', currentRent: '₹42L',  escalation: 'N/A', noticeSent: 'No',  status: 'Expiring Soon', action: 'Send Notice' },
-  { city: 'Gurgaon',    location: 'Emirates Stadium',        floor: '3, 4, 5',                    leaseEnd: '31 Mar 2029', currentRent: '₹142L', escalation: 'N/A', noticeSent: 'No',  status: 'Active',        action: 'View' },
-  { city: 'Gurgaon',    location: 'Highbury Stadium',        floor: '5, 6, 7',                    leaseEnd: '31 Mar 2028', currentRent: '₹118L', escalation: 'N/A', noticeSent: 'Yes', status: 'Active',        action: 'View' },
-  { city: 'Pune',       location: '43 EQ – Tower E',         floor: 'Tower E, 4-8 Floors',        leaseEnd: '30 Jun 2029', currentRent: '₹149L', escalation: 'N/A', noticeSent: 'Yes', status: 'Active',        action: 'View' },
-  { city: 'Hyderabad',  location: 'DLF Cybercity',           floor: '5 & 9',                      leaseEnd: '31 Oct 2034', currentRent: '₹134L', escalation: 'N/A', noticeSent: 'No',  status: 'Active',        action: 'View' },
+  { task: 'Submit Chennai site visit report',    deal: 'Chennai Infocity',    category: 'Report',    due: 'Today',  priority: 'High',   status: 'Open',        action: 'Submit' },
+  { task: 'Collect RERA cert – Prestige',        deal: 'Prestige Shantini.',  category: 'Document',  due: 'Today',  priority: 'High',   status: 'Pending',     action: 'Follow Up' },
+  { task: 'Prep Hyderabad site brief',           deal: 'Hyd Pipeline',        category: 'Presentation', due: 'Apr 6', priority: 'Medium', status: 'In Progress', action: 'Edit' },
+  { task: 'Update Cybercity CRM record',         deal: 'Cybercity, Delhi',    category: 'CRM Update',due: 'Today',  priority: 'Medium', status: 'Pending',     action: 'Update' },
+  { task: 'Embassy commercial summary',          deal: 'Embassy Extension',   category: 'Document',  due: 'Apr 4',  priority: 'Medium', status: 'In Progress', action: 'Edit' },
+  { task: 'Bengaluru micro-market research',     deal: 'Q2 Pipeline',         category: 'Research',  due: 'Apr 10', priority: 'Low',    status: 'Open',        action: 'Start' },
 ]
 
-// ─── FINANCE ──────────────────────────────────────────────────────────────────
-const financeMetrics = [
-  { label: 'Total Monthly Outgoings',  value: '₹18.4Cr', change: 'Rent + CAM across 206 leases', trend: 'up',   status: 'warning',  icon: DollarSign, highlight: true },
-  { label: 'Security Deposits (Total)',value: '₹42.8Cr', change: '206 deposits tracked',          trend: 'up',   status: 'info',     icon: FileText },
-  { label: 'Bank Guarantees Active',   value: '28',      change: '₹12.4Cr total BG value',        trend: 'up',   status: 'info',     icon: CheckCircle },
-  { label: 'Escalations Due (Next 6M)',value: '14',      change: 'Avg 5% escalation',             trend: 'up',   status: 'warning',  icon: TrendingUp },
-  { label: 'CAM Charges (Monthly)',    value: '₹2.8Cr',  change: 'Across active portfolio',       trend: 'up',   status: 'warning',  icon: BarChart3 },
+// ─── RE FINANCE ───────────────────────────────────────────────────────────────
+const refinanceMetrics = [
+  { label: 'Total Lease Obligations (PA)', value: '₹5.4Cr',  change: 'Active leases: 12',     trend: 'up',   status: 'info',    icon: DollarSign, highlight: true },
+  { label: 'Payments Due This Month',      value: '₹68.2L',  change: '4 invoices pending',    trend: 'up',   status: 'warning', icon: Clock },
+  { label: 'Security Deposits Held',       value: '₹2.1Cr',  change: '8 properties',          trend: 'neutral', status: 'neutral', icon: DollarSign },
+  { label: 'CAM Charges Reconciled',       value: '92.4%',   change: '2 properties pending',  trend: 'up',   status: 'positive', icon: CheckCircle },
+  { label: 'Overdue Rent Payments',        value: '0',       change: '100% on-time this month',trend: 'up',  status: 'positive', icon: CheckCircle },
 ]
-const financeActions = [
-  { priority: 'high',   text: 'BG expiry: 4 bank guarantees expiring within 60 days — renew or replace before expiry', due: 'Apr 10', category: 'Bank Guarantee' },
-  { priority: 'high',   text: 'Stamp duty unpaid for 3 agreements executed in Q4 FY25 — pay before penalty kicks in', due: 'Apr 5', category: 'Stamp Duty' },
-  { priority: 'medium', text: '14 rent escalations due in next 6 months — update payment instructions with banks', due: 'Apr 15', category: 'Escalations' },
-  { priority: 'medium', text: 'Security deposit refund due for 2 terminated leases (₹1.2Cr total) — process and track', due: 'Apr 12', category: 'Deposit Refund' },
-  { priority: 'low',    text: 'Annual financial schedule: reconcile lease payments vs SAP entries for FY25-26', due: 'Apr 20', category: 'Reconciliation' },
+const refinanceActions = [
+  { priority: 'high',   text: 'Whitefield lease rent ₹18.4L due Apr 5 — initiate payment today', due: 'Today', category: 'Rent Payment' },
+  { priority: 'medium', text: 'CAM charges for BKC property (₹3.2L) — reconcile against actual usage', due: 'Apr 8', category: 'CAM Reconciliation' },
+  { priority: 'medium', text: 'Security deposit refund for Pune (surrendered) — ₹24L process with landlord', due: 'Apr 10', category: 'Deposit' },
+  { priority: 'low',    text: 'Annual lease schedule update for FY26-27 budget planning', due: 'Apr 15', category: 'Planning' },
 ]
-const financeTopFive = [
+const refinanceTopFive = [
   {
-    title: 'Top 5 Properties by Monthly Rent',
+    title: 'Top 5 Properties by Annual Rent',
     items: [
-      { label: '43 EQ, Pune (PUN11)',       value: '₹149.17L', change: 0 },
-      { label: 'Emirates Stadium, Gurgaon', value: '₹142L',    change: 0 },
-      { label: 'DLF Cybercity, Hyd',        value: '₹134L',    change: 1 },
-      { label: 'Times Square Fl2+7, Mum',   value: '₹124L',    change: 0 },
-      { label: 'Highbury Stadium, Gurgaon', value: '₹118L',    change: -1 },
+      { label: 'Whitefield Towers',  value: '₹96L', change: 0 },
+      { label: 'One Indiabulls',     value: '₹84L', change: 0 },
+      { label: 'Cyber Hub, Gurgaon', value: '₹72L', change: 0 },
+      { label: 'Raheja Mindspace',   value: '₹66L', change: 0 },
+      { label: 'Embassy TechVillage',value: '₹60L', change: 0 },
     ],
   },
   {
-    title: 'Top 5 Escalations Due (Next 6M)',
+    title: 'Upcoming Payments (30 days)',
     items: [
-      { label: 'Brilliant Center, Indore',  value: 'Jun 26', change: 0 },
-      { label: 'DLF Cybercity, Hyd',        value: 'Jul 26', change: 0 },
-      { label: 'Godrej Genesis, Kolkata',   value: 'Aug 26', change: 0 },
-      { label: 'World Trade Tower, Noida',  value: 'Sep 26', change: 0 },
-      { label: 'Eastbridge, Mumbai',        value: 'Sep 26', change: 0 },
+      { label: 'Whitefield – Apr 5',     value: '₹18.4L', change: 0 },
+      { label: 'Cybercity – Apr 10',     value: '₹14.2L', change: 0 },
+      { label: 'One Indiabulls – Apr 12',value: '₹12.6L', change: 0 },
+      { label: 'Raheja – Apr 18',        value: '₹11.8L', change: 0 },
+      { label: 'Embassy – Apr 22',       value: '₹11.2L', change: 0 },
     ],
   },
 ]
-const financeCharts = [
+const refinanceCharts = [
   {
-    type: 'bar', title: 'Monthly Rent by City (₹L)',
+    type: 'bar', title: 'Monthly Rent Payments (₹L)',
     data: [
-      { name: 'Pune',      rent: 426 }, { name: 'Mumbai',    rent: 380 },
-      { name: 'Gurgaon',   rent: 488 }, { name: 'Hyderabad', rent: 134 },
-      { name: 'Bangalore', rent: 312 }, { name: 'Chennai',   rent: 248 },
-      { name: 'Noida',     rent: 154 }, { name: 'Kolkata',   rent: 82 },
+      { name: 'Oct', paid: 56.2 }, { name: 'Nov', paid: 58.4 }, { name: 'Dec', paid: 62.1 },
+      { name: 'Jan', paid: 60.8 }, { name: 'Feb', paid: 61.4 }, { name: 'Mar', paid: 63.2 },
     ],
-    lines: [{ key: 'rent', label: 'Monthly Rent (₹L)' }],
+    lines: [{ key: 'paid', label: 'Rent Paid (₹L)' }],
   },
   {
-    type: 'pie', title: 'Security Deposit Distribution by City',
+    type: 'pie', title: 'Lease Cost by City',
     data: [
-      { name: 'Pune',      value: 28 }, { name: 'Mumbai',    value: 22 },
-      { name: 'Gurgaon',   value: 18 }, { name: 'Bangalore', value: 14 },
-      { name: 'Hyderabad', value: 10 }, { name: 'Others',    value: 8 },
+      { name: 'Bengaluru', value: 36 }, { name: 'Mumbai', value: 28 },
+      { name: 'Pune',      value: 14 }, { name: 'Hyderabad', value: 12 },
+      { name: 'Delhi',     value: 10 },
     ],
     lines: [],
   },
 ]
-const financeColumns = [
-  { key: 'centreCode',   label: 'Centre Code', muted: true },
-  { key: 'city',         label: 'City' },
-  { key: 'building',     label: 'Building' },
-  { key: 'monthlyRent',  label: 'Monthly Rent' },
-  { key: 'camCharges',   label: 'CAM (₹L)' },
-  { key: 'secDeposit',   label: 'Security Dep.' },
-  { key: 'bgAmount',     label: 'BG Amount' },
-  { key: 'escalation',   label: 'Next Escalation' },
-  { key: 'status',       label: 'Status', type: 'status' },
-  { key: 'action',       label: 'Action', type: 'action', sortable: false },
+const refinanceColumns = [
+  { key: 'property',   label: 'Property' },
+  { key: 'city',       label: 'City' },
+  { key: 'annualRent', label: 'Annual Rent' },
+  { key: 'dueDate',    label: 'Next Due' },
+  { key: 'amount',     label: 'Amount Due' },
+  { key: 'leaseEnd',   label: 'Lease End', muted: true },
+  { key: 'status',     label: 'Status', type: 'status' },
+  { key: 'action',     label: 'Action', type: 'action', sortable: false },
 ]
-const financeGrid = [
-  { centreCode: 'PUN11',  city: 'Pune',       building: '43 EQ',               monthlyRent: '₹149.17L', camCharges: '12.4',  secDeposit: '₹149.17L', bgAmount: 'N/A',      escalation: 'Jun 2026', status: 'Active',  action: 'View' },
-  { centreCode: 'GGN01',  city: 'Gurgaon',    building: 'Emirates Stadium',    monthlyRent: '₹142L',    camCharges: '10.8',  secDeposit: '₹142L',    bgAmount: 'N/A',      escalation: 'Mar 2026', status: 'Active',  action: 'View' },
-  { centreCode: 'HYD03',  city: 'Hyderabad',  building: 'DLF Cybercity',       monthlyRent: '₹134L',    camCharges: '11.2',  secDeposit: '₹134L',    bgAmount: '₹40L',     escalation: 'Jul 2026', status: 'Active',  action: 'View' },
-  { centreCode: 'MUM06',  city: 'Mumbai',     building: 'Times Square Fl 2+7', monthlyRent: '₹124L',    camCharges: '9.6',   secDeposit: '₹124L',    bgAmount: '₹36L',     escalation: 'Dec 2026', status: 'Active',  action: 'View' },
-  { centreCode: 'GGN02',  city: 'Gurgaon',    building: 'Highbury Stadium',    monthlyRent: '₹118L',    camCharges: '8.4',   secDeposit: '₹118L',    bgAmount: 'N/A',      escalation: 'Mar 2027', status: 'Active',  action: 'View' },
-  { centreCode: 'GGN01',  city: 'Gurgaon',    building: 'Grand Canyon',        monthlyRent: '₹64L',     camCharges: '5.2',   secDeposit: '₹64L',     bgAmount: 'N/A',      escalation: 'Sep 2026', status: 'Active',  action: 'View' },
-  { centreCode: 'MUM16',  city: 'Mumbai',     building: 'Paradigm Tower',      monthlyRent: '₹68L',     camCharges: '5.6',   secDeposit: '₹68L',     bgAmount: '₹20L',     escalation: 'N/A',      status: 'Expiring Soon', action: 'Renew' },
-  { centreCode: 'GGN06',  city: 'Gurgaon',    building: 'Golf View',           monthlyRent: '₹54L',     camCharges: '4.4',   secDeposit: '₹54L',     bgAmount: 'N/A',      escalation: 'N/A',      status: 'Expiring Soon', action: 'Renew' },
-  { centreCode: 'NOI04',  city: 'Noida',      building: 'World Trade Tower',   monthlyRent: '₹92L',     camCharges: '7.2',   secDeposit: '₹92L',     bgAmount: '₹28L',     escalation: 'Sep 2026', status: 'Active',  action: 'View' },
-  { centreCode: 'IND01',  city: 'Indore',     building: 'Brilliant Center',    monthlyRent: '₹44L',     camCharges: '3.6',   secDeposit: '₹44L',     bgAmount: 'N/A',      escalation: 'Jun 2026', status: 'Active',  action: 'View' },
+const refinanceGrid = [
+  { property: 'Whitefield Towers',    city: 'Bengaluru', annualRent: '₹96L',  dueDate: 'Apr 5',  amount: '₹18.4L', leaseEnd: 'Mar 2028', status: 'Pending',   action: 'Pay'    },
+  { property: 'Cybercity Tower B',    city: 'Delhi NCR', annualRent: '₹72L',  dueDate: 'Apr 10', amount: '₹14.2L', leaseEnd: 'Dec 2027', status: 'Pending',   action: 'Pay'    },
+  { property: 'One Indiabulls A5',    city: 'Mumbai',    annualRent: '₹84L',  dueDate: 'Apr 12', amount: '₹12.6L', leaseEnd: 'May 2026', status: 'Pending',   action: 'Pay'    },
+  { property: 'Raheja Mindspace T4',  city: 'Hyderabad', annualRent: '₹66L',  dueDate: 'Apr 18', amount: '₹11.8L', leaseEnd: 'Apr 2026', status: 'Pending',   action: 'Pay'    },
+  { property: 'Embassy TechVillage',  city: 'Bengaluru', annualRent: '₹60L',  dueDate: 'Apr 22', amount: '₹11.2L', leaseEnd: 'Sep 2027', status: 'Pending',   action: 'Pay'    },
+  { property: 'Prestige Shantini.',   city: 'Bengaluru', annualRent: '₹48L',  dueDate: 'May 1',  amount: '₹8.4L',  leaseEnd: 'Mar 2029', status: 'Active',    action: 'View'   },
+  { property: 'Baner Lakeview',       city: 'Pune',      annualRent: '₹42L',  dueDate: 'Paid',   amount: '—',      leaseEnd: 'Aug 2027', status: 'Completed', action: 'View'   },
 ]
 
 export const nexusREData = {
-  mgmt:    { metrics: mgmtMetrics,    actions: mgmtActions,    topFive: mgmtTopFive,    charts: mgmtCharts,    columns: mgmtColumns,    grid: mgmtGrid,    gridTitle: 'Full Agreement Portfolio' },
-  rehead:  { metrics: reheadMetrics,  actions: reheadActions,  topFive: reheadTopFive,  charts: reheadCharts,  columns: reheadColumns,  grid: reheadGrid,  gridTitle: 'Expiring & At-Risk Agreements' },
-  txnmgr:  { metrics: txnmgrMetrics,  actions: txnmgrActions,  topFive: txnmgrTopFive,  charts: txnmgrCharts,  columns: txnmgrColumns,  grid: txnmgrGrid,  gridTitle: 'Property Leads Pipeline' },
-  reuser:  { metrics: reuserMetrics,  actions: reuserActions,  topFive: reuserTopFive,  charts: reuserCharts,  columns: reuserColumns,  grid: reuserGrid,  gridTitle: 'Lease Expiry Calendar' },
-  finance: { metrics: financeMetrics, actions: financeActions, topFive: financeTopFive, charts: financeCharts, columns: financeColumns, grid: financeGrid, gridTitle: 'Financial Obligations by Agreement' },
+  mgmt:    { metrics: mgmtMetrics,    actions: mgmtActions,    topFive: mgmtTopFive,    charts: mgmtCharts,    columns: mgmtColumns,    grid: mgmtGrid,    gridTitle: 'RE Portfolio — All Active Transactions' },
+  rehead:  { metrics: reheadMetrics,  actions: reheadActions,  topFive: reheadTopFive,  charts: reheadCharts,  columns: reheadColumns,  grid: reheadGrid,  gridTitle: 'Deal Pipeline Overview' },
+  txnmgr:  { metrics: txnmgrMetrics,  actions: txnmgrActions,  topFive: txnmgrTopFive,  charts: txnmgrCharts,  columns: txnmgrColumns,  grid: txnmgrGrid,  gridTitle: 'My Active Deals — Tracker' },
+  reuser:  { metrics: reuserMetrics,  actions: reuserActions,  topFive: reuserTopFive,  charts: reuserCharts,  columns: reuserColumns,  grid: reuserGrid,  gridTitle: 'My Task List' },
+  finance: { metrics: refinanceMetrics, actions: refinanceActions, topFive: refinanceTopFive, charts: refinanceCharts, columns: refinanceColumns, grid: refinanceGrid, gridTitle: 'Lease Payment Schedule' },
 }

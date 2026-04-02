@@ -1,4 +1,4 @@
-import { Users, TrendingUp, Building2, Star, Clock, AlertCircle, CheckCircle, DollarSign, BarChart3, Activity, FileText, MessageSquare, Calendar, ListChecks } from 'lucide-react'
+import { Users, TrendingUp, Building2, Star, Clock, AlertCircle, CheckCircle, DollarSign, BarChart3, Activity } from 'lucide-react'
 
 export const nexusAMPersonas = [
   { id: 'mgmt',     label: 'Management' },
@@ -11,467 +11,429 @@ export const nexusAMPersonas = [
 
 export const nexusAMFilters = [
   { id: 'region',  label: 'Region',  options: ['All Regions', 'South – Bengaluru', 'West – Pune', 'West – Mumbai', 'South – Hyderabad', 'North – Delhi'] },
-  { id: 'city',    label: 'City',    options: ['All Cities', 'Bengaluru', 'Pune', 'Mumbai', 'Hyderabad', 'Delhi', 'Chennai'] },
-  { id: 'client',  label: 'Client',  options: ['All Clients', 'Infosys BPO', 'Deutsche Bank GCC', 'Accenture India', 'Wipro Tech', 'Cognizant', 'HSBC GCC', 'XYZ Fintech'] },
-  { id: 'status',  label: 'Status',  options: ['All Statuses', 'Paid', 'Pending', 'Overdue', 'Disputed', 'Partial Payment'] },
+  { id: 'segment', label: 'Segment', options: ['All Segments', 'Enterprise', 'GCC', 'SME', 'Co-working'] },
+  { id: 'health',  label: 'Health',  options: ['All', 'Healthy', 'At Risk', 'Churning'] },
 ]
 
 // ─── MANAGEMENT ───────────────────────────────────────────────────────────────
 const mgmtMetrics = [
-  { label: 'Total Client Locations',   value: '148',    change: '+6 this month',            trend: 'up',   status: 'positive', icon: Building2, highlight: true },
-  { label: 'Invoice Collection Rate',  value: '84.6%',  change: '-2.1% vs last month',      trend: 'down', status: 'warning',  icon: DollarSign },
-  { label: 'Overdue Invoice Value',    value: '₹2.8Cr', change: '42 invoices overdue',      trend: 'up',   status: 'negative', icon: AlertCircle },
-  { label: 'Open Disputes',            value: '31',     change: '8 awaiting L2 approval',   trend: 'up',   status: 'negative', icon: MessageSquare },
-  { label: 'Task SLA Compliance',      value: '78.4%',  change: '42 tasks breached SLA',    trend: 'down', status: 'warning',  icon: ListChecks },
+  { label: 'Total Occupied Seats',     value: '12,480', change: '+340 this month',      trend: 'up',   status: 'positive', icon: Users, highlight: true },
+  { label: 'Portfolio Occupancy',      value: '87.4%',  change: '+1.8% vs last month',  trend: 'up',   status: 'positive', icon: Building2 },
+  { label: 'Gross Retention Rate',     value: '91.2%',  change: '+0.4% QoQ',            trend: 'up',   status: 'positive', icon: TrendingUp },
+  { label: 'Expansion Revenue MTD',    value: '₹4.8Cr', change: '+22% vs target',       trend: 'up',   status: 'positive', icon: DollarSign },
+  { label: 'Accounts at Churn Risk',   value: '8',      change: '₹1.2Cr ARR at risk',  trend: 'up',   status: 'negative', icon: AlertCircle },
 ]
 const mgmtActions = [
-  { priority: 'high',   text: 'Infosys BPO (4 invoices, ₹84L total) overdue >60 days — escalate to AM Head and initiate recovery', due: 'Apr 3', category: 'Invoice Recovery' },
-  { priority: 'high',   text: '8 disputes at L2 approval pending for >7 days — review and resolve to unblock client payments', due: 'Apr 4', category: 'Dispute Approval' },
-  { priority: 'medium', text: 'Monthly invoice collection rate dropped to 84.6% — identify top defaulters by region', due: 'Apr 5', category: 'Collections' },
-  { priority: 'medium', text: 'Q1 FY26 review: 42 tasks breached SLA — root-cause analysis required before board report', due: 'Apr 8', category: 'SLA Review' },
-  { priority: 'low',    text: 'Meeting completion rate at 68% for March — identify centres with low meeting adherence', due: 'Apr 10', category: 'Meeting Compliance' },
+  { priority: 'high',   text: '3 accounts (400 seats combined) not renewed — churn likely unless escalation in 7 days', due: 'Apr 8', category: 'Retention' },
+  { priority: 'high',   text: 'Infosys BPO (1,200 seats) — contract expiry in 60 days, renewal not started', due: 'Apr 15', category: 'Renewal' },
+  { priority: 'medium', text: 'Deutsche Bank GCC expansion (200 seats, Bengaluru) — approval pending board sign-off', due: 'Apr 10', category: 'Expansion' },
+  { priority: 'medium', text: 'Quarterly business review pack for top 10 clients due for distribution', due: 'Apr 5', category: 'QBR' },
+  { priority: 'low',    text: 'NPS survey batch (Q1 FY26) results in — 3 detractor accounts need follow-up', due: 'Apr 12', category: 'NPS' },
 ]
 const mgmtTopFive = [
   {
-    title: 'Top 5 Clients by Overdue Invoice Value',
+    title: 'Top 5 Accounts by Seat Count',
     items: [
-      { label: 'Infosys BPO',       value: '₹84L',   change: -1 },
-      { label: 'XYZ Fintech',       value: '₹42L',   change: -1 },
-      { label: 'GlobalCorp',        value: '₹28L',   change: 0 },
-      { label: 'Wipro Tech',        value: '₹21L',   change: 0 },
-      { label: 'TechStartup A',     value: '₹14L',   change: 0 },
+      { label: 'Infosys BPO',        value: '1,200', change: 0 },
+      { label: 'Deutsche Bank GCC',  value: '840',   change: 1 },
+      { label: 'Accenture India',    value: '680',   change: 0 },
+      { label: 'Wipro Tech',         value: '540',   change: -1 },
+      { label: 'Cognizant',          value: '480',   change: 0 },
     ],
   },
   {
-    title: 'Top 5 Locations by Open Disputes',
+    title: 'Top 5 Accounts by Churn Risk',
     items: [
-      { label: 'Whitefield, Blore',   value: '8',  change: -1 },
-      { label: 'BKC, Mumbai',         value: '6',  change: 0 },
-      { label: 'Baner, Pune',         value: '5',  change: 0 },
-      { label: 'HiTec City, Hyd',     value: '4',  change: 0 },
-      { label: 'Cyber City, Delhi',   value: '4',  change: 1 },
+      { label: 'XYZ Fintech (150 seats)',    value: 'High',   change: -1 },
+      { label: 'GlobalCorp (80 seats)',      value: 'High',   change: -1 },
+      { label: 'TechStartup A (40 seats)',   value: 'High',   change: 0 },
+      { label: 'BFSI Co. (120 seats)',       value: 'Medium', change: 0 },
+      { label: 'Retail Co. (60 seats)',      value: 'Medium', change: 0 },
     ],
   },
 ]
 const mgmtCharts = [
   {
-    type: 'line', title: 'Invoice Collection Rate & Overdue Count (Monthly)',
+    type: 'line', title: 'Occupancy & Retention Trend (Monthly)',
     data: [
-      { name: 'Oct', rate: 88.2, overdue: 28 }, { name: 'Nov', rate: 90.1, overdue: 22 },
-      { name: 'Dec', rate: 87.4, overdue: 30 }, { name: 'Jan', rate: 89.0, overdue: 24 },
-      { name: 'Feb', rate: 86.8, overdue: 36 }, { name: 'Mar', rate: 84.6, overdue: 42 },
+      { name: 'Oct', occupancy: 84.2, retention: 90.1 }, { name: 'Nov', occupancy: 85.8, retention: 90.8 },
+      { name: 'Dec', occupancy: 84.6, retention: 89.4 }, { name: 'Jan', occupancy: 86.1, retention: 90.2 },
+      { name: 'Feb', occupancy: 85.6, retention: 90.8 }, { name: 'Mar', occupancy: 87.4, retention: 91.2 },
     ],
-    lines: [{ key: 'rate', label: 'Collection Rate %' }, { key: 'overdue', label: 'Overdue Count' }],
+    lines: [{ key: 'occupancy', label: 'Occupancy %' }, { key: 'retention', label: 'Retention %' }],
   },
   {
-    type: 'pie', title: 'Invoice Status Breakdown',
+    type: 'bar', title: 'Expansion Revenue by Region (₹L MTD)',
     data: [
-      { name: 'Paid',            value: 624 },
-      { name: 'Pending',         value: 184 },
-      { name: 'Overdue',         value: 42 },
-      { name: 'Disputed',        value: 31 },
-      { name: 'Partial Payment', value: 18 },
+      { name: 'Bengaluru', expansion: 184 }, { name: 'Pune',       expansion: 96 },
+      { name: 'Mumbai',    expansion: 112 }, { name: 'Hyderabad',  expansion: 64 },
+      { name: 'Delhi',     expansion: 24 },
+    ],
+    lines: [{ key: 'expansion', label: 'Expansion Revenue (₹L)' }],
+  },
+  {
+    type: 'pie', title: 'Accounts by Health Status',
+    data: [
+      { name: 'Healthy',    value: 68 }, { name: 'Needs Attention', value: 20 },
+      { name: 'At Risk',    value: 8  }, { name: 'Churning',        value: 4  },
     ],
     lines: [],
   },
-  {
-    type: 'bar', title: 'Disputes by Status (Portfolio)',
-    data: [
-      { name: 'L1 Pending', count: 14 }, { name: 'L2 Pending', count: 8 },
-      { name: 'Resolved',   count: 42 }, { name: 'Rejected',   count: 6 },
-      { name: 'Withdrawn',  count: 3  },
-    ],
-    lines: [{ key: 'count', label: 'Disputes' }],
-  },
 ]
 const mgmtColumns = [
-  { key: 'client',       label: 'Client' },
-  { key: 'location',     label: 'Location' },
-  { key: 'totalInvoices',label: 'Total Invoices', muted: true },
-  { key: 'overdue',      label: 'Overdue (₹L)' },
-  { key: 'openDisputes', label: 'Open Disputes' },
-  { key: 'openTasks',    label: 'Tasks Pending' },
-  { key: 'invoiceHealth',label: 'Invoice Health', type: 'status' },
-  { key: 'action',       label: 'Action', type: 'action', sortable: false },
+  { key: 'account',   label: 'Account' },
+  { key: 'seats',     label: 'Seats' },
+  { key: 'centre',    label: 'Centre' },
+  { key: 'occupancy', label: 'Occupancy', type: 'progress' },
+  { key: 'renewal',   label: 'Renewal Date' },
+  { key: 'nps',       label: 'NPS', muted: true },
+  { key: 'health',    label: 'Health', type: 'status' },
+  { key: 'action',    label: 'Action', type: 'action', sortable: false },
 ]
 const mgmtGrid = [
-  { client: 'Infosys BPO',       location: 'Baner, Pune',         totalInvoices: '28', overdue: '84',  openDisputes: '3', openTasks: '6', invoiceHealth: 'At Risk',  action: 'Escalate' },
-  { client: 'Deutsche Bank GCC', location: 'Whitefield, Blore',   totalInvoices: '24', overdue: '0',   openDisputes: '1', openTasks: '2', invoiceHealth: 'Healthy',  action: 'View' },
-  { client: 'Accenture India',   location: 'Whitefield, Blore',   totalInvoices: '18', overdue: '0',   openDisputes: '2', openTasks: '3', invoiceHealth: 'Healthy',  action: 'View' },
-  { client: 'Wipro Tech',        location: 'HiTec City, Hyd',     totalInvoices: '22', overdue: '21',  openDisputes: '2', openTasks: '4', invoiceHealth: 'Warning',  action: 'Review' },
-  { client: 'Cognizant',         location: 'Baner, Pune',         totalInvoices: '16', overdue: '0',   openDisputes: '0', openTasks: '1', invoiceHealth: 'Healthy',  action: 'View' },
-  { client: 'XYZ Fintech',       location: 'BKC, Mumbai',         totalInvoices: '14', overdue: '42',  openDisputes: '4', openTasks: '5', invoiceHealth: 'At Risk',  action: 'Escalate' },
-  { client: 'HSBC GCC',          location: 'BKC, Mumbai',         totalInvoices: '20', overdue: '0',   openDisputes: '2', openTasks: '2', invoiceHealth: 'Healthy',  action: 'View' },
-  { client: 'GlobalCorp',        location: 'Cyber City, Delhi',   totalInvoices: '12', overdue: '28',  openDisputes: '3', openTasks: '4', invoiceHealth: 'At Risk',  action: 'Escalate' },
-  { client: 'TechStartup A',     location: 'Whitefield, Blore',   totalInvoices: '8',  overdue: '14',  openDisputes: '1', openTasks: '2', invoiceHealth: 'Warning',  action: 'Review' },
-  { client: 'BFSI Co.',          location: 'BKC, Mumbai',         totalInvoices: '14', overdue: '0',   openDisputes: '0', openTasks: '1', invoiceHealth: 'Healthy',  action: 'View' },
+  { account: 'Infosys BPO',       seats: '1,200', centre: 'Baner',      occupancy: 92, renewal: 'Jun 2026', nps: '42', health: 'Healthy',  action: 'View' },
+  { account: 'Deutsche Bank GCC', seats: '840',   centre: 'Whitefield', occupancy: 96, renewal: 'Sep 2027', nps: '58', health: 'Healthy',  action: 'View' },
+  { account: 'Accenture India',   seats: '680',   centre: 'Whitefield', occupancy: 88, renewal: 'Mar 2027', nps: '36', health: 'Healthy',  action: 'View' },
+  { account: 'Wipro Tech',        seats: '540',   centre: 'HiTec City', occupancy: 84, renewal: 'Aug 2026', nps: '28', health: 'Active',   action: 'View' },
+  { account: 'Cognizant',         seats: '480',   centre: 'Baner',      occupancy: 90, renewal: 'Jan 2027', nps: '44', health: 'Healthy',  action: 'View' },
+  { account: 'XYZ Fintech',       seats: '150',   centre: 'BKC',        occupancy: 62, renewal: 'Apr 2026', nps: '-12',health: 'At Risk',  action: 'Intervene' },
+  { account: 'GlobalCorp',        seats: '80',    centre: 'Cyber City', occupancy: 55, renewal: 'May 2026', nps: '-4', health: 'At Risk',  action: 'Intervene' },
+  { account: 'HSBC GCC',          seats: '420',   centre: 'BKC',        occupancy: 86, renewal: 'Dec 2027', nps: '50', health: 'Healthy',  action: 'View' },
 ]
 
 // ─── AM HEAD ──────────────────────────────────────────────────────────────────
 const amheadMetrics = [
-  { label: 'Invoices Overdue >30d',    value: '28',     change: '₹1.4Cr total overdue',     trend: 'up',   status: 'negative', icon: FileText,     highlight: true },
-  { label: 'Dispute Escalation Rate',  value: '26.4%',  change: '8 of 31 at L2+',           trend: 'up',   status: 'negative', icon: MessageSquare },
-  { label: 'Meeting Completion Rate',  value: '71.2%',  change: '-4% vs last month',         trend: 'down', status: 'warning',  icon: Calendar },
-  { label: 'SLA Breach – Tasks',       value: '18',     change: '9 critical overdue',        trend: 'up',   status: 'negative', icon: ListChecks },
-  { label: 'Renewal Pipeline (90d)',   value: '₹4.2Cr', change: '14 accounts due',           trend: 'up',   status: 'warning',  icon: TrendingUp },
+  { label: 'Accounts at Risk',       value: '8',     change: '2 new this week',        trend: 'up',   status: 'negative', icon: AlertCircle, highlight: true },
+  { label: 'Renewals Due (90 days)', value: '14',    change: '₹4.2Cr ARR',             trend: 'up',   status: 'warning',  icon: Clock },
+  { label: 'Upsell Pipeline',        value: '₹2.8Cr',change: '6 active opportunities', trend: 'up',   status: 'positive', icon: TrendingUp },
+  { label: 'Portfolio NPS',          value: '38',    change: '+4 vs last quarter',      trend: 'up',   status: 'positive', icon: Star },
+  { label: 'Gross Retention',        value: '91.2%', change: '+0.4% QoQ',              trend: 'up',   status: 'positive', icon: CheckCircle },
 ]
 const amheadActions = [
-  { priority: 'high',   text: 'AM Neha: XYZ Fintech (₹42L overdue, 4 disputes) — no action in 10 days, escalation required', due: 'Today', category: 'AM Escalation' },
-  { priority: 'high',   text: '9 critical tasks assigned to team are overdue — review and reassign with hard deadline', due: 'Apr 3', category: 'Task Overdue' },
-  { priority: 'medium', text: '8 disputes at L2 pending — your approval needed to unblock ₹68L in disputed invoices', due: 'Apr 4', category: 'Dispute Approval' },
-  { priority: 'medium', text: 'AM team meeting completion rate fell to 71.2% in March — identify AM-wise compliance gaps', due: 'Apr 5', category: 'Meeting Compliance' },
-  { priority: 'low',    text: 'Infosys BPO renewal (₹3.6Cr ARR) — ensure AM has initiated pre-renewal conversation', due: 'Apr 10', category: 'Renewal' },
+  { priority: 'high',   text: 'XYZ Fintech (150 seats) flagged as "churning" — AM Neha has not actioned in 10 days', due: 'Today', category: 'Churn Risk' },
+  { priority: 'high',   text: 'Infosys BPO renewal (1,200 seats, ₹3.6Cr) — assign senior AM and start negotiation', due: 'Apr 5', category: 'Renewal' },
+  { priority: 'medium', text: 'Deutsche Bank GCC expansion proposal — review before client submission', due: 'Apr 4', category: 'Expansion' },
+  { priority: 'medium', text: 'NPS detractors (3 accounts) — review action plans from AMs', due: 'Apr 8', category: 'NPS Recovery' },
+  { priority: 'low',    text: 'AM team pipeline review call — schedule for Apr 5 (weekly cadence missed)', due: 'Apr 5', category: 'Team Review' },
 ]
 const amheadTopFive = [
   {
-    title: 'Top 5 AMs by Overdue Invoice Count',
+    title: 'Top 5 Accounts by Renewal Risk',
     items: [
-      { label: 'Neha Sharma (AM)',      value: '12', change: -1 },
-      { label: 'Rajan Mehta (AM)',      value: '8',  change: -1 },
-      { label: 'Pooja Rao (AAM)',       value: '6',  change: 0 },
-      { label: 'Vikram Kaul (AM)',      value: '4',  change: 0 },
-      { label: 'Sonal Joshi (AAM)',     value: '3',  change: 0 },
+      { label: 'XYZ Fintech (Apr 26)',      value: '45d',  change: -1 },
+      { label: 'GlobalCorp (May 26)',        value: '60d',  change: -1 },
+      { label: 'Infosys BPO (Jun 26)',       value: '75d',  change: 0 },
+      { label: 'Wipro Tech (Aug 26)',        value: '120d', change: 0 },
+      { label: 'One Indiabulls Co. (May 26)',value: '58d',  change: 0 },
     ],
   },
   {
-    title: 'Top 5 Disputed Invoices by Value',
+    title: 'Top 5 Upsell Opportunities',
     items: [
-      { label: 'INV-2024-1142 – XYZ',   value: '₹18.4L', change: -1 },
-      { label: 'INV-2024-1089 – Wipro',  value: '₹14.2L', change: 0 },
-      { label: 'INV-2024-1201 – GlobalCorp', value: '₹12.8L', change: 0 },
-      { label: 'INV-2024-1168 – Infosys', value: '₹9.6L', change: 0 },
-      { label: 'INV-2024-1215 – BFSI',   value: '₹6.4L', change: 0 },
+      { label: 'Deutsche Bank – 200 seats', value: '₹1.2Cr', change: 1 },
+      { label: 'Cognizant – Bengaluru exp.', value: '₹68L',  change: 1 },
+      { label: 'HSBC – VAS Bundle',          value: '₹48L',  change: 0 },
+      { label: 'Accenture – Extra Floor',    value: '₹42L',  change: 0 },
+      { label: 'Wipro – Flex Desk Add-on',   value: '₹28L',  change: 0 },
     ],
   },
 ]
 const amheadCharts = [
   {
-    type: 'bar', title: 'Overdue Invoices by AM (Count)',
+    type: 'bar', title: 'Renewal Pipeline by Quarter (₹Cr ARR)',
     data: [
-      { name: 'Neha S.', overdue: 12 }, { name: 'Rajan M.', overdue: 8 },
-      { name: 'Pooja R.', overdue: 6 }, { name: 'Vikram K.', overdue: 4 },
-      { name: 'Sonal J.', overdue: 3 }, { name: 'Amit D.',   overdue: 2 },
+      { name: 'Q1 FY26', value: 1.4 }, { name: 'Q2 FY26', value: 4.2 },
+      { name: 'Q3 FY26', value: 3.8 }, { name: 'Q4 FY26', value: 2.6 },
     ],
-    lines: [{ key: 'overdue', label: 'Overdue Invoices' }],
+    lines: [{ key: 'value', label: 'ARR (₹Cr)' }],
   },
   {
-    type: 'pie', title: 'Invoice Aging Buckets (Team)',
+    type: 'line', title: 'Portfolio NPS Trend (Quarterly)',
     data: [
-      { name: '0–30 days',  value: 48 },
-      { name: '31–60 days', value: 22 },
-      { name: '61–90 days', value: 12 },
-      { name: '90+ days',   value: 8  },
+      { name: 'Q1 FY25', nps: 28 }, { name: 'Q2 FY25', nps: 32 },
+      { name: 'Q3 FY25', nps: 30 }, { name: 'Q4 FY25', nps: 34 },
+      { name: 'Q1 FY26', nps: 38 },
     ],
-    lines: [],
+    lines: [{ key: 'nps', label: 'NPS Score' }],
   },
 ]
-const amheadColumns = [
-  { key: 'invoiceNo',  label: 'Invoice No' },
-  { key: 'client',     label: 'Customer' },
-  { key: 'am',         label: 'AM Owner', muted: true },
-  { key: 'dueDate',    label: 'Due Date' },
-  { key: 'amount',     label: 'Amount (₹L)' },
-  { key: 'remaining',  label: 'Remaining (₹L)' },
-  { key: 'daysOverdue',label: 'Days Overdue', muted: true },
-  { key: 'status',     label: 'Status', type: 'status' },
-  { key: 'action',     label: 'Action', type: 'action', sortable: false },
-]
-const amheadGrid = [
-  { invoiceNo: 'INV-2024-1142', client: 'XYZ Fintech',       am: 'Neha Sharma',  dueDate: 'Feb 15', amount: '18.4', remaining: '18.4', daysOverdue: '46',  status: 'Overdue',         action: 'Escalate' },
-  { invoiceNo: 'INV-2024-1089', client: 'Wipro Tech',         am: 'Rajan Mehta',  dueDate: 'Feb 28', amount: '14.2', remaining: '14.2', daysOverdue: '33',  status: 'Overdue',         action: 'Escalate' },
-  { invoiceNo: 'INV-2024-1201', client: 'GlobalCorp',         am: 'Neha Sharma',  dueDate: 'Mar 1',  amount: '12.8', remaining: '12.8', daysOverdue: '32',  status: 'Overdue',         action: 'Escalate' },
-  { invoiceNo: 'INV-2024-1168', client: 'Infosys BPO',        am: 'Pooja Rao',    dueDate: 'Mar 5',  amount: '9.6',  remaining: '9.6',  daysOverdue: '28',  status: 'Overdue',         action: 'Review' },
-  { invoiceNo: 'INV-2024-1215', client: 'BFSI Co.',           am: 'Vikram Kaul',  dueDate: 'Mar 10', amount: '6.4',  remaining: '6.4',  daysOverdue: '23',  status: 'Disputed',        action: 'Review' },
-  { invoiceNo: 'INV-2024-1228', client: 'TechStartup A',      am: 'Sonal Joshi',  dueDate: 'Mar 15', amount: '4.8',  remaining: '2.4',  daysOverdue: '18',  status: 'Partial Payment', action: 'Follow Up' },
-  { invoiceNo: 'INV-2024-1249', client: 'Deutsche Bank GCC',  am: 'Amit Deshpande', dueDate: 'Apr 5', amount: '24.6', remaining: '0',   daysOverdue: '0',   status: 'Paid',            action: 'View' },
-  { invoiceNo: 'INV-2024-1262', client: 'Cognizant',          am: 'Rajan Mehta',  dueDate: 'Apr 10', amount: '11.2', remaining: '11.2', daysOverdue: '0',  status: 'Pending',         action: 'View' },
-]
+const amheadColumns = mgmtColumns
+const amheadGrid = mgmtGrid
 
 // ─── REGIONAL HEAD ────────────────────────────────────────────────────────────
 const regionalMetrics = [
-  { label: 'Regional Locations',       value: '38',     change: '2 new onboarded this month', trend: 'up',   status: 'positive', icon: Building2,    highlight: true },
-  { label: 'Regional Collection Rate', value: '82.4%',  change: '-3.2% vs last month',         trend: 'down', status: 'warning',  icon: DollarSign },
-  { label: 'Overdue Invoices',         value: '14',     change: '₹68L value at risk',          trend: 'up',   status: 'negative', icon: AlertCircle },
-  { label: 'Open Disputes (Region)',   value: '9',      change: '3 at L2 approval',            trend: 'up',   status: 'negative', icon: MessageSquare },
-  { label: 'Tasks Within SLA',         value: '72.6%',  change: '11 tasks breached SLA',       trend: 'down', status: 'warning',  icon: ListChecks },
+  { label: 'Regional Occupancy',      value: '88.2%', change: '+2.1% vs last month', trend: 'up',   status: 'positive', icon: Building2, highlight: true },
+  { label: 'New Accounts (MoM)',      value: '3',     change: '+280 seats added',    trend: 'up',   status: 'positive', icon: Users },
+  { label: 'Expansion Accounts',      value: '5',     change: '640 seats in flight', trend: 'up',   status: 'positive', icon: TrendingUp },
+  { label: 'Churn Accounts (30d)',    value: '1',     change: '40 seats lost',       trend: 'up',   status: 'warning',  icon: AlertCircle },
+  { label: 'Revenue vs Target',       value: '104%',  change: '+₹28L above target',  trend: 'up',   status: 'positive', icon: DollarSign },
 ]
 const regionalActions = [
-  { priority: 'high',   text: 'Whitefield Centre: 3 clients with invoices overdue >45 days — AM-level escalation needed', due: 'Apr 3', category: 'Invoice Recovery' },
-  { priority: 'high',   text: '3 disputes at L2 approval pending your clearance — blocking ₹32L invoice release', due: 'Apr 4', category: 'Dispute Approval' },
-  { priority: 'medium', text: 'BKC Mumbai: collection rate at 74% — lowest in region, review with AM', due: 'Apr 5', category: 'Collections' },
-  { priority: 'medium', text: '11 tasks with SLA breach in region this month — assign ownership and set deadlines', due: 'Apr 7', category: 'Task SLA' },
-  { priority: 'low',    text: 'Meeting completion rate at 68% for South Bengaluru — AMs to be counselled', due: 'Apr 8', category: 'Meeting Compliance' },
+  { priority: 'high',   text: 'Whitefield Centre: 2 accounts on floor 4 with low utilization — risk of downsizing', due: 'Apr 5', category: 'Utilization' },
+  { priority: 'medium', text: 'Baner Centre hit 94% occupancy — pre-empt waitlist and explore adjacent space', due: 'Apr 8', category: 'Capacity' },
+  { priority: 'medium', text: 'New GCC client (HSBC, 200 seats) — onboarding starting Apr 6, ensure centre readiness', due: 'Apr 6', category: 'Onboarding' },
+  { priority: 'low',    text: 'Quarterly account reviews for all regional accounts — schedule with AMs this week', due: 'Apr 7', category: 'QBR' },
 ]
 const regionalTopFive = [
   {
-    title: 'Top 5 Clients by Overdue Value (Regional)',
+    title: 'Top 5 Accounts by Regional Revenue',
     items: [
-      { label: 'XYZ Fintech (BKC)',       value: '₹42L', change: -1 },
-      { label: 'Wipro Tech (HiTec City)', value: '₹21L', change: 0 },
-      { label: 'GlobalCorp (Cyber City)', value: '₹28L', change: -1 },
-      { label: 'TechStartup A (WF)',      value: '₹14L', change: 0 },
-      { label: 'Retail Co. (Baner)',      value: '₹8L',  change: 0 },
+      { label: 'Deutsche Bank GCC', value: '₹1.8Cr', change: 1 },
+      { label: 'Infosys BPO',       value: '₹1.4Cr', change: 0 },
+      { label: 'Accenture India',   value: '₹98L',   change: 0 },
+      { label: 'Cognizant',         value: '₹76L',   change: 0 },
+      { label: 'HSBC GCC',          value: '₹42L',   change: 1 },
     ],
   },
   {
-    title: 'Top 5 Centres by Invoice Health',
+    title: 'Top 5 Centres by Occupancy',
     items: [
-      { label: 'Whitefield, Blore',  value: '92.4%', change: 0 },
-      { label: 'Baner, Pune',        value: '90.1%', change: 1 },
-      { label: 'Tidel Park, Chennai',value: '88.6%', change: 0 },
-      { label: 'HiTec City, Hyd',    value: '82.4%', change: -1 },
-      { label: 'BKC, Mumbai',        value: '74.0%', change: -1 },
+      { label: 'Baner, Pune',         value: '94.2%', change: 1 },
+      { label: 'Whitefield, Blore',   value: '91.8%', change: 0 },
+      { label: 'Tidel Park, Chennai', value: '88.6%', change: 0 },
+      { label: 'HiTec City, Hyd',     value: '86.4%', change: -1 },
+      { label: 'Cyber City, Delhi',   value: '84.2%', change: 0 },
     ],
   },
 ]
 const regionalCharts = [
   {
-    type: 'bar', title: 'Collection Rate by Centre (%)',
+    type: 'bar', title: 'Occupancy by Centre (%)',
     data: [
-      { name: 'Whitefield', rate: 92.4 }, { name: 'Baner',   rate: 90.1 },
-      { name: 'Tidel Park', rate: 88.6 }, { name: 'HiTec',   rate: 82.4 },
-      { name: 'Cyber City', rate: 80.2 }, { name: 'BKC',     rate: 74.0 },
+      { name: 'Baner',      occ: 94.2 }, { name: 'Whitefield', occ: 91.8 },
+      { name: 'Tidel Park', occ: 88.6 }, { name: 'HiTec City', occ: 86.4 },
+      { name: 'Cyber City', occ: 84.2 }, { name: 'BKC',        occ: 82.0 },
     ],
-    lines: [{ key: 'rate', label: 'Collection Rate %' }],
+    lines: [{ key: 'occ', label: 'Occupancy %' }],
   },
   {
-    type: 'area', title: 'Dispute Volume Trend (Monthly)',
+    type: 'area', title: 'Seat Additions & Churn (Monthly)',
     data: [
-      { name: 'Oct', raised: 8, resolved: 6 }, { name: 'Nov', raised: 6, resolved: 7 },
-      { name: 'Dec', raised: 10, resolved: 8 }, { name: 'Jan', raised: 7, resolved: 9 },
-      { name: 'Feb', raised: 9, resolved: 6 }, { name: 'Mar', raised: 12, resolved: 8 },
+      { name: 'Oct', added: 120, churned: 40 }, { name: 'Nov', added: 180, churned: 20 },
+      { name: 'Dec', added: 80,  churned: 60 }, { name: 'Jan', added: 200, churned: 30 },
+      { name: 'Feb', added: 160, churned: 40 }, { name: 'Mar', added: 280, churned: 40 },
     ],
-    lines: [{ key: 'raised', label: 'Raised' }, { key: 'resolved', label: 'Resolved' }],
+    lines: [{ key: 'added', label: 'Added' }, { key: 'churned', label: 'Churned' }],
   },
 ]
-const regionalColumns = amheadColumns
-const regionalGrid = amheadGrid.filter(r => ['XYZ Fintech', 'Wipro Tech', 'HSBC GCC'].includes(r.client))
+const regionalColumns = mgmtColumns
+const regionalGrid = mgmtGrid
 
 // ─── CENTRE MANAGER ───────────────────────────────────────────────────────────
 const centreMetrics = [
-  { label: 'Centre Locations',         value: '14',    change: '1 onboarding this week',    trend: 'up',   status: 'positive', icon: Building2, highlight: true },
-  { label: 'Centre Collection Rate',   value: '88.4%', change: '-1.2% vs last month',       trend: 'down', status: 'warning',  icon: DollarSign },
-  { label: 'Overdue Invoices (Centre)',value: '4',     change: '₹28L value at risk',        trend: 'up',   status: 'negative', icon: FileText },
-  { label: 'Open Disputes (Centre)',   value: '6',     change: '2 awaiting L1 approval',    trend: 'up',   status: 'warning',  icon: MessageSquare },
-  { label: 'Tasks Due Today',          value: '8',     change: '3 critical tasks',          trend: 'up',   status: 'warning',  icon: ListChecks },
+  { label: 'Centre Occupancy',        value: '91.8%', change: '+1.4% vs last month',  trend: 'up',   status: 'positive', icon: Building2, highlight: true },
+  { label: 'Active Client Accounts',  value: '14',    change: '1 onboarding this wk', trend: 'up',   status: 'info',    icon: Users },
+  { label: 'Open Client Issues',      value: '6',     change: '2 escalated',          trend: 'up',   status: 'warning', icon: AlertCircle },
+  { label: 'Seat Expansion Pipeline', value: '180',   change: '3 active expansions',  trend: 'up',   status: 'positive', icon: TrendingUp },
+  { label: 'Client CSAT This Month',  value: '4.5/5', change: '+0.1 vs last month',   trend: 'up',   status: 'positive', icon: Star },
 ]
 const centreActions = [
-  { priority: 'high',   text: 'Deutsche Bank GCC: L1 dispute approval pending 4 days — review and approve/reject to unblock AM', due: 'Today', category: 'Dispute Approval' },
-  { priority: 'high',   text: 'XYZ Fintech invoice INV-2024-1142 (₹18.4L) overdue 46 days — contact client and document response', due: 'Today', category: 'Invoice Recovery' },
-  { priority: 'medium', text: 'HSBC onboarding: 3 tasks pending completion (ID cards, IT handover, floor signage)', due: 'Apr 5', category: 'Onboarding Tasks' },
-  { priority: 'medium', text: 'Monthly client meeting schedule for April not published — coordinate with AMs', due: 'Apr 4', category: 'Meeting Planning' },
-  { priority: 'low',    text: '3 tasks assigned to facilities team SLA-breached by >1 day — escalate and get ETAs', due: 'Apr 6', category: 'Task SLA' },
+  { priority: 'high',   text: 'Floor 4: Client says AHU noise complaints for 3 days — HVAC team not yet deployed', due: 'Today', category: 'Facilities' },
+  { priority: 'high',   text: 'HSBC onboarding Apr 6 — IT infra, access cards, floor signage not confirmed', due: 'Apr 5', category: 'Onboarding' },
+  { priority: 'medium', text: 'XYZ Fintech utilization at 62% — low attendance for 3 weeks, flag to AM', due: 'Apr 4', category: 'Utilization' },
+  { priority: 'medium', text: 'Monthly client newsletter for centre updates not sent yet (due Apr 1)', due: 'Today', category: 'Communication' },
+  { priority: 'low',    text: 'Floor 2 seating reallocation for Deutsche Bank expansion — coordinate facilities', due: 'Apr 8', category: 'Space Planning' },
 ]
 const centreTopFive = [
   {
-    title: 'Top 5 Clients by Invoice Outstanding',
+    title: 'Top 5 Accounts by Occupancy',
     items: [
-      { label: 'XYZ Fintech',       value: '₹18.4L', change: -1 },
-      { label: 'Wipro Tech',        value: '₹14.2L', change: 0 },
-      { label: 'TechStartup A',     value: '₹4.8L',  change: 0 },
-      { label: 'Accenture India',   value: '₹0',     change: 1 },
-      { label: 'Deutsche Bank GCC', value: '₹0',     change: 0 },
+      { label: 'Deutsche Bank GCC', value: '96%', change: 0 },
+      { label: 'Cognizant',         value: '92%', change: 1 },
+      { label: 'Accenture India',   value: '88%', change: 0 },
+      { label: 'Wipro Tech',        value: '84%', change: -1 },
+      { label: 'XYZ Fintech',       value: '62%', change: -1 },
     ],
   },
   {
-    title: 'Top 5 Open Dispute Categories (Centre)',
+    title: 'Top 5 Recurring Client Issues',
     items: [
-      { label: 'Overbilling – Space', value: '3', change: 0 },
-      { label: 'VAS Charges',        value: '2', change: 1 },
-      { label: 'Security Deposit',   value: '2', change: 0 },
-      { label: 'Cafeteria Charge',   value: '1', change: 0 },
-      { label: 'Maintenance Levy',   value: '1', change: 0 },
+      { label: 'HVAC Noise/Temperature', value: '8', change: 1 },
+      { label: 'Slow Internet',          value: '5', change: 0 },
+      { label: 'Meeting Room Booking',   value: '4', change: 0 },
+      { label: 'Pantry Restocking',      value: '3', change: 0 },
+      { label: 'Visitor Management',     value: '2', change: 0 },
     ],
   },
 ]
 const centreCharts = [
   {
-    type: 'bar', title: 'Tasks by Status (Centre)',
+    type: 'area', title: 'Daily Attendance (head count)',
     data: [
-      { name: 'Open',       count: 18 }, { name: 'Critical', count: 4 },
-      { name: 'Overdue',    count: 6 },  { name: 'Within SLA', count: 12 },
-      { name: 'Completed',  count: 42 },
+      { name: 'Mar 26', attendance: 920 }, { name: 'Mar 27', attendance: 980 },
+      { name: 'Mar 28', attendance: 940 }, { name: 'Mar 29', attendance: 1010 },
+      { name: 'Mar 30', attendance: 380 }, { name: 'Mar 31', attendance: 960 },
+      { name: 'Apr 1',  attendance: 1020 },
     ],
-    lines: [{ key: 'count', label: 'Tasks' }],
+    lines: [{ key: 'attendance', label: 'Attendance' }],
   },
   {
-    type: 'area', title: 'Invoice Collections vs Overdue (Monthly, ₹L)',
+    type: 'bar', title: 'Client CSAT Score by Account',
     data: [
-      { name: 'Oct', collected: 148, overdue: 8  }, { name: 'Nov', collected: 162, overdue: 6 },
-      { name: 'Dec', collected: 140, overdue: 14 }, { name: 'Jan', collected: 158, overdue: 10 },
-      { name: 'Feb', collected: 152, overdue: 16 }, { name: 'Mar', collected: 146, overdue: 28 },
+      { name: 'Deutsche Bank', csat: 4.8 }, { name: 'Cognizant', csat: 4.6 },
+      { name: 'Accenture',    csat: 4.4 }, { name: 'Wipro',      csat: 4.2 },
+      { name: 'XYZ Fintech',  csat: 2.8 }, { name: 'HSBC',       csat: 4.5 },
     ],
-    lines: [{ key: 'collected', label: 'Collected (₹L)' }, { key: 'overdue', label: 'Overdue (₹L)' }],
+    lines: [{ key: 'csat', label: 'CSAT Score' }],
   },
 ]
-const centreColumns = amheadColumns
-const centreGrid = amheadGrid.slice(0, 6)
+const centreColumns = mgmtColumns
+const centreGrid = mgmtGrid.filter(r => ['Whitefield', 'Baner'].includes(r.centre))
 
 // ─── AAM / AM ─────────────────────────────────────────────────────────────────
 const aamMetrics = [
-  { label: 'My Locations',             value: '12',    change: '1 new onboarded',           trend: 'up',   status: 'positive', icon: Building2, highlight: true },
-  { label: 'Open Invoices',            value: '8',     change: '3 overdue',                 trend: 'up',   status: 'warning',  icon: FileText },
-  { label: 'Overdue Invoice Value',    value: '₹28L',  change: 'Oldest: 46 days',           trend: 'up',   status: 'negative', icon: AlertCircle },
-  { label: 'Open Disputes',            value: '4',     change: '2 awaiting my L1 approval', trend: 'up',   status: 'warning',  icon: MessageSquare },
-  { label: 'Tasks Due Today',          value: '5',     change: '2 critical, 1 overdue',     trend: 'up',   status: 'negative', icon: ListChecks },
+  { label: 'My Accounts',             value: '8',     change: '2 at risk',            trend: 'up',   status: 'warning',  icon: Users, highlight: true },
+  { label: 'Renewals Due (60 days)',  value: '2',     change: '₹1.2Cr ARR',           trend: 'up',   status: 'warning',  icon: Clock },
+  { label: 'Expansion Opportunities', value: '3',     change: '₹86L in pipeline',     trend: 'up',   status: 'positive', icon: TrendingUp },
+  { label: 'Open Tickets (all accts)',value: '12',    change: '2 escalated',          trend: 'up',   status: 'warning',  icon: AlertCircle },
+  { label: 'Avg Days Since Touchpoint',value: '11d',  change: '2 accounts >21 days',  trend: 'up',   status: 'negative', icon: Activity },
 ]
 const aamActions = [
-  { priority: 'high',   text: 'INV-2024-1142 (XYZ Fintech, ₹18.4L) — 46 days overdue. Call client and log response today', due: 'Today', category: 'Invoice Recovery' },
-  { priority: 'high',   text: 'Dispute DIS-0482 (XYZ Fintech, ₹8.2L) — L1 approval required from you. Review and approve/reject', due: 'Today', category: 'Dispute Approval' },
-  { priority: 'medium', text: 'April QBR meeting for Deutsche Bank GCC — schedule, prepare deck and send agenda', due: 'Apr 8', category: 'Meetings' },
-  { priority: 'medium', text: '2 tasks assigned to you are within SLA — complete before deadline to avoid breach', due: 'Apr 5', category: 'Tasks' },
-  { priority: 'low',    text: 'Cognizant location: 2 maintenance requests pending client sign-off for >3 days', due: 'Apr 6', category: 'Operations' },
+  { priority: 'high',   text: 'XYZ Fintech — last AM touchpoint 18 days ago and NPS is -12. Call today.', due: 'Today', category: 'Risk Account' },
+  { priority: 'high',   text: 'Wipro renewal (540 seats) due Aug 2026 — start pre-renewal conversation now', due: 'Apr 10', category: 'Renewal' },
+  { priority: 'medium', text: 'Deutsche Bank expansion proposal (200 seats) — finalize and share draft', due: 'Apr 4', category: 'Expansion' },
+  { priority: 'medium', text: '3 open tickets pending client confirmation for >3 days — chase responses', due: 'Today', category: 'Tickets' },
+  { priority: 'low',    text: 'Cognizant QBR deck for Apr 10 meeting — prepare outcomes from last quarter', due: 'Apr 8', category: 'QBR' },
 ]
 const aamTopFive = [
   {
-    title: 'My Overdue Invoices by Amount',
+    title: 'My Accounts by Touchpoint Recency',
     items: [
-      { label: 'XYZ Fintech – INV-1142',    value: '₹18.4L', change: -1 },
-      { label: 'Wipro Tech – INV-1089',     value: '₹14.2L', change: -1 },
-      { label: 'TechStartup A – INV-1228',  value: '₹4.8L',  change: 0 },
-      { label: 'BFSI Co. – INV-1215',       value: '₹6.4L',  change: -1 },
-      { label: 'GlobalCorp – INV-1201',     value: '₹12.8L', change: -1 },
+      { label: 'XYZ Fintech',      value: '18d', change: -1 },
+      { label: 'GlobalCorp',       value: '14d', change: -1 },
+      { label: 'BFSI Co.',         value: '11d', change: 0 },
+      { label: 'Wipro Tech',       value: '8d',  change: 0 },
+      { label: 'Deutsche Bank',    value: '3d',  change: 1 },
     ],
   },
   {
-    title: 'My Tasks by Priority',
+    title: 'My Accounts by Health',
     items: [
-      { label: 'Invoice recovery – XYZ',    value: 'Critical', change: -1 },
-      { label: 'Dispute resolution – XYZ',  value: 'Critical', change: -1 },
-      { label: 'QBR prep – Deutsche Bank',  value: 'High',     change: 0 },
-      { label: 'April meeting schedule',    value: 'Medium',   change: 0 },
-      { label: 'Cognizant sign-off follow', value: 'Low',      change: 0 },
+      { label: 'Deutsche Bank GCC', value: 'Healthy',  change: 0 },
+      { label: 'Wipro Tech',        value: 'Active',   change: 0 },
+      { label: 'Cognizant',         value: 'Healthy',  change: 1 },
+      { label: 'XYZ Fintech',       value: 'At Risk',  change: -1 },
+      { label: 'GlobalCorp',        value: 'At Risk',  change: -1 },
     ],
   },
 ]
 const aamCharts = [
   {
-    type: 'bar', title: 'My Invoice Aging Breakdown',
-    data: [
-      { name: '0–30 days', count: 3 }, { name: '31–60 days', count: 2 },
-      { name: '61–90 days', count: 1 }, { name: '90+ days', count: 0 },
-    ],
-    lines: [{ key: 'count', label: 'Invoices' }],
+    type: 'bar', title: 'My Account Health Distribution',
+    data: [{ name: 'Healthy', count: 4 }, { name: 'Active', count: 1 }, { name: 'At Risk', count: 2 }, { name: 'Churning', count: 1 }],
+    lines: [{ key: 'count', label: 'Accounts' }],
   },
   {
-    type: 'area', title: 'My Task SLA Compliance (Weekly)',
+    type: 'area', title: 'Total Seats Under Management (Monthly)',
     data: [
-      { name: 'Wk 1 Mar', compliance: 88 }, { name: 'Wk 2 Mar', compliance: 82 },
-      { name: 'Wk 3 Mar', compliance: 76 }, { name: 'Wk 4 Mar', compliance: 70 },
-      { name: 'Wk 1 Apr', compliance: 74 },
+      { name: 'Oct', seats: 1840 }, { name: 'Nov', seats: 1920 }, { name: 'Dec', seats: 1880 },
+      { name: 'Jan', seats: 2040 }, { name: 'Feb', seats: 2020 }, { name: 'Mar', seats: 2080 },
     ],
-    lines: [{ key: 'compliance', label: 'SLA Compliance %' }],
+    lines: [{ key: 'seats', label: 'Seats' }],
   },
 ]
 const aamColumns = [
-  { key: 'invoiceNo',   label: 'Invoice No' },
-  { key: 'client',      label: 'Customer' },
-  { key: 'type',        label: 'Type', muted: true },
-  { key: 'date',        label: 'Date' },
-  { key: 'dueDate',     label: 'Due Date' },
-  { key: 'amount',      label: 'Amount (₹L)' },
-  { key: 'remaining',   label: 'Remaining (₹L)' },
-  { key: 'daysOverdue', label: 'Days Overdue', muted: true },
-  { key: 'status',      label: 'Status', type: 'status' },
-  { key: 'action',      label: 'Action', type: 'action', sortable: false },
+  { key: 'account',    label: 'Account' },
+  { key: 'seats',      label: 'Seats' },
+  { key: 'centre',     label: 'Centre' },
+  { key: 'renewal',    label: 'Renewal' },
+  { key: 'touchpoint', label: 'Last Touchpoint', muted: true },
+  { key: 'openTkts',   label: 'Open Tkts', muted: true },
+  { key: 'health',     label: 'Health', type: 'status' },
+  { key: 'action',     label: 'Action', type: 'action', sortable: false },
 ]
 const aamGrid = [
-  { invoiceNo: 'INV-2024-1142', client: 'XYZ Fintech',       type: 'Monthly',           date: 'Jan 15', dueDate: 'Feb 15', amount: '18.4', remaining: '18.4', daysOverdue: '46',  status: 'Overdue',         action: 'Follow Up' },
-  { invoiceNo: 'INV-2024-1089', client: 'Wipro Tech',         type: 'Monthly',           date: 'Jan 28', dueDate: 'Feb 28', amount: '14.2', remaining: '14.2', daysOverdue: '33',  status: 'Overdue',         action: 'Follow Up' },
-  { invoiceNo: 'INV-2024-1201', client: 'GlobalCorp',         type: 'Monthly',           date: 'Feb 1',  dueDate: 'Mar 1',  amount: '12.8', remaining: '12.8', daysOverdue: '32',  status: 'Overdue',         action: 'Follow Up' },
-  { invoiceNo: 'INV-2024-1215', client: 'BFSI Co.',           type: 'Quarterly',         date: 'Feb 8',  dueDate: 'Mar 10', amount: '6.4',  remaining: '6.4',  daysOverdue: '23',  status: 'Disputed',        action: 'View Dispute' },
-  { invoiceNo: 'INV-2024-1228', client: 'TechStartup A',      type: 'Monthly',           date: 'Feb 15', dueDate: 'Mar 15', amount: '4.8',  remaining: '2.4',  daysOverdue: '18',  status: 'Partial Payment', action: 'Follow Up' },
-  { invoiceNo: 'INV-2024-1249', client: 'Deutsche Bank GCC',  type: 'Monthly',           date: 'Mar 5',  dueDate: 'Apr 5',  amount: '24.6', remaining: '0',    daysOverdue: '0',   status: 'Paid',            action: 'View' },
-  { invoiceNo: 'INV-2024-1262', client: 'Cognizant',          type: 'Monthly',           date: 'Mar 10', dueDate: 'Apr 10', amount: '11.2', remaining: '11.2', daysOverdue: '0',   status: 'Pending',         action: 'View' },
-  { invoiceNo: 'INV-2024-1271', client: 'Accenture India',    type: 'Monthly',           date: 'Mar 12', dueDate: 'Apr 12', amount: '16.8', remaining: '16.8', daysOverdue: '0',   status: 'Pending',         action: 'View' },
-  { invoiceNo: 'INV-2024-1108', client: 'XYZ Fintech',        type: 'Security Deposit',  date: 'Dec 1',  dueDate: 'Dec 15', amount: '8.4',  remaining: '8.4',  daysOverdue: '108', status: 'Disputed',        action: 'View Dispute' },
-  { invoiceNo: 'INV-2024-1284', client: 'HSBC GCC',           type: 'VAS',               date: 'Mar 20', dueDate: 'Apr 20', amount: '3.2',  remaining: '3.2',  daysOverdue: '0',   status: 'Pending',         action: 'View' },
+  { account: 'Deutsche Bank GCC', seats: '840',   centre: 'Whitefield', renewal: 'Sep 2027', touchpoint: '3 days ago',  openTkts: '1', health: 'Healthy', action: 'View' },
+  { account: 'Cognizant',         seats: '480',   centre: 'Baner',      renewal: 'Jan 2027', touchpoint: '8 days ago',  openTkts: '2', health: 'Healthy', action: 'View' },
+  { account: 'Wipro Tech',        seats: '540',   centre: 'HiTec City', renewal: 'Aug 2026', touchpoint: '8 days ago',  openTkts: '3', health: 'Active',  action: 'View' },
+  { account: 'BFSI Co.',          seats: '120',   centre: 'BKC',        renewal: 'Jul 2026',  touchpoint: '11 days ago', openTkts: '2', health: 'Active',  action: 'View' },
+  { account: 'XYZ Fintech',       seats: '150',   centre: 'BKC',        renewal: 'Apr 2026', touchpoint: '18 days ago', openTkts: '4', health: 'At Risk', action: 'Call Now' },
+  { account: 'GlobalCorp',        seats: '80',    centre: 'Cyber City', renewal: 'May 2026', touchpoint: '14 days ago', openTkts: '2', health: 'At Risk', action: 'Call Now' },
+  { account: 'Retail Co.',        seats: '60',    centre: 'Baner',      renewal: 'Dec 2026', touchpoint: '5 days ago',  openTkts: '1', health: 'Active',  action: 'View' },
+  { account: 'TechStartup A',     seats: '40',    centre: 'Whitefield', renewal: 'May 2026', touchpoint: '21 days ago', openTkts: '1', health: 'At Risk', action: 'Contact' },
 ]
 
 // ─── GRE ──────────────────────────────────────────────────────────────────────
 const greMetrics = [
-  { label: 'Meetings Scheduled Today', value: '14',    change: '8 completed, 4 in progress', trend: 'up',   status: 'positive', icon: Calendar,     highlight: true },
-  { label: 'Visitor Check-ins',         value: '142',   change: '↑18 vs yesterday',           trend: 'up',   status: 'info',     icon: Users },
-  { label: 'Open Guest Requests',       value: '8',     change: '2 overdue >1 hr',             trend: 'up',   status: 'warning',  icon: Clock },
-  { label: 'Tasks Pending (Location)',  value: '6',     change: '2 critical tasks',            trend: 'up',   status: 'warning',  icon: ListChecks },
-  { label: 'Avg Lobby Wait Time',       value: '3.2m',  change: '-0.8m vs yesterday',          trend: 'down', status: 'positive', icon: Activity },
+  { label: 'Visitor Check-ins Today',  value: '142',   change: '↑ 18 vs yesterday',    trend: 'up',   status: 'info',    icon: Users, highlight: true },
+  { label: 'Visitor Satisfaction',     value: '4.6/5', change: '+0.1 vs last week',    trend: 'up',   status: 'positive', icon: Star },
+  { label: 'Guest Requests Open',      value: '8',     change: '2 overdue >1hr',       trend: 'up',   status: 'warning', icon: Clock },
+  { label: 'Avg Wait Time (lobby)',    value: '3.2min', change: '-0.8min vs yesterday', trend: 'down', status: 'positive', icon: Activity },
+  { label: 'Meeting Rooms Utilized',  value: '68%',   change: 'Peak: 12–2pm',         trend: 'up',   status: 'info',    icon: Building2 },
 ]
 const greActions = [
-  { priority: 'high',   text: 'VIP visitor (CEO, Deutsche Bank) at 3pm — escort confirmed? Greeting protocol in place?', due: '3:00 PM', category: 'VIP Protocol' },
-  { priority: 'high',   text: '2 guest requests (room setup, catering) unactioned for >90 mins — action immediately', due: 'Now', category: 'Guest Service' },
-  { priority: 'medium', text: 'April meeting schedule not uploaded to system for 3 clients — upload before EOD', due: 'Today', category: 'Meeting Admin' },
-  { priority: 'medium', text: 'Meeting room MR-4 display fault reported since morning — raise facilities task', due: 'Today', category: 'Facilities Task' },
-  { priority: 'low',    text: 'Evening HSBC corporate event (25 pax, 6pm) — catering confirmation not received yet', due: '4:00 PM', category: 'Events' },
+  { priority: 'high',   text: 'VIP visitor (CEO, Deutsche Bank) expected at 3pm — greeting protocol and escort confirmed?', due: '3:00 PM', category: 'VIP' },
+  { priority: 'high',   text: '2 visitor requests unactioned for >90 mins — follow up and update guests', due: 'Now', category: 'Service' },
+  { priority: 'medium', text: 'Meeting room MR-4 reported faulty display since morning — raise facilities ticket', due: 'Today', category: 'Facilities' },
+  { priority: 'medium', text: 'Evening catering confirmation for HSBC event (25 pax, 6pm) — not yet confirmed', due: '4pm', category: 'Events' },
+  { priority: 'low',    text: 'Weekly lobby experience feedback compilation for Centre Manager', due: 'Tomorrow', category: 'Reports' },
 ]
 const greTopFive = [
-  {
-    title: 'Today\'s Meetings by Client',
-    items: [
-      { label: 'Deutsche Bank GCC', value: '4', change: 0 },
-      { label: 'Accenture India',   value: '3', change: 1 },
-      { label: 'HSBC GCC',          value: '3', change: 0 },
-      { label: 'Cognizant',         value: '2', change: 0 },
-      { label: 'Wipro Tech',        value: '2', change: -1 },
-    ],
-  },
   {
     title: 'Top 5 Visitor Request Types',
     items: [
       { label: 'Meeting Room Extension',  value: '28', change: 0 },
       { label: 'Guest Badge Reprint',     value: '12', change: 1 },
-      { label: 'Cafe / Meal Request',     value: '10', change: 0 },
+      { label: 'Café / Meal Request',     value: '10', change: 0 },
       { label: 'Taxi / Cab Assistance',   value: '8',  change: 0 },
-      { label: 'Equipment Assistance',    value: '4',  change: -1 },
+      { label: 'Equipment Help',          value: '4',  change: -1 },
+    ],
+  },
+  {
+    title: 'Top 5 Busiest Times (Visitor Volume)',
+    items: [
+      { label: '9:30 – 10:30 AM',  value: '42', change: 0 },
+      { label: '11:00 – 12:00 PM', value: '38', change: 1 },
+      { label: '2:00 – 3:00 PM',   value: '32', change: 0 },
+      { label: '3:30 – 4:30 PM',   value: '28', change: 0 },
+      { label: '4:30 – 5:30 PM',   value: '24', change: -1 },
     ],
   },
 ]
 const greCharts = [
   {
-    type: 'bar', title: 'Meeting Status Breakdown (This Month)',
-    data: [
-      { name: 'Scheduled',      count: 62 }, { name: 'Completed',   count: 44 },
-      { name: 'Cancelled',      count: 8  }, { name: 'With Recording', count: 28 },
-    ],
-    lines: [{ key: 'count', label: 'Meetings' }],
-  },
-  {
     type: 'area', title: 'Visitor Volume — Hourly Today',
     data: [
-      { name: '8am',  visitors: 18 }, { name: '9am',  visitors: 42 },
-      { name: '10am', visitors: 38 }, { name: '11am', visitors: 35 },
-      { name: '12pm', visitors: 28 }, { name: '1pm',  visitors: 22 },
-      { name: '2pm',  visitors: 32 }, { name: '3pm',  visitors: 14 },
+      { name: '8am', visitors: 18 }, { name: '9am', visitors: 42 }, { name: '10am', visitors: 38 },
+      { name: '11am', visitors: 35 }, { name: '12pm', visitors: 28 }, { name: '1pm', visitors: 22 },
+      { name: '2pm', visitors: 32 }, { name: '3pm', visitors: 0 },
     ],
     lines: [{ key: 'visitors', label: 'Check-ins' }],
   },
+  {
+    type: 'bar', title: 'Room Utilization by Type (%)',
+    data: [
+      { name: 'Boardroom', util: 82 }, { name: 'Conf (6-pax)', util: 74 },
+      { name: 'Meeting (4)', util: 68 }, { name: 'Phone Booth', util: 58 },
+      { name: 'Training Rm', util: 44 },
+    ],
+    lines: [{ key: 'util', label: 'Utilization %' }],
+  },
 ]
 const greColumns = [
-  { key: 'meetingId',  label: 'Meeting ID' },
-  { key: 'client',     label: 'Client' },
-  { key: 'host',       label: 'Host (AM)' },
-  { key: 'time',       label: 'Time' },
-  { key: 'type',       label: 'Type', muted: true },
-  { key: 'attendees',  label: 'Attendees', muted: true },
-  { key: 'room',       label: 'Room' },
-  { key: 'status',     label: 'Status', type: 'status' },
-  { key: 'action',     label: 'Action', type: 'action', sortable: false },
+  { key: 'visitor',  label: 'Visitor Name' },
+  { key: 'company',  label: 'Company', muted: true },
+  { key: 'host',     label: 'Host' },
+  { key: 'time',     label: 'Check-in Time' },
+  { key: 'purpose',  label: 'Purpose' },
+  { key: 'badge',    label: 'Badge' },
+  { key: 'status',   label: 'Status', type: 'status' },
+  { key: 'action',   label: 'Action', type: 'action', sortable: false },
 ]
 const greGrid = [
-  { meetingId: 'MTG-0481', client: 'Deutsche Bank GCC', host: 'Amit Deshpande', time: '9:00 AM',  type: 'QBR',                 attendees: '6',  room: 'Boardroom',   status: 'Completed', action: 'View' },
-  { meetingId: 'MTG-0482', client: 'Accenture India',   host: 'Pooja Rao',      time: '10:30 AM', type: 'Renewal Discussion',  attendees: '4',  room: 'Conf Room 1', status: 'Completed', action: 'View' },
-  { meetingId: 'MTG-0483', client: 'HSBC GCC',          host: 'Rajan Mehta',    time: '11:00 AM', type: 'Onboarding',          attendees: '8',  room: 'Training Room',status: 'Completed',action: 'View' },
-  { meetingId: 'MTG-0484', client: 'Wipro Tech',        host: 'Neha Sharma',    time: '12:30 PM', type: 'Complaint Resolution',attendees: '3',  room: 'Conf Room 2', status: 'Completed', action: 'View' },
-  { meetingId: 'MTG-0485', client: 'Cognizant',         host: 'Vikram Kaul',    time: '2:00 PM',  type: 'Operations Review',   attendees: '5',  room: 'Boardroom',   status: 'Active',    action: 'View' },
-  { meetingId: 'MTG-0486', client: 'Deutsche Bank GCC', host: 'Amit Deshpande', time: '3:00 PM',  type: 'VIP Visit',           attendees: '12', room: 'Boardroom',   status: 'Scheduled', action: 'Prepare' },
-  { meetingId: 'MTG-0487', client: 'HSBC GCC',          host: 'Event Team',     time: '6:00 PM',  type: 'Corporate Event',     attendees: '25', room: 'Event Hall',  status: 'Scheduled', action: 'Confirm' },
-  { meetingId: 'MTG-0488', client: 'XYZ Fintech',       host: 'Neha Sharma',    time: '4:00 PM',  type: 'Invoice Discussion',  attendees: '2',  room: 'Meeting Pod', status: 'Cancelled', action: 'Reschedule' },
+  { visitor: 'John Smith',      company: 'Deutsche Bank', host: 'Priya M.',   time: '09:15 AM', purpose: 'Business Review', badge: 'V-124', status: 'Active',    action: 'View' },
+  { visitor: 'Anita Kapoor',    company: 'HSBC GCC',      host: 'Rajesh K.',  time: '10:00 AM', purpose: 'Onboarding',      badge: 'V-125', status: 'Active',    action: 'View' },
+  { visitor: 'Mark Jensen',     company: 'Deutsche Bank', host: 'Seema G.',   time: '10:30 AM', purpose: 'IT Setup',        badge: 'V-126', status: 'Active',    action: 'View' },
+  { visitor: 'Suresh Iyer',     company: 'Vendor',        host: 'Facilities', time: '11:00 AM', purpose: 'Maintenance',     badge: 'V-127', status: 'In Progress',action: 'View' },
+  { visitor: 'CEO – Deutsche',  company: 'Deutsche Bank', host: 'Centre Mgr', time: '03:00 PM', purpose: 'VIP Visit',       badge: 'Pre-reg', status: 'Pending', action: 'Prepare' },
+  { visitor: 'HSBC Event Guest', company: 'External',     host: 'Event Team', time: '06:00 PM', purpose: 'Corporate Event', badge: 'Batch',   status: 'Pending', action: 'Confirm' },
 ]
 
 export const nexusAMData = {
-  mgmt:     { metrics: mgmtMetrics,     actions: mgmtActions,     topFive: mgmtTopFive,     charts: mgmtCharts,     columns: mgmtColumns,     grid: mgmtGrid,     gridTitle: 'Portfolio Invoice & Dispute Health Overview' },
-  amhead:   { metrics: amheadMetrics,   actions: amheadActions,   topFive: amheadTopFive,   charts: amheadCharts,   columns: amheadColumns,   grid: amheadGrid,   gridTitle: 'Team Invoice Aging Report' },
-  regional: { metrics: regionalMetrics, actions: regionalActions, topFive: regionalTopFive, charts: regionalCharts, columns: regionalColumns, grid: regionalGrid, gridTitle: 'Regional Invoice Overdue Tracker' },
-  centre:   { metrics: centreMetrics,   actions: centreActions,   topFive: centreTopFive,   charts: centreCharts,   columns: centreColumns,   grid: centreGrid,   gridTitle: 'Centre Invoice & Dispute Register' },
-  aam:      { metrics: aamMetrics,      actions: aamActions,      topFive: aamTopFive,      charts: aamCharts,      columns: aamColumns,      grid: aamGrid,      gridTitle: 'My Invoice Register' },
-  gre:      { metrics: greMetrics,      actions: greActions,      topFive: greTopFive,      charts: greCharts,      columns: greColumns,      grid: greGrid,      gridTitle: 'Today\'s Meeting Log' },
+  mgmt:     { metrics: mgmtMetrics,     actions: mgmtActions,     topFive: mgmtTopFive,     charts: mgmtCharts,     columns: mgmtColumns,     grid: mgmtGrid,     gridTitle: 'Portfolio Account Health Overview' },
+  amhead:   { metrics: amheadMetrics,   actions: amheadActions,   topFive: amheadTopFive,   charts: amheadCharts,   columns: amheadColumns,   grid: amheadGrid,   gridTitle: 'Account Portfolio — At-Risk & Renewal Tracker' },
+  regional: { metrics: regionalMetrics, actions: regionalActions, topFive: regionalTopFive, charts: regionalCharts, columns: regionalColumns, grid: regionalGrid, gridTitle: 'Regional Account Overview' },
+  centre:   { metrics: centreMetrics,   actions: centreActions,   topFive: centreTopFive,   charts: centreCharts,   columns: centreColumns,   grid: centreGrid,   gridTitle: 'Centre Client Accounts' },
+  aam:      { metrics: aamMetrics,      actions: aamActions,      topFive: aamTopFive,      charts: aamCharts,      columns: aamColumns,      grid: aamGrid,      gridTitle: 'My Accounts Dashboard' },
+  gre:      { metrics: greMetrics,      actions: greActions,      topFive: greTopFive,      charts: greCharts,      columns: greColumns,      grid: greGrid,      gridTitle: 'Today\'s Visitor Log' },
 }
