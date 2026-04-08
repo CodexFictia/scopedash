@@ -10,7 +10,7 @@ import TopFiveList from '../components/TopFiveList'
 import TrendChart from '../components/TrendChart'
 import DataGrid from '../components/DataGrid'
 
-export default function DashboardPage({ title, subtitle, personas, filters, dataMap, defaultPersona }) {
+export default function DashboardPage({ title, subtitle, personas, filters, dataMap, defaultPersona, periodOptions, defaultPeriod }) {
   const [activePersona, setActivePersona] = useState(defaultPersona || personas[0].id)
   const d = dataMap[activePersona]
 
@@ -23,6 +23,8 @@ export default function DashboardPage({ title, subtitle, personas, filters, data
         activePersona={activePersona}
         onPersonaChange={setActivePersona}
         filters={filters}
+        periodOptions={periodOptions}
+        defaultPeriod={defaultPeriod}
       />
 
       <div className="page-content">

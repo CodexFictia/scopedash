@@ -51,10 +51,13 @@ function PersonaChip({ id, label, active, onClick }) {
   )
 }
 
-export default function TopBar({ title, subtitle, personas, activePersona, onPersonaChange, filters }) {
+const DEFAULT_PERIOD_OPTIONS = ['Today', 'This Week', 'This Month', 'Last Month', 'Q4 FY25', 'Q1 FY26', 'FY25–26']
+
+export default function TopBar({ title, subtitle, personas, activePersona, onPersonaChange, filters, periodOptions, defaultPeriod }) {
+  const opts = periodOptions && periodOptions.length ? periodOptions : DEFAULT_PERIOD_OPTIONS
   const [search, setSearch] = useState('')
   const [showFilters, setShowFilters] = useState(false)
-  const [period, setPeriod] = useState('This Month')
+  const [period, setPeriod] = useState(defaultPeriod || opts[2] || opts[0])
   const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 
   return (

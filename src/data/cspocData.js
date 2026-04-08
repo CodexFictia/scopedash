@@ -1,4 +1,9 @@
-import { CreditCard, RefreshCw, Zap, UtensilsCrossed, Wallet, Star, ShoppingBag, Tv2, Server, Activity, Shield, Cpu, AlertTriangle } from 'lucide-react'
+import {
+  CreditCard, RefreshCw, Wallet, UtensilsCrossed, Store, ShoppingBag, Coins,
+  Receipt, TrendingUp, TrendingDown, BarChart3, PieChart, Banknote, IndianRupee,
+  Sparkles, Activity, AlertTriangle, CheckCircle2, XCircle, Clock,
+  UserPlus, Ticket, BookOpen, Settings2, Building2,
+} from 'lucide-react'
 
 export const cspocPersonas = [
   { id: 'finance', label: 'Finance Team' },
@@ -7,68 +12,76 @@ export const cspocPersonas = [
 ]
 
 export const cspocFilters = [
-  { id: 'centre', label: 'Centre', options: ['All Centres', 'Bengaluru – Whitefield', 'Pune – Baner', 'Hyderabad – HiTec City', 'Mumbai – BKC', 'Delhi – Cyber City', 'Chennai – Tidel Park'] },
-  { id: 'status', label: 'Status',  options: ['All Statuses', 'Pending', 'Completed', 'Failed', 'Review', 'Overdue'] },
-  { id: 'type',   label: 'Type',    options: ['All Types', 'Vendor Payment', 'Settlement', 'Wallet Credit', 'Meal Plan', 'Reconciliation'] },
+  { id: 'client',   label: 'Client',   options: ['All Clients', 'Deutsche Bank GCC', 'TechCorp India', 'Infosys BPO', 'Accenture', 'Cognizant', 'Wipro', 'HSBC GCC', 'Capgemini', 'Multiple'] },
+  { id: 'location', label: 'Location', options: ['All Locations', 'Bengaluru – Whitefield', 'Pune – Baner', 'Hyderabad – HiTec City', 'Mumbai – BKC', 'Delhi – Cyber City', 'Chennai – Tidel Park'] },
+  { id: 'status',   label: 'Status',   options: ['All Statuses', 'Pending', 'Completed', 'Failed', 'Review', 'Overdue'] },
+  { id: 'type',     label: 'Type',     options: ['All Types', 'Workctrl', 'Paytm DQR', 'Wallet', 'Vendor Payment', 'Wallet Topup', 'Meal Plan'] },
 ]
 
 // ─── FINANCE TEAM ─────────────────────────────────────────────────────────────
+// Yesterday-centric reporting view: Workctrl, Paytm DQR, Wallet sales + vendor & wallet ops
 const financeMetrics = [
-  { label: 'Vendor Payments Pending', value: '₹4.2L',  change: '+2 from yesterday', trend: 'up',      status: 'warning', icon: CreditCard,       highlight: true },
-  { label: 'Razorpay Match Rate',      value: '94.8%',  change: '247/261 matched',   trend: 'neutral', status: 'warning', icon: RefreshCw },
-  { label: 'Auto Settlement Rate',     value: '97.2%',  change: '+1.3% vs last wk',  trend: 'up',      status: 'positive', icon: Zap },
-  { label: 'Active Meal Plans',        value: '312',    change: '+8 this week',       trend: 'up',      status: 'positive', icon: UtensilsCrossed },
-  { label: 'Wallet Points Issued MTD', value: '₹1.86L', change: '+12% MoM',          trend: 'up',      status: 'info',    icon: Wallet },
+  { label: 'Workctrl Payments',         value: '₹3.42L', change: '412 txns yesterday',  trend: 'up',      status: 'positive', icon: CreditCard },
+  { label: 'Paytm DQR Payments',        value: '₹1.85L', change: '287 txns yesterday',  trend: 'up',      status: 'positive', icon: Receipt },
+  { label: 'Wallet Points Spent',       value: '₹68.4K', change: '198 txns yesterday',  trend: 'up',      status: 'info',     icon: Coins },
+  { label: 'Total Sales (Yesterday)',   value: '₹5.95L', change: 'WC + DQR + Wallet',   trend: 'up',      status: 'positive', icon: IndianRupee, highlight: true },
+  { label: 'Smart Store Sales (#)',     value: '384',    change: 'transactions',         trend: 'up',      status: 'positive', icon: Store },
+  { label: 'Food Vendor Sales (#)',     value: '513',    change: 'transactions',         trend: 'up',      status: 'positive', icon: UtensilsCrossed },
+  { label: 'Vendor Payments Pending',   value: '₹4.20L', change: '18 vendors · 3 overdue', trend: 'up',  status: 'warning',  icon: Banknote },
+  { label: 'Razorpay Actions Pending',  value: '14',     change: 'unmatched txns',       trend: 'neutral', status: 'warning',  icon: RefreshCw },
+  { label: 'B2B Wallet Top-ups',        value: '8 / ₹1.86L', change: 'batches / value', trend: 'up',      status: 'info',     icon: Wallet },
+  { label: 'Meal Plans',                value: '248 / 312', change: 'consumed / active', trend: 'up',     status: 'positive', icon: UtensilsCrossed },
 ]
 
 const financeActions = [
-  { priority: 'high',   text: '14 RazorPay transactions unmatched — manual reconciliation required', due: 'Within 2 hrs', category: 'Reconciliation' },
-  { priority: 'high',   text: 'Auto-settlement failed for 3 transactions (₹68,200 total) — retry or escalate', due: 'Today', category: 'Settlement' },
-  { priority: 'high',   text: 'Vendor payment ₹2.8L to Café Supplies Pvt Ltd is 4 days overdue', due: 'Overdue', category: 'Payments' },
-  { priority: 'medium', text: 'TechCorp wallet top-up batch (620 employees, ₹62,000) pending CFO auth', due: 'EOD', category: 'Wallet' },
-  { priority: 'medium', text: '3 client-wise meal plan reports pending client sign-off before month close', due: 'Tomorrow', category: 'Reports' },
-  { priority: 'low',    text: 'Monthly vendor reconciliation summary for April due in 5 days', due: 'Apr 7', category: 'Reports' },
+  { priority: 'high',   text: 'Reconcile 14 Razorpay txns with invoices and approve vendor payments', due: 'Today', category: 'Reconciliation' },
+  { priority: 'medium', text: 'B2B wallet top-up batches pending CFO approval — 8 batches, ₹1.86L total', due: 'EOD', category: 'Wallet' },
+  { priority: 'low',    text: 'Send monthly meal-plan & store consumption report to client finance teams', due: 'Apr 30', category: 'Reports' },
 ]
 
 const financeTopFive = [
   {
-    title: 'Top 5 Vendors by Pending Amount',
+    title: 'Top 5 Stores by Sales Yesterday',
     items: [
-      { label: 'Café Supplies Pvt Ltd',  value: '₹2.8L', change: -1 },
-      { label: 'CleanPro Services',       value: '₹1.4L', change: 0 },
-      { label: 'TechFix Infra',           value: '₹88K',  change: 1 },
-      { label: 'SecureGuard Systems',     value: '₹67K',  change: -1 },
-      { label: 'AquaPure Solutions',      value: '₹45K',  change: 0 },
+      { label: 'Café Verde — Whitefield',    value: '₹84K', change: 1 },
+      { label: 'Smart Store — BKC',          value: '₹71K', change: 1 },
+      { label: 'Dosa Plaza — HiTec City',    value: '₹62K', change: 0 },
+      { label: 'BrewPoint — Cyber City',     value: '₹58K', change: -1 },
+      { label: 'Smart Store — Baner',        value: '₹49K', change: 0 },
     ],
   },
   {
-    title: 'Top 5 Clients by Wallet Balance',
+    title: 'Top 5 Vendors by Pending Amount',
     items: [
-      { label: 'Deutsche Bank GCC', value: '₹1.2L', change: 1 },
-      { label: 'TechCorp India',    value: '₹98K',  change: 1 },
-      { label: 'Infosys BPO',       value: '₹76K',  change: 0 },
-      { label: 'Cognizant',         value: '₹54K',  change: -1 },
-      { label: 'Accenture',         value: '₹43K',  change: 0 },
+      { label: 'Café Supplies Pvt Ltd', value: '₹2.8L', change: -1 },
+      { label: 'CleanPro Services',     value: '₹1.4L', change: 0 },
+      { label: 'TechFix Infra',         value: '₹88K',  change: 1 },
+      { label: 'SecureGuard Systems',   value: '₹67K',  change: -1 },
+      { label: 'AquaPure Solutions',    value: '₹45K',  change: 0 },
     ],
   },
 ]
 
 const financeCharts = [
   {
-    type: 'line', title: 'Razorpay Daily Match Rate (%)',
+    type: 'bar', title: 'Daily Sales Split (₹K) — Workctrl · Paytm DQR · Wallet',
     data: [
-      { name: 'Mar 26', matched: 96.2, target: 98 },
-      { name: 'Mar 27', matched: 97.1, target: 98 },
-      { name: 'Mar 28', matched: 94.5, target: 98 },
-      { name: 'Mar 29', matched: 98.2, target: 98 },
-      { name: 'Mar 30', matched: 95.8, target: 98 },
-      { name: 'Mar 31', matched: 96.4, target: 98 },
-      { name: 'Apr 1',  matched: 94.8, target: 98 },
+      { name: 'Mar 26', workctrl: 312, dqr: 168, wallet: 58 },
+      { name: 'Mar 27', workctrl: 348, dqr: 182, wallet: 64 },
+      { name: 'Mar 28', workctrl: 296, dqr: 154, wallet: 51 },
+      { name: 'Mar 29', workctrl: 364, dqr: 198, wallet: 72 },
+      { name: 'Mar 30', workctrl: 128, dqr:  62, wallet: 22 },
+      { name: 'Mar 31', workctrl: 332, dqr: 176, wallet: 66 },
+      { name: 'Apr 1',  workctrl: 342, dqr: 185, wallet: 68 },
     ],
-    lines: [{ key: 'matched', label: 'Match Rate %' }, { key: 'target', label: 'Target %' }],
+    lines: [
+      { key: 'workctrl', label: 'Workctrl' },
+      { key: 'dqr',      label: 'Paytm DQR' },
+      { key: 'wallet',   label: 'Wallet' },
+    ],
   },
   {
-    type: 'bar', title: 'Monthly Vendor Payments (₹L)',
+    type: 'bar', title: 'Vendor Payments — Paid vs Pending (₹L)',
     data: [
       { name: 'Oct', paid: 12.4, pending: 2.1 },
       { name: 'Nov', paid: 14.1, pending: 1.8 },
@@ -80,248 +93,263 @@ const financeCharts = [
     lines: [{ key: 'paid', label: 'Paid' }, { key: 'pending', label: 'Pending' }],
   },
   {
-    type: 'area', title: 'Daily Meal Plan Consumption (covers)',
+    type: 'area', title: 'B2B Wallet Top-ups (₹K) — Daily',
     data: [
-      { name: 'Mar 26', lunch: 820, dinner: 340 },
-      { name: 'Mar 27', lunch: 875, dinner: 380 },
-      { name: 'Mar 28', lunch: 812, dinner: 290 },
-      { name: 'Mar 29', lunch: 830, dinner: 310 },
-      { name: 'Mar 30', lunch: 0,   dinner: 0   },
-      { name: 'Mar 31', lunch: 850, dinner: 360 },
-      { name: 'Apr 1',  lunch: 890, dinner: 410 },
+      { name: 'Mar 26', topups: 142 },
+      { name: 'Mar 27', topups: 168 },
+      { name: 'Mar 28', topups:  88 },
+      { name: 'Mar 29', topups: 210 },
+      { name: 'Mar 30', topups:  44 },
+      { name: 'Mar 31', topups: 156 },
+      { name: 'Apr 1',  topups: 186 },
     ],
-    lines: [{ key: 'lunch', label: 'Lunch' }, { key: 'dinner', label: 'Dinner' }],
+    lines: [{ key: 'topups', label: 'Top-ups (₹K)' }],
   },
 ]
 
 const financeColumns = [
-  { key: 'vendor',  label: 'Vendor / Reference' },
-  { key: 'amount',  label: 'Amount' },
-  { key: 'type',    label: 'Type' },
-  { key: 'centre',  label: 'Centre', muted: true },
-  { key: 'dueDate', label: 'Due Date' },
-  { key: 'status',  label: 'Status', type: 'status' },
-  { key: 'action',  label: 'Action', type: 'action', sortable: false },
+  { key: 'reference', label: 'Reference / Vendor' },
+  { key: 'client',    label: 'Client' },
+  { key: 'location',  label: 'Location', muted: true },
+  { key: 'type',      label: 'Type' },
+  { key: 'amount',    label: 'Amount' },
+  { key: 'date',      label: 'Date' },
+  { key: 'status',    label: 'Status', type: 'status' },
+  { key: 'action',    label: 'Action', type: 'action', sortable: false },
 ]
 
 const financeGrid = [
-  { vendor: 'Café Supplies Pvt Ltd',   amount: '₹2,80,000', type: 'Vendor Payment', centre: 'Whitefield',    dueDate: 'Mar 29, 2026', status: 'Overdue',     action: 'Pay Now' },
-  { vendor: 'CleanPro Services',        amount: '₹1,40,000', type: 'Vendor Payment', centre: 'Multiple',      dueDate: 'Apr 3, 2026',  status: 'Pending',     action: 'Review'  },
-  { vendor: 'TechFix Infra',            amount: '₹88,000',   type: 'Vendor Payment', centre: 'Baner',         dueDate: 'Apr 5, 2026',  status: 'Pending',     action: 'Review'  },
-  { vendor: 'RazorPay TXN#892341',     amount: '₹45,000',   type: 'Settlement',     centre: 'BKC',           dueDate: 'Apr 1, 2026',  status: 'Failed',      action: 'Retry'   },
-  { vendor: 'RazorPay TXN#891204',     amount: '₹12,500',   type: 'Settlement',     centre: 'HiTec City',    dueDate: 'Apr 1, 2026',  status: 'Failed',      action: 'Retry'   },
-  { vendor: 'SecureGuard Systems',      amount: '₹67,000',   type: 'Vendor Payment', centre: 'Cyber City',    dueDate: 'Apr 7, 2026',  status: 'Pending',     action: 'Review'  },
-  { vendor: 'TechCorp Wallet Batch',    amount: '₹62,000',   type: 'Wallet Credit',  centre: 'Whitefield',    dueDate: 'Apr 2, 2026',  status: 'Pending',     action: 'Authorize' },
-  { vendor: 'AquaPure Solutions',       amount: '₹45,000',   type: 'Vendor Payment', centre: 'Baner',         dueDate: 'Apr 8, 2026',  status: 'Pending',     action: 'Review'  },
-  { vendor: 'RazorPay TXN#890123',     amount: '₹8,200',    type: 'Reconciliation', centre: 'Tidel Park',    dueDate: 'Apr 1, 2026',  status: 'Review',      action: 'Match'   },
-  { vendor: 'Infosys BPO Meal Plan',    amount: '₹1,65,000', type: 'Meal Plan',      centre: 'Baner',         dueDate: 'Apr 10, 2026', status: 'In Progress', action: 'View'    },
-  { vendor: 'Deutsche Bank Wallet',     amount: '₹40,000',   type: 'Wallet Credit',  centre: 'BKC',           dueDate: 'Apr 3, 2026',  status: 'Completed',   action: 'View'    },
-  { vendor: 'Cognizant Meal Top-Up',    amount: '₹28,500',   type: 'Meal Plan',      centre: 'Whitefield',    dueDate: 'Apr 4, 2026',  status: 'Pending',     action: 'Authorize' },
+  { reference: 'WC#88412 — Café Verde',         client: 'Deutsche Bank GCC', location: 'Whitefield',    type: 'Workctrl',       amount: '₹84,200', date: 'Apr 1',  status: 'Completed',   action: 'View' },
+  { reference: 'DQR#22871 — Smart Store',       client: 'TechCorp India',    location: 'BKC',           type: 'Paytm DQR',      amount: '₹71,300', date: 'Apr 1',  status: 'Completed',   action: 'View' },
+  { reference: 'WL#10544 — Dosa Plaza',         client: 'Infosys BPO',       location: 'HiTec City',    type: 'Wallet',         amount: '₹38,900', date: 'Apr 1',  status: 'Completed',   action: 'View' },
+  { reference: 'RZP TXN#892341 — Settlement',   client: 'Multiple',          location: 'BKC',           type: 'Vendor Payment', amount: '₹45,000', date: 'Apr 1',  status: 'Failed',      action: 'Match' },
+  { reference: 'RZP TXN#891204 — Settlement',   client: 'Multiple',          location: 'HiTec City',    type: 'Vendor Payment', amount: '₹12,500', date: 'Apr 1',  status: 'Review',      action: 'Match' },
+  { reference: 'Café Supplies Pvt Ltd',         client: 'Multiple',          location: 'Whitefield',    type: 'Vendor Payment', amount: '₹2,80,000', date: 'Mar 29', status: 'Overdue',    action: 'Pay Now' },
+  { reference: 'TechCorp Wallet Batch #B-7711', client: 'TechCorp India',    location: 'Whitefield',    type: 'Wallet Topup',   amount: '₹62,000', date: 'Apr 2',  status: 'Pending',     action: 'Authorize' },
+  { reference: 'Cognizant Wallet Batch #B-7714',client: 'Cognizant',         location: 'BKC',           type: 'Wallet Topup',   amount: '₹38,500', date: 'Apr 2',  status: 'Pending',     action: 'Authorize' },
+  { reference: 'CleanPro Services',             client: 'Multiple',          location: 'Multiple',      type: 'Vendor Payment', amount: '₹1,40,000', date: 'Apr 3', status: 'Pending',     action: 'Review' },
+  { reference: 'Infosys BPO Meal Plan — Mar',   client: 'Infosys BPO',       location: 'Baner',         type: 'Meal Plan',      amount: '₹1,65,000', date: 'Apr 1', status: 'Completed',   action: 'View' },
+  { reference: 'TechFix Infra',                 client: 'Multiple',          location: 'Baner',         type: 'Vendor Payment', amount: '₹88,000', date: 'Apr 5',  status: 'Pending',     action: 'Review' },
+  { reference: 'SecureGuard Systems',           client: 'Multiple',          location: 'Cyber City',    type: 'Vendor Payment', amount: '₹67,000', date: 'Apr 7',  status: 'Pending',     action: 'Review' },
 ]
 
 // ─── VAS TEAM ─────────────────────────────────────────────────────────────────
+// Meal plan + stores + rent commercial view
 const vasMetrics = [
-  { label: 'Active VAS Subscriptions', value: '1,284', change: '+34 this month',  trend: 'up',      status: 'positive', icon: Star, highlight: true },
-  { label: 'VAS Revenue MTD',          value: '₹8.4L', change: '+18% vs target',  trend: 'up',      status: 'positive', icon: ShoppingBag },
-  { label: 'Avg Revenue / User',        value: '₹654',  change: '+₹42 vs last mo', trend: 'up',      status: 'positive', icon: Wallet },
-  { label: 'New Enrollments Today',     value: '47',    change: '↑ 12 vs avg day', trend: 'up',      status: 'info',    icon: Star },
-  { label: 'Churn Rate (30d)',          value: '2.1%',  change: '-0.3% MoM',       trend: 'down',    status: 'positive', icon: AlertTriangle },
+  { label: 'Meal Plan Amount (Yesterday)', value: '₹84.2K', change: '+6.3% vs avg',          trend: 'up',   status: 'positive', icon: UtensilsCrossed, highlight: true },
+  { label: 'Meal Plan Coverage',           value: '38 / 61', change: 'active / total locations', trend: 'up', status: 'positive', icon: Building2 },
+  { label: 'Meal Plan Usage',              value: '4,820',   change: 'covers yesterday',     trend: 'up',   status: 'positive', icon: UtensilsCrossed },
+  { label: 'Previous Period Amount',       value: '₹79.2K',  change: 'AI: weather +rainy day uplift', trend: 'up', status: 'info', icon: Sparkles, ai: true },
+  { label: 'Previous Period Usage',        value: '4,510',   change: 'AI: 2 new clients onboarded', trend: 'up', status: 'info', icon: Sparkles, ai: true },
+  { label: 'Avg Meal Plan Utilisation',    value: '78.4%',   change: '+2.1% MoM',            trend: 'up',   status: 'positive', icon: TrendingUp },
+  { label: 'Avg Store Revenue',            value: '₹42.0K',  change: 'per store / day',      trend: 'up',   status: 'positive', icon: Store },
+  { label: 'Rent Revenue (MTD)',           value: '₹1.24Cr', change: '38 stores billable',   trend: 'up',   status: 'positive', icon: Banknote },
+  { label: 'Avg Margin %',                 value: '21.6%',   change: '+0.4% vs target',      trend: 'up',   status: 'positive', icon: TrendingUp },
 ]
 
 const vasActions = [
-  { priority: 'high',   text: 'Café kiosk subscription renewal for Accenture (340 users) expires in 3 days', due: 'Apr 5', category: 'Renewal' },
-  { priority: 'high',   text: 'VAS onboarding blocked for Wipro (150 users) — payment gateway error on portal', due: 'Today', category: 'Onboarding' },
-  { priority: 'medium', text: 'Amenity booking tier upgrade pending approval for Infosys BPO (Baner)', due: 'EOD', category: 'Upgrade' },
-  { priority: 'medium', text: 'Monthly VAS usage report for 6 enterprise clients due for distribution', due: 'Apr 3', category: 'Reports' },
-  { priority: 'low',    text: 'Loyalty points redemption batch (1,200 users, ₹3.6L) ready for processing', due: 'Apr 6', category: 'Loyalty' },
+  { priority: 'high',   text: 'Meal plan renewal pending for Accenture (340 users) — expires in 3 days', due: 'Apr 5', category: 'Renewal' },
+  { priority: 'high',   text: 'AI flag: Wipro Baner meal usage dropped 38% vs 4-week avg — investigate', due: 'Today', category: 'AI Insight' },
+  { priority: 'medium', text: 'Store onboarding: 3 new food vendors at HiTec City awaiting menu sign-off', due: 'Apr 4', category: 'Stores' },
+  { priority: 'medium', text: 'Margin below target (18.2%) at Tidel Park — review vendor pricing', due: 'Apr 6', category: 'Commercial' },
+  { priority: 'low',    text: 'Quarterly rent escalation for 6 stores due — share commercials with Finance', due: 'Apr 15', category: 'Rent' },
 ]
 
 const vasTopFive = [
   {
-    title: 'Top 5 VAS Categories by Revenue',
+    title: 'Top 5 Clients by Meal Plan Amount',
     items: [
-      { label: 'Café & Food Services', value: '₹3.2L', change: 1 },
-      { label: 'Wellness & Fitness',   value: '₹1.8L', change: 1 },
-      { label: 'Concierge Services',   value: '₹1.4L', change: 0 },
-      { label: 'Stationery & Store',   value: '₹92K',  change: -1 },
-      { label: 'Event Spaces',         value: '₹68K',  change: 0 },
+      { label: 'Deutsche Bank GCC', value: '₹1.42L', change: 1 },
+      { label: 'Infosys BPO',       value: '₹1.18L', change: 0 },
+      { label: 'Accenture',         value: '₹0.96L', change: 1 },
+      { label: 'Wipro',             value: '₹0.62L', change: -1 },
+      { label: 'HSBC GCC',          value: '₹0.58L', change: 0 },
     ],
   },
   {
-    title: 'Top 5 Clients by VAS Spend',
+    title: 'Top 5 Stores by Revenue (Yesterday)',
     items: [
-      { label: 'Deutsche Bank GCC', value: '₹1.4L', change: 1 },
-      { label: 'Infosys BPO',       value: '₹1.1L', change: 0 },
-      { label: 'Accenture',         value: '₹98K',  change: 1 },
-      { label: 'Wipro',             value: '₹76K',  change: -1 },
-      { label: 'TechCorp India',    value: '₹64K',  change: 0 },
+      { label: 'Café Verde — Whitefield',  value: '₹84K', change: 1 },
+      { label: 'Smart Store — BKC',         value: '₹71K', change: 1 },
+      { label: 'Dosa Plaza — HiTec City',   value: '₹62K', change: 0 },
+      { label: 'BrewPoint — Cyber City',    value: '₹58K', change: -1 },
+      { label: 'Smart Store — Baner',       value: '₹49K', change: 0 },
     ],
   },
 ]
 
 const vasCharts = [
   {
-    type: 'area', title: 'VAS Revenue Trend (₹L) — Daily',
+    type: 'area', title: 'Meal Plan Amount (₹K) — Daily',
     data: [
-      { name: 'Mar 26', revenue: 28.4, target: 28 },
-      { name: 'Mar 27', revenue: 31.2, target: 28 },
-      { name: 'Mar 28', revenue: 27.8, target: 28 },
-      { name: 'Mar 29', revenue: 33.1, target: 28 },
-      { name: 'Mar 30', revenue: 12.4, target: 0  },
-      { name: 'Mar 31', revenue: 29.8, target: 28 },
-      { name: 'Apr 1',  revenue: 35.2, target: 28 },
+      { name: 'Mar 26', current: 78, prev: 74 },
+      { name: 'Mar 27', current: 82, prev: 76 },
+      { name: 'Mar 28', current: 71, prev: 73 },
+      { name: 'Mar 29', current: 88, prev: 80 },
+      { name: 'Mar 30', current: 22, prev: 20 },
+      { name: 'Mar 31', current: 80, prev: 78 },
+      { name: 'Apr 1',  current: 84, prev: 79 },
     ],
-    lines: [{ key: 'revenue', label: 'Revenue (₹K)' }, { key: 'target', label: 'Daily Target' }],
+    lines: [{ key: 'current', label: 'This Week' }, { key: 'prev', label: 'Prev Week' }],
   },
   {
-    type: 'bar', title: 'Enrollments by Service Category',
+    type: 'bar', title: 'Meal Plan Utilisation by Client (%)',
     data: [
-      { name: 'Café',       current: 420, last: 390 },
-      { name: 'Wellness',   current: 280, last: 240 },
-      { name: 'Concierge',  current: 210, last: 195 },
-      { name: 'Store',      current: 180, last: 175 },
-      { name: 'Events',     current: 94,  last: 80  },
+      { name: 'Deutsche', current: 88, target: 80 },
+      { name: 'Infosys',  current: 82, target: 80 },
+      { name: 'Accenture',current: 79, target: 80 },
+      { name: 'Wipro',    current: 56, target: 80 },
+      { name: 'HSBC',     current: 84, target: 80 },
     ],
-    lines: [{ key: 'current', label: 'This Month' }, { key: 'last', label: 'Last Month' }],
+    lines: [{ key: 'current', label: 'Utilisation %' }, { key: 'target', label: 'Target %' }],
   },
   {
-    type: 'pie', title: 'VAS Revenue Mix',
+    type: 'line', title: 'Avg Store Revenue & Margin',
     data: [
-      { name: 'Café',      value: 38 },
-      { name: 'Wellness',  value: 21 },
-      { name: 'Concierge', value: 17 },
-      { name: 'Store',     value: 11 },
-      { name: 'Events',    value: 8  },
-      { name: 'Other',     value: 5  },
+      { name: 'Oct', revenue: 38, margin: 20.1 },
+      { name: 'Nov', revenue: 39, margin: 20.4 },
+      { name: 'Dec', revenue: 41, margin: 21.0 },
+      { name: 'Jan', revenue: 40, margin: 20.8 },
+      { name: 'Feb', revenue: 41, margin: 21.2 },
+      { name: 'Mar', revenue: 42, margin: 21.6 },
     ],
-    lines: [],
+    lines: [{ key: 'revenue', label: 'Revenue ₹K/day' }, { key: 'margin', label: 'Margin %' }],
   },
 ]
 
 const vasColumns = [
-  { key: 'service',   label: 'Service' },
   { key: 'client',    label: 'Client' },
-  { key: 'users',     label: 'Users' },
-  { key: 'revenue',   label: 'Revenue MTD' },
-  { key: 'renewal',   label: 'Renewal Date' },
+  { key: 'location',  label: 'Location', muted: true },
+  { key: 'plan',      label: 'Meal Plan' },
+  { key: 'users',     label: 'Active Users' },
+  { key: 'amount',    label: 'Amount (Yest)' },
+  { key: 'usage',     label: 'Usage %' },
   { key: 'status',    label: 'Status', type: 'status' },
   { key: 'action',    label: 'Action', type: 'action', sortable: false },
 ]
 
 const vasGrid = [
-  { service: 'Café Kiosk',         client: 'Deutsche Bank GCC', users: '480',  revenue: '₹96,000', renewal: 'Apr 5, 2026',  status: 'Active',      action: 'View' },
-  { service: 'Wellness Studio',    client: 'Infosys BPO',       users: '240',  revenue: '₹72,000', renewal: 'May 1, 2026',  status: 'Active',      action: 'View' },
-  { service: 'Café Kiosk',         client: 'Accenture',         users: '340',  revenue: '₹68,000', renewal: 'Apr 5, 2026',  status: 'Active',      action: 'Renew' },
-  { service: 'Concierge Plus',     client: 'TechCorp India',    users: '120',  revenue: '₹60,000', renewal: 'Apr 15, 2026', status: 'Active',      action: 'View' },
-  { service: 'Wellness Studio',    client: 'Wipro',             users: '150',  revenue: '₹0',      renewal: 'Apr 2, 2026',  status: 'Pending',     action: 'Fix'  },
-  { service: 'Store Subscription', client: 'Cognizant',         users: '200',  revenue: '₹30,000', renewal: 'Jun 1, 2026',  status: 'Active',      action: 'View' },
-  { service: 'Event Space Pkg',    client: 'HSBC GCC',          users: 'N/A',  revenue: '₹45,000', renewal: 'Quarterly',    status: 'Active',      action: 'View' },
-  { service: 'Café Kiosk',         client: 'Capgemini',         users: '180',  revenue: '₹36,000', renewal: 'Apr 20, 2026', status: 'Active',      action: 'View' },
-  { service: 'Loyalty Program',    client: 'Multiple',          users: '1,200',revenue: '₹0',      renewal: 'Ongoing',      status: 'In Progress', action: 'View' },
+  { client: 'Deutsche Bank GCC', location: 'BKC',         plan: 'Lunch + Snacks', users: '480', amount: '₹1,42,000', usage: '88%', status: 'Active',  action: 'View' },
+  { client: 'Infosys BPO',       location: 'Baner',       plan: 'Full Day',       users: '420', amount: '₹1,18,000', usage: '82%', status: 'Active',  action: 'View' },
+  { client: 'Accenture',         location: 'HiTec City',  plan: 'Lunch',          users: '340', amount: '₹96,000',  usage: '79%', status: 'Renewing',action: 'Renew' },
+  { client: 'Wipro',             location: 'Baner',       plan: 'Lunch',          users: '210', amount: '₹62,000',  usage: '56%', status: 'Review',  action: 'Investigate' },
+  { client: 'HSBC GCC',          location: 'Whitefield',  plan: 'Full Day',       users: '180', amount: '₹58,000',  usage: '84%', status: 'Active',  action: 'View' },
+  { client: 'Cognizant',         location: 'BKC',         plan: 'Lunch + Snacks', users: '200', amount: '₹52,000',  usage: '74%', status: 'Active',  action: 'View' },
+  { client: 'TechCorp India',    location: 'Whitefield',  plan: 'Full Day',       users: '120', amount: '₹38,000',  usage: '81%', status: 'Active',  action: 'View' },
+  { client: 'Capgemini',         location: 'Cyber City',  plan: 'Lunch',          users: '150', amount: '₹34,000',  usage: '70%', status: 'Active',  action: 'View' },
+  { client: 'Multiple — Café Verde Store', location: 'Whitefield', plan: 'Smart Store', users: 'N/A', amount: '₹84,000', usage: 'N/A', status: 'Active', action: 'View' },
 ]
 
 // ─── TECH OPS ─────────────────────────────────────────────────────────────────
+// Vendor onboarding + ticketing pipeline by category
 const techopsMetrics = [
-  { label: 'Platform Uptime (30d)',   value: '99.7%',  change: 'SLA: 99.5%', trend: 'up',   status: 'positive', icon: Server, highlight: true },
-  { label: 'Active Incidents',        value: '3',      change: '↓ 2 vs yesterday', trend: 'down', status: 'warning', icon: AlertTriangle },
-  { label: 'Integration Health',      value: '94.2%',  change: '3 integrations degraded', trend: 'neutral', status: 'warning', icon: Activity },
-  { label: 'Avg API Response Time',   value: '148ms',  change: '+12ms vs baseline', trend: 'up', status: 'warning', icon: Cpu },
-  { label: 'Open Tech Tickets',       value: '18',     change: '5 P1 · 8 P2 · 5 P3', trend: 'up', status: 'negative', icon: Shield },
+  { label: 'Onboarding — In Progress', value: '8',  change: '4 stores · 4 vendors', trend: 'up',   status: 'info',     icon: UserPlus, highlight: true },
+  { label: 'Onboarding — Completed',   value: '24', change: 'this month',           trend: 'up',   status: 'positive', icon: CheckCircle2 },
+  { label: 'Onboarding — Rejected',    value: '3',  change: 'KYC / docs failed',    trend: 'down', status: 'warning',  icon: XCircle },
+  { label: 'Open Tickets',             value: '14', change: 'all categories',       trend: 'up',   status: 'warning',  icon: Ticket },
+  { label: 'In-Progress Tickets',      value: '6',  change: 'avg age 11h',          trend: 'neutral', status: 'info',  icon: Clock },
+  { label: 'Closed Tickets (MTD)',     value: '47', change: '92% within SLA',       trend: 'up',   status: 'positive', icon: CheckCircle2 },
 ]
 
 const techopsActions = [
-  { priority: 'high',   text: 'P1: Payment gateway integration (Razorpay) returning 504 timeouts at peak load — 3 centres affected', due: 'Immediate', category: 'Incident' },
-  { priority: 'high',   text: 'VBMS–Ticketing sync broken for Whitefield Centre (IoT events not creating tickets)', due: 'Within 4hrs', category: 'Integration' },
-  { priority: 'medium', text: 'Café kiosk POS offline at Baner (3 terminals) — impacting VAS team SLA', due: 'Today', category: 'Hardware' },
-  { priority: 'medium', text: 'SSL certificate expiry for client-portal.smartworks.in in 12 days — renew now', due: 'Apr 14', category: 'Security' },
-  { priority: 'low',    text: 'DB maintenance window for CSPOC reporting DB scheduled — confirm with teams', due: 'Apr 5 2am', category: 'Maintenance' },
+  { priority: 'high',   text: 'Complete Store KT for 4 newly onboarded stores (Café Verde Whitefield, Dosa Plaza HiTec City, BrewPoint Cyber City, Smart Store Baner)', due: 'Apr 10', category: 'Onboarding' },
+  { priority: 'high',   text: 'DQR setup pending for 6 stores — coordinate with Paytm and store owners to install QR & POS', due: 'Apr 12', category: 'DQR Setup' },
+  { priority: 'medium', text: '3 onboarding cases stuck in KYC review — chase docs from vendors', due: 'Apr 6', category: 'Onboarding' },
+  { priority: 'medium', text: 'Workctrl integration ticket (P2) at Cyber City — 504 errors at peak hours', due: 'Today', category: 'Tickets' },
 ]
 
 const techopsTopFive = [
   {
-    title: 'Top 5 Active Incidents by Severity',
+    title: 'Top 5 Ticket Categories (Open)',
     items: [
-      { label: 'Razorpay gateway 504',     value: 'P1', change: -1 },
-      { label: 'VBMS-Ticketing sync fail', value: 'P1', change: -1 },
-      { label: 'API latency spike — BKC',  value: 'P2', change: 0 },
-      { label: 'POS offline — Baner',      value: 'P2', change: -1 },
-      { label: 'Report builder timeout',   value: 'P3', change: 0 },
+      { label: 'Workctrl integration', value: '5', change: 1 },
+      { label: 'DQR setup / sync',     value: '4', change: -1 },
+      { label: 'Wallet top-ups',       value: '2', change: 0 },
+      { label: 'Meal plan portal',     value: '2', change: 0 },
+      { label: 'Store hardware',       value: '1', change: -1 },
     ],
   },
   {
-    title: 'Top 5 Integrations by Error Rate',
+    title: 'Top 5 Stores in Onboarding Queue',
     items: [
-      { label: 'Razorpay Payment GW',   value: '4.8%', change: -1 },
-      { label: 'VBMS IoT Bridge',        value: '3.2%', change: -1 },
-      { label: 'ERP–CSPOC Billing Sync', value: '1.1%', change: 0 },
-      { label: 'CRM Lead Webhook',       value: '0.4%', change: 0 },
-      { label: 'Super App Push GW',      value: '0.2%', change: 1 },
+      { label: 'Café Verde — Whitefield',     value: 'Day 4', change: 1 },
+      { label: 'Dosa Plaza — HiTec City',     value: 'Day 6', change: 0 },
+      { label: 'BrewPoint — Cyber City',      value: 'Day 3', change: 1 },
+      { label: 'Smart Store — Baner',         value: 'Day 8', change: -1 },
+      { label: 'Juice Junction — Tidel Park', value: 'Day 2', change: 1 },
     ],
   },
 ]
 
 const techopsCharts = [
   {
-    type: 'line', title: 'API Response Time (ms) — Hourly',
+    type: 'bar', title: 'Tickets by Category — Open · In Progress · Closed',
     data: [
-      { name: '8am',  p50: 110, p95: 185, threshold: 200 },
-      { name: '9am',  p50: 125, p95: 210, threshold: 200 },
-      { name: '10am', p50: 148, p95: 245, threshold: 200 },
-      { name: '11am', p50: 142, p95: 230, threshold: 200 },
-      { name: '12pm', p50: 138, p95: 220, threshold: 200 },
-      { name: '1pm',  p50: 152, p95: 260, threshold: 200 },
-      { name: '2pm',  p50: 145, p95: 240, threshold: 200 },
-      { name: '3pm',  p50: 148, p95: 248, threshold: 200 },
+      { name: 'Workctrl',  open: 5, inprog: 2, closed: 14 },
+      { name: 'DQR',       open: 4, inprog: 1, closed: 12 },
+      { name: 'Wallet',    open: 2, inprog: 1, closed:  9 },
+      { name: 'Meal Plan', open: 2, inprog: 1, closed:  8 },
+      { name: 'Hardware',  open: 1, inprog: 1, closed:  4 },
     ],
-    lines: [{ key: 'p50', label: 'P50 (ms)' }, { key: 'p95', label: 'P95 (ms)' }, { key: 'threshold', label: 'Threshold' }],
+    lines: [
+      { key: 'open',   label: 'Open' },
+      { key: 'inprog', label: 'In Progress' },
+      { key: 'closed', label: 'Closed' },
+    ],
   },
   {
-    type: 'bar', title: 'Incidents by Category (Last 30 days)',
+    type: 'bar', title: 'Vendor Onboarding Funnel (this month)',
     data: [
-      { name: 'Integrations', open: 8, resolved: 22 },
-      { name: 'Infrastructure', open: 3, resolved: 12 },
-      { name: 'Application', open: 5, resolved: 18 },
-      { name: 'Security', open: 1, resolved: 4 },
-      { name: 'Hardware', open: 2, resolved: 9 },
+      { name: 'Lead',      count: 42 },
+      { name: 'KYC',       count: 38 },
+      { name: 'Agreement', count: 32 },
+      { name: 'Setup',     count: 27 },
+      { name: 'Live',      count: 24 },
     ],
-    lines: [{ key: 'open', label: 'Open' }, { key: 'resolved', label: 'Resolved' }],
+    lines: [{ key: 'count', label: 'Vendors' }],
   },
   {
-    type: 'area', title: 'Platform Uptime % (Daily)',
+    type: 'line', title: 'Tickets Opened vs Closed (Daily)',
     data: [
-      { name: 'Mar 26', uptime: 99.9 }, { name: 'Mar 27', uptime: 99.8 }, { name: 'Mar 28', uptime: 100 },
-      { name: 'Mar 29', uptime: 99.5 }, { name: 'Mar 30', uptime: 99.9 }, { name: 'Mar 31', uptime: 99.6 },
-      { name: 'Apr 1',  uptime: 99.7 },
+      { name: 'Mar 26', opened: 4, closed: 5 },
+      { name: 'Mar 27', opened: 6, closed: 4 },
+      { name: 'Mar 28', opened: 3, closed: 6 },
+      { name: 'Mar 29', opened: 5, closed: 4 },
+      { name: 'Mar 30', opened: 1, closed: 2 },
+      { name: 'Mar 31', opened: 4, closed: 5 },
+      { name: 'Apr 1',  opened: 5, closed: 6 },
     ],
-    lines: [{ key: 'uptime', label: 'Uptime %' }],
+    lines: [{ key: 'opened', label: 'Opened' }, { key: 'closed', label: 'Closed' }],
   },
 ]
 
 const techopsColumns = [
-  { key: 'incident',  label: 'Incident / Ticket' },
-  { key: 'severity',  label: 'Severity', type: 'status' },
-  { key: 'system',    label: 'System' },
-  { key: 'centre',    label: 'Centre', muted: true },
-  { key: 'opened',    label: 'Opened' },
+  { key: 'reference', label: 'Reference' },
+  { key: 'kind',      label: 'Type' },
+  { key: 'category',  label: 'Category' },
+  { key: 'client',    label: 'Client / Vendor' },
+  { key: 'location',  label: 'Location', muted: true },
   { key: 'age',       label: 'Age' },
   { key: 'status',    label: 'Status', type: 'status' },
   { key: 'action',    label: 'Action', type: 'action', sortable: false },
 ]
 
 const techopsGrid = [
-  { incident: 'Razorpay 504 timeouts at peak',       severity: 'High',   system: 'Payment GW',    centre: 'BKC + 2',       opened: 'Apr 1, 09:12', age: '6h 22m', status: 'In Progress', action: 'View'    },
-  { incident: 'VBMS-Ticketing sync failure',          severity: 'High',   system: 'VBMS Bridge',   centre: 'Whitefield',    opened: 'Apr 1, 11:45', age: '3h 49m', status: 'In Progress', action: 'View'    },
-  { incident: 'Report builder query timeout',         severity: 'Medium', system: 'CSPOC DB',      centre: 'All',           opened: 'Mar 31, 16:00',age: '19h',    status: 'Open',        action: 'Assign'  },
-  { incident: 'POS terminals offline — 3 units',      severity: 'Medium', system: 'Kiosk POS',     centre: 'Baner',         opened: 'Mar 31, 10:30',age: '25h',    status: 'In Progress', action: 'View'    },
-  { incident: 'API latency spike > 300ms',            severity: 'Medium', system: 'API Gateway',   centre: 'BKC',           opened: 'Apr 1, 07:00', age: '8h',     status: 'Open',        action: 'Assign'  },
-  { incident: 'SSL cert expiry warning',              severity: 'Low',    system: 'Client Portal', centre: 'Global',        opened: 'Apr 1, 08:00', age: '7h',     status: 'Open',        action: 'Renew'   },
-  { incident: 'DB maintenance confirmation needed',   severity: 'Low',    system: 'Reporting DB',  centre: 'All',           opened: 'Apr 1, 06:00', age: '9h',     status: 'Pending',     action: 'Confirm' },
-  { incident: 'Push notification delivery 89% (↓)',   severity: 'Low',    system: 'Super App',     centre: 'All',           opened: 'Mar 31',       age: '28h',    status: 'In Progress', action: 'View'    },
+  { reference: 'ONB-2204', kind: 'Onboarding', category: 'Store',    client: 'Café Verde',          location: 'Whitefield', age: '4d',   status: 'KT Pending', action: 'Resume' },
+  { reference: 'ONB-2207', kind: 'Onboarding', category: 'Store',    client: 'Dosa Plaza',          location: 'HiTec City', age: '6d',   status: 'DQR Pending', action: 'Setup' },
+  { reference: 'ONB-2210', kind: 'Onboarding', category: 'Store',    client: 'BrewPoint',           location: 'Cyber City', age: '3d',   status: 'KT Pending', action: 'Resume' },
+  { reference: 'ONB-2212', kind: 'Onboarding', category: 'Store',    client: 'Smart Store',         location: 'Baner',      age: '8d',   status: 'KYC Review', action: 'Chase' },
+  { reference: 'ONB-2185', kind: 'Onboarding', category: 'Vendor',   client: 'Juice Junction',      location: 'Tidel Park', age: '2d',   status: 'Agreement',  action: 'Send' },
+  { reference: 'TKT-9182', kind: 'Ticket',     category: 'Workctrl', client: 'Deutsche Bank GCC',   location: 'Cyber City', age: '6h',   status: 'In Progress',action: 'View' },
+  { reference: 'TKT-9176', kind: 'Ticket',     category: 'DQR',      client: 'TechCorp India',     location: 'BKC',        age: '11h',  status: 'Open',       action: 'Assign' },
+  { reference: 'TKT-9171', kind: 'Ticket',     category: 'Wallet',   client: 'Infosys BPO',         location: 'Baner',      age: '1d',   status: 'In Progress',action: 'View' },
+  { reference: 'TKT-9168', kind: 'Ticket',     category: 'Meal Plan',client: 'Wipro',               location: 'Baner',      age: '1d',   status: 'Open',       action: 'Assign' },
+  { reference: 'TKT-9163', kind: 'Ticket',     category: 'Hardware', client: 'Multiple',            location: 'Baner',      age: '2d',   status: 'In Progress',action: 'View' },
 ]
 
-// ─── EXPORT ────────────────────────────────────────────────────────────────────
+// ─── EXPORT ───────────────────────────────────────────────────────────────────
 export const cspocData = {
-  finance: { metrics: financeMetrics, actions: financeActions, topFive: financeTopFive, charts: financeCharts, columns: financeColumns, grid: financeGrid, gridTitle: 'Vendor Payment & Settlement Tracker' },
-  vas:     { metrics: vasMetrics,     actions: vasActions,     topFive: vasTopFive,     charts: vasCharts,     columns: vasColumns,     grid: vasGrid,     gridTitle: 'VAS Subscription Register' },
-  techops: { metrics: techopsMetrics, actions: techopsActions, topFive: techopsTopFive, charts: techopsCharts, columns: techopsColumns, grid: techopsGrid, gridTitle: 'Active Incidents & Open Tech Tickets' },
+  finance: { metrics: financeMetrics, actions: financeActions, topFive: financeTopFive, charts: financeCharts, columns: financeColumns, grid: financeGrid, gridTitle: 'Sales · Vendor Payments · Wallet Top-ups (Yesterday)' },
+  vas:     { metrics: vasMetrics,     actions: vasActions,     topFive: vasTopFive,     charts: vasCharts,     columns: vasColumns,     grid: vasGrid,     gridTitle: 'Meal Plans & Store Performance' },
+  techops: { metrics: techopsMetrics, actions: techopsActions, topFive: techopsTopFive, charts: techopsCharts, columns: techopsColumns, grid: techopsGrid, gridTitle: 'Vendor Onboarding & Tickets' },
 }
