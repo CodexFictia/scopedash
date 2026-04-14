@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Sidebar from './components/Sidebar'
 import CSPOCPage from './pages/CSPOCPage'
+import VendorStoresPage from './pages/VendorStoresPage'
 import TicketingPage from './pages/TicketingPage'
 import NexusREPage from './pages/NexusREPage'
 import NexusAMPage from './pages/NexusAMPage'
@@ -18,6 +19,7 @@ export default function App() {
   const renderPage = () => {
     switch (activePage) {
       case 'cspoc': return <CSPOCPage />
+      case 'vendorStores': return <VendorStoresPage />
       case 'ticketing': return <TicketingPage />
       case 'nexusRE': return <NexusREPage />
       case 'nexusAM': return <NexusAMPage />

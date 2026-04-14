@@ -1,11 +1,12 @@
-import { Layers, Ticket, Building2, Users, Briefcase, Bell, MessageSquarePlus, ChevronRight, Zap, LayoutDashboard } from 'lucide-react'
+import { Layers, Ticket, Building2, Users, Briefcase, Bell, MessageSquarePlus, ChevronRight, Zap, LayoutDashboard, ShoppingBag } from 'lucide-react'
 
 const NAV = [
-  { id: 'cspoc', label: 'Vendor Reports', Icon: Layers, desc: 'Vendor Reports — Finance · VAS · Tech Ops' },
-  { id: 'ticketing', label: 'Ticketing', Icon: Ticket, desc: 'Service Desk & SLA' },
-  { id: 'nexusRE', label: 'Nexus RE', Icon: Building2, desc: 'Real Estate' },
-  { id: 'nexusAM', label: 'Nexus AM', Icon: Users, desc: 'Account Management' },
-  { id: 'crm', label: 'CRM', Icon: Briefcase, desc: 'Sales Pipeline' },
+  { id: 'cspoc',         label: 'Vendor Reports',  Icon: Layers,       desc: 'Vendor Reports — Finance · VAS · Tech Ops' },
+  { id: 'vendorStores',  label: 'Vendor Stores',   Icon: ShoppingBag,  desc: 'Smart Cafe — Orders · Catalogue · Settlements' },
+  { id: 'ticketing',     label: 'Ticketing',        Icon: Ticket,       desc: 'Service Desk & SLA' },
+  { id: 'nexusRE',       label: 'Nexus RE',         Icon: Building2,    desc: 'Real Estate' },
+  { id: 'nexusAM',       label: 'Nexus AM',         Icon: Users,        desc: 'Account Management' },
+  { id: 'crm',           label: 'CRM',              Icon: Briefcase,    desc: 'Sales Pipeline' },
 ]
 
 const S = {
