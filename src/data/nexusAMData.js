@@ -898,6 +898,407 @@ const aamGrid = [
   { ref: 'TSK-5514', type: 'Task',      client: 'Multiple',          category: 'Housekeeping', due: 'Apr 10',    sla: '8h',        status: 'Violated',   action: 'Re-plan' },
 ]
 
+// ─── NEW: AM — Task View (daily / weekly with delegate flag) ─────────────────
+const amTaskView = {
+  aamOptions: ['Ankit Kumar', 'Ritu Agarwal', 'Saurabh Pal'],
+  daily: [
+    { id: 'tv1', label: 'Initiate renewal process — Accenture (contract May 15)',    client: 'Accenture',         priority: 'high',   due: 'Today',   category: 'Renewal',        canDelegate: false },
+    { id: 'tv2', label: 'Schedule save meeting — Wipro Tech (CSAT 7.2)',             client: 'Wipro Tech',        priority: 'high',   due: 'Today',   category: 'Meeting',        canDelegate: true  },
+    { id: 'tv3', label: 'Create April invoices — Deutsche, Infosys, Cognizant, HSBC', client: 'Multiple',       priority: 'high',   due: 'Apr 11',  category: 'Invoicing',      canDelegate: true  },
+    { id: 'tv4', label: 'Monthly QBR — prepare deck for Deutsche Bank GCC',          client: 'Deutsche Bank GCC', priority: 'medium', due: 'Apr 18',  category: 'Meeting',        canDelegate: true  },
+    { id: 'tv5', label: 'Issue CN — Cognizant disputes (₹4.8L, finance approved)',   client: 'Cognizant',         priority: 'medium', due: 'Apr 12',  category: 'Dispute CN',     canDelegate: true  },
+    { id: 'tv6', label: 'Daily checklist close',                                     client: '—',                 priority: 'low',    due: 'EOD',     category: 'Checklist',      canDelegate: false },
+  ],
+  weekly: [
+    { id: 'wv1', label: 'Submit mod-project proposal — Infosys meeting-room refresh', client: 'Infosys BPO',     priority: 'medium', due: 'Apr 14',  category: 'Mod Project',    canDelegate: false },
+    { id: 'wv2', label: 'Weekly sync — HSBC GCC (booked)',                            client: 'HSBC GCC',         priority: 'medium', due: 'Apr 12',  category: 'Meeting',        canDelegate: true  },
+    { id: 'wv3', label: 'Follow up on Accenture commercial draft',                    client: 'Accenture',        priority: 'high',   due: 'Apr 15',  category: 'Renewal',        canDelegate: false },
+    { id: 'wv4', label: 'Review Capgemini CSAT feedback — action response email',     client: 'Capgemini',        priority: 'low',    due: 'Apr 16',  category: 'CSAT',           canDelegate: true  },
+    { id: 'wv5', label: 'Close 6 violated task SLAs — bulk plan with AAM',            client: 'Multiple',         priority: 'medium', due: 'Apr 13',  category: 'SLA Review',     canDelegate: true  },
+    { id: 'wv6', label: 'CSAT survey follow-up — 2 clients pending response',         client: 'Multiple',         priority: 'low',    due: 'Apr 17',  category: 'CSAT',           canDelegate: true  },
+  ],
+}
+
+// AM — modal data keyed by metric label
+const amMetricModals = {
+  'My Active Clients': {
+    title: 'My Active Clients — All 22',
+    subtitle: '14 in lock-in · 8 out of lock-in',
+    type: 'clientList',
+    data: {
+      clients: [
+        { name: 'Deutsche Bank GCC', location: 'BKC',       am: 'Self', seats: '1,240', health: '94', lockin: 'In LI',     status: 'Excellent' },
+        { name: 'Infosys BPO',       location: 'Baner',     am: 'Self', seats: '820',   health: '88', lockin: 'In LI',     status: 'Excellent' },
+        { name: 'HSBC GCC',          location: 'Whitefield',am: 'Self', seats: '280',   health: '86', lockin: 'In LI',     status: 'Good' },
+        { name: 'Accenture',         location: 'ORR',       am: 'Self', seats: '640',   health: '82', lockin: 'Out of LI', status: 'Renewing' },
+        { name: 'Capgemini',         location: 'Whitefield',am: 'Self', seats: '220',   health: '80', lockin: 'In LI',     status: 'Good' },
+        { name: 'Cognizant',         location: 'ORR',       am: 'Self', seats: '520',   health: '76', lockin: 'In LI',     status: 'Good' },
+        { name: 'TechCorp India',    location: 'ORR',       am: 'Self', seats: '380',   health: '74', lockin: 'In LI',     status: 'Monitor' },
+        { name: 'Wipro Tech',        location: 'Whitefield',am: 'Self', seats: '320',   health: '68', lockin: 'Out of LI', status: 'Monitor' },
+      ],
+    },
+  },
+  'Out of Lock-in': {
+    title: 'Out of Lock-in Clients — 8',
+    subtitle: 'These clients can serve notice at any time — prioritise engagement',
+    type: 'clientList',
+    data: {
+      note: '⚠ Clients out of lock-in can exit with standard notice. Immediate engagement recommended.',
+      actions: ['delegate'],
+      aamOptions: ['Ankit Kumar', 'Ritu Agarwal', 'Saurabh Pal'],
+      clients: [
+        { name: 'Accenture',    location: 'ORR',       seats: '640', health: '82', lockin: 'Out since Mar 2026', status: 'Renewing' },
+        { name: 'Wipro Tech',   location: 'Whitefield',seats: '320', health: '68', lockin: 'Out since Jan 2026', status: 'Monitor'  },
+        { name: 'GlobalTech',   location: 'BKC',       seats: '180', health: '72', lockin: 'Out since Feb 2026', status: 'Monitor'  },
+        { name: 'NovaCorp',     location: 'Kharadi',   seats: '120', health: '74', lockin: 'Out since Apr 2026', status: 'Good'     },
+        { name: 'AlphaFinance', location: 'ORR',       seats: '200', health: '71', lockin: 'Out since Mar 2026', status: 'Monitor'  },
+        { name: 'TechVision',   location: 'Baner',     seats: '160', health: '75', lockin: 'Out since Apr 2026', status: 'Good'     },
+        { name: 'DataBridge',   location: 'Whitefield',seats: '140', health: '69', lockin: 'Out since Feb 2026', status: 'Monitor'  },
+        { name: 'CloudSystems', location: 'ORR',       seats: '110', health: '73', lockin: 'Out since Mar 2026', status: 'Good'     },
+      ],
+    },
+  },
+  'Unpaid Invoices': {
+    title: 'Unpaid Invoices — My Book',
+    subtitle: '12 invoices · ₹84L total outstanding',
+    type: 'invoiceList',
+    data: {
+      invoices: [
+        { id: 'INV-001', client: 'Infosys BPO',       invoiceNo: 'INF-APR-001', category: 'Monthly',      amount: '₹18.2L', dueDate: '20 Mar', overdueDays: 26 },
+        { id: 'INV-002', client: 'Cognizant',          invoiceNo: 'COG-MAR-002', category: 'Monthly',      amount: '₹12.4L', dueDate: '25 Mar', overdueDays: 21 },
+        { id: 'INV-003', client: 'Accenture',          invoiceNo: 'ACC-APR-001', category: 'Monthly',      amount: '₹9.8L',  dueDate: '01 Apr', overdueDays: 14 },
+        { id: 'INV-004', client: 'Wipro Tech',         invoiceNo: 'WIP-MAR-003', category: 'VAS',          amount: '₹6.4L',  dueDate: '28 Mar', overdueDays: 18 },
+        { id: 'INV-005', client: 'TechCorp India',     invoiceNo: 'TCI-APR-002', category: 'Monthly',      amount: '₹5.8L',  dueDate: '05 Apr', overdueDays: 10 },
+        { id: 'INV-006', client: 'Capgemini',          invoiceNo: 'CAP-APR-001', category: 'Mod Project',  amount: '₹4.2L',  dueDate: '10 Apr', overdueDays: 3  },
+        { id: 'INV-007', client: 'Deutsche Bank GCC',  invoiceNo: 'DBG-APR-001', category: 'Monthly',      amount: '₹16.4L', dueDate: '15 Apr', overdueDays: 0  },
+        { id: 'INV-008', client: 'HSBC GCC',           invoiceNo: 'HSB-APR-001', category: 'Monthly',      amount: '₹7.8L',  dueDate: '15 Apr', overdueDays: 0  },
+      ],
+    },
+  },
+  'Renewals Due (90d)': {
+    title: 'Renewals Due — Next 90 Days',
+    subtitle: '3 accounts · ₹8.2Cr ARR at stake',
+    type: 'clientList',
+    data: {
+      clients: [
+        { name: 'Accenture',    location: 'ORR',       seats: '640', health: '82', lockin: 'Out of LI', status: 'Renewing',  unpaid: '2 invoices pending' },
+        { name: 'HSBC GCC',     location: 'Whitefield',seats: '280', health: '86', lockin: 'In LI',     status: 'Good',      unpaid: '1 invoice pending'  },
+        { name: 'TechCorp India',location: 'ORR',      seats: '380', health: '74', lockin: 'In LI',     status: 'Monitor',   unpaid: '1 invoice pending'  },
+      ],
+    },
+  },
+  'Open Tickets (my clients)': {
+    title: 'Open Tickets — My Client Portfolio',
+    subtitle: 'Requires cross-collaboration with tech ops',
+    type: 'ticketList',
+    data: {
+      tickets: [
+        { id: 'TKT-4421', title: 'HVAC failure — floor 3', client: 'Deutsche Bank GCC', category: 'HVAC',       priority: 1, openDays: 1,  slaStatus: 'At Risk',   assignee: 'Tech Ops' },
+        { id: 'TKT-4418', title: 'Lift outage',             client: 'Infosys BPO',       category: 'Mechanical', priority: 1, openDays: 2,  slaStatus: 'Breached',  assignee: 'Facilities' },
+        { id: 'TKT-4410', title: 'WiFi drop — east wing',   client: 'Accenture',         category: 'IT/Network', priority: 2, openDays: 3,  slaStatus: 'Breached',  assignee: 'IT Ops' },
+        { id: 'TKT-4402', title: 'Housekeeping complaint',  client: 'Wipro Tech',        category: 'FM',         priority: 2, openDays: 4,  slaStatus: 'Within SLA', assignee: 'FM Team' },
+        { id: 'TKT-4398', title: 'Parking allocation issue',client: 'Cognizant',         category: 'Admin',      priority: 3, openDays: 5,  slaStatus: 'Within SLA', assignee: 'Admin' },
+      ],
+    },
+  },
+}
+
+// ─── NEW: CM — Top unpaid invoices (by value, top 3) ─────────────────────────
+const cmTopInvoices = [
+  { id: 'INV-C001', client: 'NorthStar Bank',    invoiceNo: 'NSB-MAR-008', category: 'Monthly',     amount: '₹24.6L', dueDate: '15 Mar', overdueDays: 31 },
+  { id: 'INV-C002', client: 'Wipro Tech',         invoiceNo: 'WIP-APR-002', category: 'Monthly + VAS',amount: '₹18.4L', dueDate: '25 Mar', overdueDays: 21 },
+  { id: 'INV-C003', client: 'Accenture',          invoiceNo: 'ACC-APR-001', category: 'Monthly',     amount: '₹14.8L', dueDate: '01 Apr', overdueDays: 14 },
+]
+
+// ─── NEW: CM — Disputes ───────────────────────────────────────────────────────
+const cmDisputes = [
+  {
+    id: 'DSP-0841', client: 'Cognizant',      category: 'Service Quality',  amount: '₹4.8L',  raised: 'Apr 08', overdueDays: 7,
+    status: 'Under Review', am: 'Aditi Nair', financeApproved: false,
+    description: 'Client raised dispute on HVAC downtime (14h) impacting 520 seats on Apr 6–7. Requesting credit for 2 days.',
+  },
+  {
+    id: 'DSP-0837', client: 'Wipro Tech',     category: 'Billing Error',    amount: '₹3.2L',  raised: 'Apr 05', overdueDays: 10,
+    status: 'Approved', am: 'Rohan Desai', financeApproved: true,
+    description: 'Duplicate charge raised on VAS invoice (wifi premium). Finance confirmed billing error. CN to be issued.',
+  },
+  {
+    id: 'DSP-0829', client: 'TechCorp India', category: 'SLA Breach',       amount: '₹2.4L',  raised: 'Apr 02', overdueDays: 13,
+    status: 'CN Issued', am: 'Meera Krishnan', financeApproved: true,
+    clientNotified: true,
+    description: 'P1 ticket resolution took 38h vs 4h SLA. Credit note issued per SLA penalty clause. Client notified.',
+  },
+  {
+    id: 'DSP-0818', client: 'Infosys BPO',   category: 'Mod Project Delay', amount: '₹5.8L',  raised: 'Mar 28', overdueDays: 18,
+    status: 'CN Pending', am: 'Sneha Iyer', financeApproved: false,
+    description: 'Cafeteria renovation delayed by 12 days. Client claiming penalty per contract clause 8.4. Awaiting legal review.',
+  },
+]
+
+// CM — modal data keyed by metric label
+const cmMetricModals = {
+  'Out of Lock-in': {
+    title: 'Out of Lock-in Clients — 6 of 28',
+    subtitle: 'These clients can serve notice. Immediate retention action recommended.',
+    type: 'clientList',
+    data: {
+      note: '⚠ 6 clients are outside lock-in period and can exit with 30-day notice.',
+      actions: ['delegate'],
+      aamOptions: ['Ankit Kumar', 'Ritu Agarwal', 'Saurabh Pal'],
+      clients: [
+        { name: 'Accenture',    location: 'ORR',       am: 'Priya Sharma',   seats: '640', health: '82', lockin: 'Out since Mar 2026', status: 'Renewing' },
+        { name: 'Wipro Tech',   location: 'Whitefield',am: 'Rohan Desai',    seats: '320', health: '68', lockin: 'Out since Jan 2026', status: 'Monitor'  },
+        { name: 'GlobalTech',   location: 'BKC',       am: 'Priya Sharma',   seats: '180', health: '72', lockin: 'Out since Feb 2026', status: 'Monitor'  },
+        { name: 'NovaCorp',     location: 'Kharadi',   am: 'Aditi Nair',     seats: '120', health: '74', lockin: 'Out since Apr 2026', status: 'Good'     },
+        { name: 'AlphaFinance', location: 'ORR',       am: 'Karan Patel',    seats: '200', health: '71', lockin: 'Out since Mar 2026', status: 'Monitor'  },
+        { name: 'TechVision',   location: 'Baner',     am: 'Sneha Iyer',     seats: '160', health: '75', lockin: 'Out since Apr 2026', status: 'Good'     },
+      ],
+    },
+  },
+  'Under Notice Period': {
+    title: 'Clients Under Notice Period',
+    subtitle: '1 client in active exit process',
+    type: 'clientList',
+    data: {
+      note: '⛔ Client has served notice. Coordinate exit checklist with operations and AM.',
+      actions: ['delegate'],
+      aamOptions: ['Ankit Kumar', 'Ritu Agarwal', 'Saurabh Pal'],
+      clients: [
+        { name: 'NorthStar Bank', location: 'BKC', am: 'Rahul Mehta', seats: '180', health: '52', lockin: 'Notice served Apr 01', daysNoticed: 14, status: 'Notice' },
+      ],
+    },
+  },
+  'Unpaid Invoices': {
+    title: 'All Unpaid Invoices — This Centre',
+    subtitle: '42 invoices · ₹2.8Cr outstanding',
+    type: 'invoiceList',
+    data: {
+      invoices: [
+        { id: 'C-INV-001', client: 'NorthStar Bank',    invoiceNo: 'NSB-MAR-008', category: 'Monthly',       amount: '₹24.6L', dueDate: '15 Mar', overdueDays: 31 },
+        { id: 'C-INV-002', client: 'Wipro Tech',         invoiceNo: 'WIP-APR-002', category: 'Monthly + VAS', amount: '₹18.4L', dueDate: '25 Mar', overdueDays: 21 },
+        { id: 'C-INV-003', client: 'Accenture',          invoiceNo: 'ACC-APR-001', category: 'Monthly',       amount: '₹14.8L', dueDate: '01 Apr', overdueDays: 14 },
+        { id: 'C-INV-004', client: 'Cognizant',          invoiceNo: 'COG-APR-003', category: 'Monthly',       amount: '₹11.2L', dueDate: '05 Apr', overdueDays: 10 },
+        { id: 'C-INV-005', client: 'TechCorp India',     invoiceNo: 'TCI-APR-002', category: 'VAS',           amount: '₹8.6L',  dueDate: '08 Apr', overdueDays: 7  },
+        { id: 'C-INV-006', client: 'Infosys BPO',        invoiceNo: 'INF-APR-003', category: 'Mod Project',   amount: '₹7.4L',  dueDate: '10 Apr', overdueDays: 5  },
+        { id: 'C-INV-007', client: 'Deutsche Bank GCC',  invoiceNo: 'DBG-APR-001', category: 'Monthly',       amount: '₹16.4L', dueDate: '15 Apr', overdueDays: 0  },
+        { id: 'C-INV-008', client: 'HSBC GCC',           invoiceNo: 'HSB-APR-001', category: 'Monthly',       amount: '₹7.8L',  dueDate: '15 Apr', overdueDays: 0  },
+      ],
+    },
+  },
+  'Total Active Clients': {
+    title: 'All Active Clients — This Centre',
+    subtitle: '28 clients across all AMs',
+    type: 'clientList',
+    data: {
+      clients: [
+        { name: 'Deutsche Bank GCC', am: 'Karan Patel',    seats: '1,240', health: '94', lockin: 'In LI',     status: 'Excellent' },
+        { name: 'Infosys BPO',       am: 'Sneha Iyer',     seats: '820',   health: '88', lockin: 'In LI',     status: 'Excellent' },
+        { name: 'HSBC GCC',          am: 'Priya Sharma',   seats: '280',   health: '86', lockin: 'In LI',     status: 'Good' },
+        { name: 'Accenture',         am: 'Priya Sharma',   seats: '640',   health: '82', lockin: 'Out of LI', status: 'Renewing' },
+        { name: 'Capgemini',         am: 'Karan Patel',    seats: '220',   health: '80', lockin: 'In LI',     status: 'Good' },
+        { name: 'Cognizant',         am: 'Aditi Nair',     seats: '520',   health: '76', lockin: 'In LI',     status: 'Good' },
+        { name: 'TechCorp India',    am: 'Meera Krishnan', seats: '380',   health: '74', lockin: 'In LI',     status: 'Monitor' },
+        { name: 'Wipro Tech',        am: 'Rohan Desai',    seats: '320',   health: '68', lockin: 'Out of LI', status: 'Monitor' },
+        { name: 'NorthStar Bank',    am: 'Rahul Mehta',    seats: '180',   health: '52', lockin: 'Out of LI', status: 'At Risk' },
+      ],
+    },
+  },
+  'Open Tickets': {
+    title: 'Open Tickets — This Centre',
+    subtitle: '22 tickets · 6 P1 · 10 P2 · 6 P3',
+    type: 'ticketList',
+    data: {
+      tickets: [
+        { id: 'TKT-4421', title: 'HVAC failure — floor 3',       client: 'Deutsche Bank GCC', category: 'HVAC',       priority: 1, openDays: 1,  slaStatus: 'At Risk',    assignee: 'Tech Ops' },
+        { id: 'TKT-4418', title: 'Lift outage — main bank',      client: 'Infosys BPO',       category: 'Mechanical', priority: 1, openDays: 2,  slaStatus: 'Breached',   assignee: 'Facilities' },
+        { id: 'TKT-4410', title: 'WiFi drop — east wing',        client: 'Accenture',         category: 'IT/Network', priority: 1, openDays: 3,  slaStatus: 'Breached',   assignee: 'IT Ops' },
+        { id: 'TKT-4405', title: 'Chiller unit trip',            client: 'NorthStar Bank',    category: 'HVAC',       priority: 1, openDays: 4,  slaStatus: 'Breached',   assignee: 'Tech Ops' },
+        { id: 'TKT-4401', title: 'Security access card failure', client: 'Wipro Tech',        category: 'Security',   priority: 1, openDays: 2,  slaStatus: 'At Risk',    assignee: 'Security' },
+        { id: 'TKT-4398', title: 'Housekeeping complaint',       client: 'Cognizant',         category: 'FM',         priority: 2, openDays: 5,  slaStatus: 'Within SLA', assignee: 'FM Team' },
+        { id: 'TKT-4392', title: 'Parking allocation issue',     client: 'TechCorp India',    category: 'Admin',      priority: 2, openDays: 6,  slaStatus: 'Within SLA', assignee: 'Admin' },
+      ],
+    },
+  },
+  'Renewals Due (90d)': {
+    title: 'Renewals Due — Next 90 Days',
+    subtitle: '4 accounts · ₹8.6Cr ARR',
+    type: 'clientList',
+    data: {
+      clients: [
+        { name: 'Accenture',     am: 'Priya Sharma',   seats: '640', health: '82', lockin: 'Out of LI', status: 'Renewing',  unpaid: '2 invoices pending' },
+        { name: 'Wipro Tech',    am: 'Rohan Desai',    seats: '320', health: '68', lockin: 'Out of LI', status: 'Monitor',   unpaid: '5 invoices pending' },
+        { name: 'HSBC GCC',      am: 'Priya Sharma',   seats: '280', health: '86', lockin: 'In LI',     status: 'Good',      unpaid: '1 invoice pending'  },
+        { name: 'TechCorp India',am: 'Meera Krishnan', seats: '380', health: '74', lockin: 'In LI',     status: 'Monitor',   unpaid: '2 invoices pending' },
+      ],
+    },
+  },
+}
+
+// CM — updated metrics with modal data merged
+const cmMetricsWithModals = cmMetrics.map(m => ({
+  ...m,
+  ...(cmMetricModals[m.label] ? { modal: cmMetricModals[m.label] } : {}),
+}))
+
+// AM — updated metrics with modal data merged
+const amMetricsWithModals = amMetrics.map(m => ({
+  ...m,
+  ...(amMetricModals[m.label] ? { modal: amMetricModals[m.label] } : {}),
+}))
+
+// ─── NEW: AM — filtered actions (remove incidents open, disputes/CN — those are AAM/CM level) ──
+const amActionsFiltered = amActions.filter(a => !['Dispute', 'Checklist'].includes(a.category))
+
+// ─── NEW: Regional Head — Centre KPI Cards ────────────────────────────────────
+const reheadCentreCards = [
+  {
+    name: 'Whitefield',
+    location: 'Bengaluru',
+    cm: 'Priya Sharma',
+    status: 'excellent',
+    sparkline: [72, 74, 76, 77, 78, 80, 82],
+    metrics: [
+      { label: 'Active Clients', value: '28', status: 'info', modal: { title: 'Whitefield — Active Clients', type: 'clientList', data: { clients: [{ name: 'Deutsche Bank GCC', am: 'Karan Patel', seats: '1,240', health: '94', lockin: 'In LI', status: 'Excellent' }, { name: 'Infosys BPO', am: 'Sneha Iyer', seats: '820', health: '88', lockin: 'In LI', status: 'Excellent' }, { name: 'HSBC GCC', am: 'Priya Sharma', seats: '280', health: '86', lockin: 'In LI', status: 'Good' }] } } },
+      { label: 'Out of Lock-in', value: '6', status: 'warning', highlighted: true, modal: { title: 'Whitefield — Out of Lock-in', subtitle: '6 clients can give notice · Retention risk', type: 'clientList', data: { note: '⚠ These clients are outside lock-in period.', clients: [{ name: 'Accenture', am: 'Priya Sharma', seats: '640', health: '82', lockin: 'Out of LI', status: 'Renewing' }, { name: 'Wipro Tech', am: 'Rohan Desai', seats: '320', health: '68', lockin: 'Out of LI', status: 'Monitor' }] } } },
+      { label: 'Under Notice', value: '1', status: 'negative', modal: { title: 'Whitefield — Under Notice', type: 'clientList', data: { clients: [{ name: 'NorthStar Bank', am: 'Rahul Mehta', seats: '180', health: '52', lockin: 'Notice served', daysNoticed: 14, status: 'Notice' }] } } },
+      { label: 'Unpaid Inv.', value: '42 · ₹2.8Cr', status: 'warning', modal: { title: 'Whitefield — Unpaid Invoices', type: 'invoiceList', data: { invoices: [{ id: 'W-INV-001', client: 'NorthStar Bank', invoiceNo: 'NSB-MAR-008', category: 'Monthly', amount: '₹24.6L', dueDate: '15 Mar', overdueDays: 31 }, { id: 'W-INV-002', client: 'Wipro Tech', invoiceNo: 'WIP-APR-002', category: 'Monthly + VAS', amount: '₹18.4L', dueDate: '25 Mar', overdueDays: 21 }] } } },
+      { label: 'Renewals 90d', value: '4', status: 'warning' },
+      { label: 'Avg CSAT', value: '8.4', status: 'positive' },
+      { label: 'Avg Health', value: '78', status: 'positive' },
+      { label: 'Open Tickets', value: '22 · 6 P1', status: 'warning', modal: { title: 'Whitefield — Open Tickets', type: 'ticketList', data: { tickets: [{ id: 'TKT-4421', title: 'HVAC failure', client: 'Deutsche Bank GCC', category: 'HVAC', priority: 1, openDays: 1, slaStatus: 'At Risk', assignee: 'Tech Ops' }, { id: 'TKT-4418', title: 'Lift outage', client: 'Infosys BPO', category: 'Mechanical', priority: 1, openDays: 2, slaStatus: 'Breached', assignee: 'Facilities' }] } } },
+    ],
+  },
+  {
+    name: 'Outer Ring Road',
+    location: 'Bengaluru',
+    cm: 'Rajesh Kumar',
+    status: 'good',
+    sparkline: [70, 71, 73, 75, 76, 77, 78],
+    metrics: [
+      { label: 'Active Clients', value: '24', status: 'info' },
+      { label: 'Out of Lock-in', value: '8', status: 'warning', highlighted: true, modal: { title: 'ORR — Out of Lock-in', type: 'clientList', data: { note: '⚠ 8 clients outside lock-in.', clients: [{ name: 'Accenture ORR', am: 'Priya Sharma', seats: '420', health: '78', lockin: 'Out of LI', status: 'Good' }, { name: 'GlobalTech', am: 'Vikram Rao', seats: '280', health: '72', lockin: 'Out of LI', status: 'Monitor' }] } } },
+      { label: 'Under Notice', value: '0', status: 'positive' },
+      { label: 'Unpaid Inv.', value: '38 · ₹2.4Cr', status: 'warning' },
+      { label: 'Renewals 90d', value: '3', status: 'warning' },
+      { label: 'Avg CSAT', value: '8.2', status: 'positive' },
+      { label: 'Avg Health', value: '76', status: 'positive' },
+      { label: 'Open Tickets', value: '18 · 4 P1', status: 'warning' },
+    ],
+  },
+  {
+    name: 'Koramangala',
+    location: 'Bengaluru',
+    cm: 'Neha Singh',
+    status: 'good',
+    sparkline: [68, 70, 72, 73, 74, 75, 76],
+    metrics: [
+      { label: 'Active Clients', value: '22', status: 'info' },
+      { label: 'Out of Lock-in', value: '7', status: 'warning', highlighted: true },
+      { label: 'Under Notice', value: '0', status: 'positive' },
+      { label: 'Unpaid Inv.', value: '28 · ₹1.8Cr', status: 'warning' },
+      { label: 'Renewals 90d', value: '2', status: 'info' },
+      { label: 'Avg CSAT', value: '8.0', status: 'positive' },
+      { label: 'Avg Health', value: '74', status: 'positive' },
+      { label: 'Open Tickets', value: '14 · 3 P1', status: 'warning' },
+    ],
+  },
+  {
+    name: 'Indiranagar',
+    location: 'Bengaluru',
+    cm: 'Vikas Agarwal',
+    status: 'monitor',
+    sparkline: [65, 66, 68, 69, 70, 71, 72],
+    metrics: [
+      { label: 'Active Clients', value: '18', status: 'info' },
+      { label: 'Out of Lock-in', value: '6', status: 'warning', highlighted: true },
+      { label: 'Under Notice', value: '1', status: 'negative' },
+      { label: 'Unpaid Inv.', value: '24 · ₹1.6Cr', status: 'warning' },
+      { label: 'Renewals 90d', value: '1', status: 'info' },
+      { label: 'Avg CSAT', value: '7.8', status: 'warning' },
+      { label: 'Avg Health', value: '70', status: 'warning' },
+      { label: 'Open Tickets', value: '11 · 2 P1', status: 'info' },
+    ],
+  },
+  {
+    name: 'MG Road',
+    location: 'Bengaluru',
+    cm: 'Deepa Menon',
+    status: 'monitor',
+    sparkline: [62, 63, 65, 66, 68, 69, 70],
+    metrics: [
+      { label: 'Active Clients', value: '14', status: 'info' },
+      { label: 'Out of Lock-in', value: '6', status: 'negative', highlighted: true },
+      { label: 'Under Notice', value: '1', status: 'negative' },
+      { label: 'Unpaid Inv.', value: '20 · ₹1.4Cr', status: 'negative' },
+      { label: 'Renewals 90d', value: '1', status: 'info' },
+      { label: 'Avg CSAT', value: '7.6', status: 'warning' },
+      { label: 'Avg Health', value: '68', status: 'warning' },
+      { label: 'Open Tickets', value: '9 · 2 P1', status: 'info' },
+    ],
+  },
+  {
+    name: 'Electronic City',
+    location: 'Bengaluru',
+    cm: 'Arjun Shah',
+    status: 'monitor',
+    sparkline: [60, 62, 63, 64, 65, 67, 68],
+    metrics: [
+      { label: 'Active Clients', value: '12', status: 'info' },
+      { label: 'Out of Lock-in', value: '5', status: 'negative', highlighted: true },
+      { label: 'Under Notice', value: '0', status: 'positive' },
+      { label: 'Unpaid Inv.', value: '16 · ₹1.1Cr', status: 'warning' },
+      { label: 'Renewals 90d', value: '1', status: 'info' },
+      { label: 'Avg CSAT', value: '7.5', status: 'warning' },
+      { label: 'Avg Health', value: '66', status: 'warning' },
+      { label: 'Open Tickets', value: '7 · 1 P1', status: 'info' },
+    ],
+  },
+]
+
+// Rehead — insight-focused charts (replace AM-specific metrics)
+const reheadInsightCharts = [
+  {
+    type: 'line', title: 'Portfolio Health Score Trend by Centre — Last 6 Months',
+    data: [
+      { name: 'Oct', Whitefield: 72, ORR: 70, Koramangala: 68, Indiranagar: 65, 'MG Road': 62 },
+      { name: 'Nov', Whitefield: 74, ORR: 71, Koramangala: 70, Indiranagar: 66, 'MG Road': 63 },
+      { name: 'Dec', Whitefield: 76, ORR: 73, Koramangala: 72, Indiranagar: 68, 'MG Road': 65 },
+      { name: 'Jan', Whitefield: 77, ORR: 75, Koramangala: 73, Indiranagar: 69, 'MG Road': 66 },
+      { name: 'Feb', Whitefield: 78, ORR: 76, Koramangala: 74, Indiranagar: 70, 'MG Road': 68 },
+      { name: 'Mar', Whitefield: 82, ORR: 78, Koramangala: 76, Indiranagar: 72, 'MG Road': 70 },
+    ],
+    lines: [
+      { key: 'Whitefield',  color: '#3fb950' }, { key: 'ORR', color: '#388bfd' },
+      { key: 'Koramangala', color: '#8b5cf6' }, { key: 'Indiranagar', color: '#d29922' },
+      { key: 'MG Road',     color: '#f85149' },
+    ],
+  },
+  {
+    type: 'bar', title: 'Out of Lock-in vs Under Notice — By Centre',
+    data: [
+      { name: 'Whitefield',  outLI: 6, notice: 1 },
+      { name: 'ORR',         outLI: 8, notice: 0 },
+      { name: 'Koramangala', outLI: 7, notice: 0 },
+      { name: 'Indiranagar', outLI: 6, notice: 1 },
+      { name: 'MG Road',     outLI: 6, notice: 1 },
+      { name: 'E-City',      outLI: 5, notice: 0 },
+    ],
+    lines: [{ key: 'outLI', color: '#d29922' }, { key: 'notice', color: '#f85149' }],
+  },
+  {
+    type: 'area', title: 'Average CSAT Trend — Region (with decline tracking)',
+    data: [
+      { name: 'Oct', csat: 8.1, target: 8.5 },
+      { name: 'Nov', csat: 8.2, target: 8.5 },
+      { name: 'Dec', csat: 8.3, target: 8.5 },
+      { name: 'Jan', csat: 8.2, target: 8.5 },
+      { name: 'Feb', csat: 8.1, target: 8.5 },
+      { name: 'Mar', csat: 8.3, target: 8.5 },
+    ],
+    lines: [{ key: 'csat', color: '#f97316' }, { key: 'target', color: '#8b949e' }],
+  },
+]
+
 // ─── EXPORT ───────────────────────────────────────────────────────────────────
 export const nexusAMData = {
   mgmt: {
@@ -931,16 +1332,23 @@ export const nexusAMData = {
   rehead: {
     compositeNote,
     tasksList: reheadTasks,
-    tasksTitle: 'Regional Head — tasks this week',
+    tasksTitle: 'Regional Head — priority decisions this week',
+    // centreCards replaces metric row — rich per-centre KPI cards
+    centreCards: reheadCentreCards,
+    // Keep composites at portfolio level
     taskComposite: reheadTaskComposite,
     meetingComposite: reheadMeetingComposite,
-    metrics: reheadMetrics,
-    actions: reheadActions,
-    topFive: reheadTopFive,
-    charts: reheadCharts,
+    // Insight charts (health trend, out-of-LI by centre, CSAT decline)
+    charts: reheadInsightCharts,
+    // TopFive: client health + pending settlements (remove AM-specific lists)
+    topFive: [reheadTopFive[0], reheadTopFive[1], reheadTopFive[2]],
+    // Grid: centre overview (unchanged)
     columns: reheadColumns,
     grid: reheadGrid,
     gridTitle: 'Regional Centre Performance',
+    // No AM-specific actions — rehead is insight/decision-making
+    actions: reheadActions,
+    actionsTitle: 'Regional Insights & Decisions',
   },
   cm: {
     compositeNote,
@@ -948,8 +1356,16 @@ export const nexusAMData = {
     tasksTitle: 'Centre Manager — tasks this week',
     taskComposite: cmTaskComposite,
     meetingComposite: cmMeetingComposite,
-    metrics: cmMetrics,
+    // Metrics with clickable modal data merged
+    metrics: cmMetricsWithModals,
+    // Top 3 unpaid invoices alert panel
+    topInvoices: cmTopInvoices,
+    invoicesPageLink: true,
+    // Dispute management panel
+    disputes: cmDisputes,
+    // Actions — CM level (includes tickets, mod projects, invoicing)
     actions: cmActions,
+    actionsTitle: 'Priority Actions — This Centre',
     topFive: cmTopFive,
     charts: cmCharts,
     columns: cmColumns,
@@ -962,9 +1378,18 @@ export const nexusAMData = {
     tasksTitle: 'Account Manager — tasks this week',
     taskComposite: amTaskComposite,
     meetingComposite: amMeetingComposite,
-    metrics: amMetrics,
+    // Metrics with clickable modal data
+    metrics: amMetricsWithModals,
+    // Collapsible KPI section
+    collapsibleMetrics: true,
+    // Actions at top (AM workflow priority)
+    actionsFirst: true,
+    // Task management daily/weekly with AAM delegation
+    taskView: amTaskView,
     funnel: amFunnel,
-    actions: amActions,
+    // Filtered actions — incidents/disputes handled by AAM/CM
+    actions: amActionsFiltered,
+    actionsTitle: 'Action Required',
     topFive: amTopFive,
     charts: amCharts,
     columns: amColumns,
