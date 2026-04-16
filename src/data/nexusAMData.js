@@ -105,12 +105,12 @@ const mgmtMeetingComposite = meetingComposite({
 })
 
 const mgmtActions = [
-  { priority: 'high',   text: '18 at-risk clients (health < 60) — review with AM Head and regional leads', due: 'This week', category: 'Retention' },
-  { priority: 'high',   text: '12 clients under notice period — ₹42Cr ARR — final save attempts required', due: 'Apr 12', category: 'Exit Management' },
-  { priority: 'high',   text: 'Portfolio collection rate at 15.13% vs 30% target — escalation needed', due: 'Immediate', category: 'Collections' },
-  { priority: 'medium', text: '3,800 tasks violated SLA — root-cause with AM Head before board review', due: 'Apr 15', category: 'SLA Review' },
-  { priority: 'medium', text: '38 renewals due in next 90 days — approve revised commercials for top 10', due: 'Apr 20', category: 'Renewals' },
-  { priority: 'low',    text: 'Mod-project pipeline at ₹14.6Cr (136 projects) — review conversion rate', due: 'Apr 25', category: 'Pipeline' },
+  { priority: 'high',   text: 'Collection rate 15.13% vs 30% target — investigate zone-wise breakdown. Is underperformance concentrated in specific AMs or regions?', due: 'Immediate', category: 'Anomaly: Collections' },
+  { priority: 'high',   text: '163 clients out of lock-in (36% portfolio) — North zone highest risk. Request retention heat-map and AM-wise out-of-LI exposure from AM Head', due: 'This week', category: 'Anomaly: Retention' },
+  { priority: 'high',   text: '12 clients under notice — ₹42Cr ARR. Verify AM Head has save-plan in place for each. Flag any missing coverage to regional leads', due: 'Apr 12', category: 'Anomaly: Exit Pipeline' },
+  { priority: 'medium', text: '18 clients with health < 60 — investigate whether drop is systemic (infra/service) or relational (AM churn). Pull zone-level incident + CSAT correlation', due: 'Apr 15', category: 'Anomaly: Health Decline' },
+  { priority: 'medium', text: '3,800 SLA violations across portfolio — analyse zone-wise and AM-wise concentration. Is the same AM driving violations across accounts?', due: 'Apr 15', category: 'Anomaly: SLA Breach' },
+  { priority: 'low',    text: '₹4.26B unpaid — pull ageing concentration: is >60d overdue isolated to specific zones/AMs or portfolio-wide? Identify systemic billing gaps', due: 'Apr 20', category: 'Anomaly: Ageing Invoices' },
 ]
 
 const mgmtTopFive = [
@@ -465,11 +465,11 @@ const reheadGrid = [
 
 // ─── CENTRE MANAGER ───────────────────────────────────────────────────────────
 const cmTasks = [
-  { label: 'NorthStar Bank — retention meet',           priority: 'high',   due: 'Apr 10' },
-  { label: 'Approve 3 mod-projects < ₹10L',             priority: 'high',   due: 'Apr 11' },
-  { label: '6 P1 tickets joint resolution',             priority: 'high',   due: 'Today' },
-  { label: 'Create Deutsche April invoice (₹62L)',      priority: 'medium', due: 'Apr 12' },
-  { label: 'Issue 4 CNs for disputes (₹14.2L)',         priority: 'medium', due: 'Apr 13' },
+  { label: 'NorthStar Bank — coordinate retention meeting with AM', priority: 'high',   due: 'Apr 10' },
+  { label: 'Submit 3 mod-project proposals to AM Head',             priority: 'high',   due: 'Apr 11' },
+  { label: '6 P1 tickets — coordinate joint resolution',           priority: 'high',   due: 'Today' },
+  { label: 'Create Deutsche April invoice (₹62L)',                 priority: 'medium', due: 'Apr 12' },
+  { label: 'Send payment reminders — 3 overdue clients',           priority: 'medium', due: 'Apr 14' },
 ]
 
 const cmMetrics = [
@@ -495,12 +495,14 @@ const cmMeetingComposite = meetingComposite({
 })
 
 const cmActions = [
-  { priority: 'high',   text: 'NorthStar Bank under notice — final retention meeting with AM & client CXO', due: 'Apr 10', category: 'Exit / Retention' },
-  { priority: 'high',   text: 'Approve 3 mod-projects < ₹10L (fit-out refresh, HVAC upgrade, meeting-room AV)', due: 'Apr 11', category: 'Mod Projects' },
-  { priority: 'high',   text: '6 P1 tickets open >24h — pull AM + tech ops for joint resolution', due: 'Today', category: 'Tickets' },
-  { priority: 'medium', text: 'Create invoice for Deutsche Bank GCC April — amount ₹62L', due: 'Apr 12', category: 'Invoicing' },
-  { priority: 'medium', text: 'Issue CN against 4 raised disputes — amount ₹14.2L', due: 'Apr 13', category: 'Disputes' },
-  { priority: 'low',    text: 'Review top performing AM for the centre — recognition for monthly scorecard', due: 'Apr 15', category: 'Team' },
+  { priority: 'high',   text: 'NorthStar Bank under notice — coordinate retention meeting between AM Rahul Mehta and client CXO · book for Apr 10', due: 'Apr 10', category: 'Retention' },
+  { priority: 'high',   text: '6 P1 tickets open >24h — coordinate joint resolution session with AM team and tech ops', due: 'Today', category: 'Tickets' },
+  { priority: 'high',   text: 'Submit 3 mod-project proposals to AM Head for approval (fit-out refresh, HVAC upgrade, meeting-room AV)', due: 'Apr 11', category: 'Mod Projects' },
+  { priority: 'medium', text: 'Create April invoice for Deutsche Bank GCC — ₹62L · share with AM Karan for review before sending', due: 'Apr 12', category: 'Invoicing' },
+  { priority: 'medium', text: 'Schedule client meetings for Wipro Tech, Cognizant, TechCorp India — CSAT follow-up and SLA review', due: 'Apr 12', category: 'Meetings' },
+  { priority: 'medium', text: 'Discuss 4 pending disputes with AM — ₹14.2L total outstanding · escalate to AM Head for CN sign-off', due: 'Apr 13', category: 'Disputes' },
+  { priority: 'medium', text: 'Send payment reminders to NorthStar Bank, Wipro Tech, Accenture — invoices overdue >14d, ₹57.8L at stake', due: 'Apr 14', category: 'Collections' },
+  { priority: 'low',    text: 'Share monthly AM performance feedback to AM Head for team scorecard', due: 'Apr 15', category: 'Team' },
 ]
 
 const cmTopFive = [
@@ -1319,43 +1321,85 @@ const amMeetingsTrendChart = {
   ],
 }
 
-// ─── NEW: AM Head — National zone-based charts ────────────────────────────────
+// ─── NEW: AM Head — Per-metric zone charts (8 centre metrics × 4 zones) ───────
+// Mirrors exactly the 8 metrics shown per centre card in Regional Head view,
+// but consolidated across zones so AM Head sees the national picture.
 const amheadZoneCharts = [
+  // 1. Active clients — pie gives instant share intuition
   {
-    type: 'pie', title: 'Client Distribution — By Zone',
+    type: 'pie', title: 'Active Clients — By Zone',
     data: [
-      { name: 'South', value: 312, color: '#3fb950' },
-      { name: 'North', value: 186, color: '#388bfd' },
-      { name: 'West',  value: 142, color: '#8b5cf6' },
-      { name: 'East',  value:  78, color: '#d29922' },
+      { name: 'South (312)', value: 312 },
+      { name: 'North (186)', value: 186 },
+      { name: 'West (142)',  value: 142 },
+      { name: 'East (78)',   value:  78 },
     ],
   },
+  // 2. Out of Lock-in + Under Notice — retention risk side-by-side
   {
-    type: 'bar', title: 'Outstanding vs Collection — By Zone (₹Cr)',
+    type: 'bar', title: 'Retention Risk — Out of LI & Under Notice by Zone',
     data: [
-      { name: 'South', outstanding: 18.4, collected: 14.2 },
-      { name: 'North', outstanding: 11.6, collected:  8.8 },
-      { name: 'West',  outstanding:  9.2, collected:  7.4 },
-      { name: 'East',  outstanding:  5.8, collected:  4.1 },
+      { name: 'South', outLI: 38, notice: 2 },
+      { name: 'North', outLI: 28, notice: 1 },
+      { name: 'West',  outLI: 21, notice: 1 },
+      { name: 'East',  outLI: 14, notice: 0 },
     ],
     lines: [
-      { key: 'outstanding', label: 'Outstanding', color: '#f85149' },
-      { key: 'collected',   label: 'Collected',   color: '#3fb950' },
+      { key: 'outLI',  label: 'Out of Lock-in' },
+      { key: 'notice', label: 'Under Notice' },
     ],
   },
+  // 3. Unpaid invoices value by zone (₹Cr) — collection pressure
   {
-    type: 'line', title: 'Avg Client Health Score — By Zone, Last 6 Months',
+    type: 'bar', title: 'Unpaid Invoice Value — By Zone (₹Cr)',
     data: [
-      { name: 'Oct', South: 72, North: 68, West: 70, East: 65 },
-      { name: 'Nov', South: 74, North: 70, West: 71, East: 66 },
-      { name: 'Dec', South: 76, North: 72, West: 72, East: 68 },
-      { name: 'Jan', South: 78, North: 73, West: 74, East: 69 },
-      { name: 'Feb', South: 79, North: 74, West: 75, East: 70 },
-      { name: 'Mar', South: 81, North: 76, West: 76, East: 71 },
+      { name: 'South', value: 182 },
+      { name: 'West',  value: 148 },
+      { name: 'North', value:  68 },
+      { name: 'East',  value:  52 },
+    ],
+    lines: [{ key: 'value', label: 'Unpaid ₹Cr' }],
+  },
+  // 4. Renewals due in 90d + count of at-risk renewals
+  {
+    type: 'bar', title: 'Renewals Due (90d) — By Zone',
+    data: [
+      { name: 'South', renewals: 14, atRisk: 6 },
+      { name: 'West',  renewals: 10, atRisk: 4 },
+      { name: 'North', renewals:  9, atRisk: 5 },
+      { name: 'East',  renewals:  5, atRisk: 2 },
     ],
     lines: [
-      { key: 'South', color: '#3fb950' }, { key: 'North', color: '#388bfd' },
-      { key: 'West',  color: '#8b5cf6' }, { key: 'East',  color: '#d29922' },
+      { key: 'renewals', label: 'Renewals Due' },
+      { key: 'atRisk',   label: 'At-Risk (OOL)' },
+    ],
+  },
+  // 5. Avg CSAT + Avg Health — quality metrics by zone
+  {
+    type: 'bar', title: 'Avg CSAT & Health Score — By Zone',
+    data: [
+      { name: 'South', csat: 84, health: 74 },
+      { name: 'West',  csat: 81, health: 72 },
+      { name: 'North', csat: 79, health: 70 },
+      { name: 'East',  csat: 78, health: 68 },
+    ],
+    lines: [
+      { key: 'csat',   label: 'CSAT (×10)' },
+      { key: 'health', label: 'Avg Health' },
+    ],
+  },
+  // 6. Open tickets — P1 vs total; operational load distribution
+  {
+    type: 'bar', title: 'Open Tickets — P1 vs Total by Zone',
+    data: [
+      { name: 'South', total: 82, p1: 18 },
+      { name: 'West',  total: 64, p1: 14 },
+      { name: 'North', total: 48, p1: 12 },
+      { name: 'East',  total: 28, p1:  6 },
+    ],
+    lines: [
+      { key: 'total', label: 'Total Tickets' },
+      { key: 'p1',    label: 'P1 Tickets' },
     ],
   },
 ]

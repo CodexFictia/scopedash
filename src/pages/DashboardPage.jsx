@@ -370,8 +370,12 @@ export default function DashboardPage({
           </div>
         )}
 
-        {/* 11. Charts */}
-        {!hideCharts && d.charts && d.charts.length === 3 ? (
+        {/* 11. Charts — 1/2/3 charts use dedicated layouts; 4+ render in a responsive 3-col grid */}
+        {!hideCharts && d.charts && d.charts.length > 3 ? (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
+            {d.charts.map((c, i) => <TrendChart key={i} type={c.type} title={c.title} data={c.data} lines={c.lines} />)}
+          </div>
+        ) : !hideCharts && d.charts && d.charts.length === 3 ? (
           <div className="chart-row-3">
             {d.charts.map((c, i) => <TrendChart key={i} type={c.type} title={c.title} data={c.data} lines={c.lines} />)}
           </div>
