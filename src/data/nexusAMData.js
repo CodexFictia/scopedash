@@ -1299,6 +1299,428 @@ const reheadInsightCharts = [
   },
 ]
 
+// ─── NEW: AM Head — Meetings completion trend (replaces aging area) ───────────
+const amMeetingsTrendChart = {
+  type: 'line', title: 'Meetings Completion Trend — My Book (Last 8 Weeks)',
+  data: [
+    { name: 'W1', booked: 12, completed: 8,  pending: 4 },
+    { name: 'W2', booked: 14, completed: 10, pending: 4 },
+    { name: 'W3', booked: 16, completed: 12, pending: 4 },
+    { name: 'W4', booked: 14, completed: 11, pending: 3 },
+    { name: 'W5', booked: 18, completed: 14, pending: 4 },
+    { name: 'W6', booked: 16, completed: 13, pending: 3 },
+    { name: 'W7', booked: 20, completed: 16, pending: 4 },
+    { name: 'W8', booked: 18, completed: 14, pending: 6 },
+  ],
+  lines: [
+    { key: 'booked',    label: 'Booked',    color: '#388bfd' },
+    { key: 'completed', label: 'Completed', color: '#3fb950' },
+    { key: 'pending',   label: 'Pending',   color: '#f85149' },
+  ],
+}
+
+// ─── NEW: AM Head — National zone-based charts ────────────────────────────────
+const amheadZoneCharts = [
+  {
+    type: 'pie', title: 'Client Distribution — By Zone',
+    data: [
+      { name: 'South', value: 312, color: '#3fb950' },
+      { name: 'North', value: 186, color: '#388bfd' },
+      { name: 'West',  value: 142, color: '#8b5cf6' },
+      { name: 'East',  value:  78, color: '#d29922' },
+    ],
+  },
+  {
+    type: 'bar', title: 'Outstanding vs Collection — By Zone (₹Cr)',
+    data: [
+      { name: 'South', outstanding: 18.4, collected: 14.2 },
+      { name: 'North', outstanding: 11.6, collected:  8.8 },
+      { name: 'West',  outstanding:  9.2, collected:  7.4 },
+      { name: 'East',  outstanding:  5.8, collected:  4.1 },
+    ],
+    lines: [
+      { key: 'outstanding', label: 'Outstanding', color: '#f85149' },
+      { key: 'collected',   label: 'Collected',   color: '#3fb950' },
+    ],
+  },
+  {
+    type: 'line', title: 'Avg Client Health Score — By Zone, Last 6 Months',
+    data: [
+      { name: 'Oct', South: 72, North: 68, West: 70, East: 65 },
+      { name: 'Nov', South: 74, North: 70, West: 71, East: 66 },
+      { name: 'Dec', South: 76, North: 72, West: 72, East: 68 },
+      { name: 'Jan', South: 78, North: 73, West: 74, East: 69 },
+      { name: 'Feb', South: 79, North: 74, West: 75, East: 70 },
+      { name: 'Mar', South: 81, North: 76, West: 76, East: 71 },
+    ],
+    lines: [
+      { key: 'South', color: '#3fb950' }, { key: 'North', color: '#388bfd' },
+      { key: 'West',  color: '#8b5cf6' }, { key: 'East',  color: '#d29922' },
+    ],
+  },
+]
+
+const amheadZoneTopFive = [
+  {
+    title: 'Zone Portfolio — Health Score',
+    items: [
+      { label: 'South (312 clients)', value: '81', change: 1 },
+      { label: 'West (142 clients)',  value: '76', change: 0 },
+      { label: 'North (186 clients)', value: '76', change: 1 },
+      { label: 'East (78 clients)',   value: '71', change: -1 },
+    ],
+  },
+  {
+    title: 'Zone Portfolio — Collection Rate',
+    items: [
+      { label: 'West',  value: '80%', change: 1 },
+      { label: 'South', value: '77%', change: 0 },
+      { label: 'North', value: '76%', change: 0 },
+      { label: 'East',  value: '71%', change: -1 },
+    ],
+  },
+  {
+    title: 'Zone Portfolio — Out of Lock-in',
+    items: [
+      { label: 'South (42 clients)', value: '42', change: 1 },
+      { label: 'North (28 clients)', value: '28', change: 1 },
+      { label: 'West (21 clients)',  value: '21', change: 0 },
+      { label: 'East (14 clients)',  value: '14', change: -1 },
+    ],
+  },
+]
+
+// ─── NEW: CM — Meetings Calendar Data ────────────────────────────────────────
+const cmMeetingsCalendarData = [
+  {
+    id: 'cm-m01', title: 'Weekly Sync', client: 'Deutsche Bank GCC',
+    am: 'Karan Patel', date: 'Apr 2', time: 'Wed · 11:00', type: 'Recurring',
+    status: 'completed', csatScore: 5, csatComment: 'Very smooth. Team appreciated the facility updates.',
+    tasks: [
+      { label: 'Prepare agenda & client brief',    status: 'completed',  due: 'Apr 1' },
+      { label: 'Share meeting notes within 24h',   status: 'completed',  due: 'Apr 2' },
+    ],
+  },
+  {
+    id: 'cm-m02', title: 'Budget Planning', client: 'Accenture',
+    am: 'Priya Sharma', date: 'Apr 3', time: 'Thu · 14:00', type: 'Commercial',
+    status: 'completed', csatScore: 4, csatComment: 'Good discussion. Some pricing concerns flagged.',
+    tasks: [
+      { label: 'Prepare commercial deck',       status: 'completed', due: 'Apr 2' },
+      { label: 'Share proposal doc',            status: 'completed', due: 'Apr 4' },
+    ],
+  },
+  {
+    id: 'cm-m03', title: 'CSAT Review', client: 'Capgemini',
+    am: 'Karan Patel', date: 'Apr 3', time: 'Thu · 16:00', type: 'QBR',
+    status: 'completed', csatScore: 4, csatComment: 'Client satisfied. Raised minor housekeeping concern.',
+    tasks: [
+      { label: 'Pull last 90d CSAT data',      status: 'completed',  due: 'Apr 2' },
+      { label: 'Action plan for P2 issues',    status: 'on-time',    due: 'Apr 5' },
+    ],
+  },
+  {
+    id: 'cm-m04', title: 'Weekly Sync', client: 'Infosys BPO',
+    am: 'Sneha Iyer', date: 'Apr 4', time: 'Fri · 15:30', type: 'Recurring',
+    status: 'completed', csatScore: 5, csatComment: '',
+    tasks: [
+      { label: 'Incident log review',           status: 'completed', due: 'Apr 4' },
+      { label: 'April meeting plan',            status: 'completed', due: 'Apr 4' },
+    ],
+  },
+  {
+    id: 'cm-m05', title: 'Walkthrough', client: 'HSBC GCC',
+    am: 'Priya Sharma', date: 'Apr 4', time: 'Fri · 10:00', type: 'Site Visit',
+    status: 'completed', csatScore: 4, csatComment: 'Smooth walk. Client noted lift wait times.',
+    tasks: [
+      { label: 'Coordinate with security team', status: 'completed',  due: 'Apr 3' },
+      { label: 'FM snag list post walkthrough', status: 'delayed',    due: 'Apr 5', delayedBy: '1d' },
+    ],
+  },
+  {
+    id: 'cm-m06', title: 'Renewal Discussion', client: 'Accenture',
+    am: 'Priya Sharma', date: 'Apr 7', time: 'Mon · 14:00', type: 'Renewal',
+    status: 'completed', csatScore: 3, csatComment: 'Pricing still a blocker. Requested discount approval.',
+    tasks: [
+      { label: 'Prepare renewal options deck',  status: 'completed', due: 'Apr 6' },
+      { label: 'Escalate discount to AM Head',  status: 'on-time',   due: 'Apr 8' },
+    ],
+  },
+  {
+    id: 'cm-m07', title: 'Dispute Review', client: 'Cognizant',
+    am: 'Aditi Nair', date: 'Apr 8', time: 'Tue · 15:00', type: 'Dispute',
+    status: 'completed', csatScore: 3, csatComment: 'Tense meeting. Client firm on credit claim.',
+    tasks: [
+      { label: 'Pull HVAC downtime logs',        status: 'completed', due: 'Apr 7' },
+      { label: 'Draft dispute response for CM',  status: 'completed', due: 'Apr 8' },
+      { label: 'Issue CN post finance approval', status: 'pending',   due: 'Apr 12' },
+    ],
+  },
+  {
+    id: 'cm-m08', title: 'Incident RCA', client: 'TechCorp India',
+    am: 'Meera Krishnan', date: 'Apr 9', time: 'Wed · 11:00', type: 'Incident',
+    status: 'completed', csatScore: 3, csatComment: 'Client acknowledged RCA. Monitoring period agreed.',
+    tasks: [
+      { label: 'Prepare RCA document',           status: 'completed', due: 'Apr 8' },
+      { label: 'Share corrective action plan',   status: 'completed', due: 'Apr 9' },
+      { label: 'Follow-up review in 2 weeks',    status: 'pending',   due: 'Apr 22' },
+    ],
+  },
+  {
+    id: 'cm-m09', title: 'Save Meeting', client: 'Wipro Tech',
+    am: 'Rohan Desai', date: 'Apr 10', time: 'Thu · 16:00', type: 'Escalation',
+    status: 'completed', csatScore: 2, csatComment: 'Client very unhappy. Needs strong follow through.',
+    tasks: [
+      { label: 'Book meeting with client SPOC',  status: 'completed', due: 'Apr 9' },
+      { label: 'FM action plan for complaints',  status: 'delayed',   due: 'Apr 10', delayedBy: '2d' },
+      { label: 'Weekly check-in for 4 weeks',    status: 'pending',   due: 'Apr 17' },
+    ],
+  },
+  {
+    id: 'cm-m10', title: 'Monthly QBR', client: 'Infosys BPO',
+    am: 'Sneha Iyer', date: 'Apr 11', time: 'Fri · 15:30', type: 'QBR',
+    status: 'completed', csatScore: 5, csatComment: 'Excellent session. Client praised facilities team.',
+    tasks: [
+      { label: 'Prepare monthly QBR deck',      status: 'completed', due: 'Apr 10' },
+      { label: 'Share action tracker',          status: 'completed', due: 'Apr 11' },
+      { label: 'Schedule next QBR',             status: 'completed', due: 'Apr 12' },
+    ],
+  },
+  {
+    id: 'cm-m11', title: 'Weekly Sync', client: 'Deutsche Bank GCC',
+    am: 'Karan Patel', date: 'Apr 14', time: 'Mon · 11:00', type: 'Recurring',
+    status: 'booked',
+    tasks: [
+      { label: 'Prepare agenda',                status: 'pending', due: 'Apr 13' },
+      { label: 'Pull last week incident log',   status: 'pending', due: 'Apr 14' },
+    ],
+  },
+  {
+    id: 'cm-m12', title: 'Kick-off', client: 'HSBC GCC Phase 2',
+    am: 'Priya Sharma', date: 'Apr 15', time: 'Tue · 10:00', type: 'Kick-off',
+    status: 'booked',
+    tasks: [
+      { label: 'Onboarding checklist ready',    status: 'pending', due: 'Apr 14' },
+      { label: 'Facilities walk planned',       status: 'pending', due: 'Apr 15' },
+      { label: 'Intro DQR presentation',        status: 'pending', due: 'Apr 15' },
+    ],
+  },
+  {
+    id: 'cm-m13', title: 'Weekly Sync', client: 'HSBC GCC',
+    am: 'Priya Sharma', date: 'Apr 16', time: 'Wed · 14:00', type: 'Recurring',
+    status: 'booked',
+    tasks: [
+      { label: 'Prepare agenda',                status: 'pending', due: 'Apr 15' },
+    ],
+  },
+  {
+    id: 'cm-m14', title: 'Monthly QBR', client: 'Deutsche Bank GCC',
+    am: 'Karan Patel', date: 'Apr 18', time: 'Fri · 11:00', type: 'QBR',
+    status: 'booked',
+    tasks: [
+      { label: 'Monthly QBR deck',             status: 'pending', due: 'Apr 17' },
+      { label: 'Facilities scorecard update',  status: 'pending', due: 'Apr 16' },
+      { label: 'Action tracker from Mar QBR',  status: 'pending', due: 'Apr 18' },
+    ],
+  },
+  {
+    id: 'cm-m15', title: 'Mod Project Review', client: 'Infosys BPO',
+    am: 'Sneha Iyer', date: 'Apr 18', time: 'Fri · 14:30', type: 'Mod Project',
+    status: 'booked',
+    tasks: [
+      { label: 'Cafeteria renovation update',  status: 'pending', due: 'Apr 17' },
+      { label: 'Vendor coordination confirmed',status: 'pending', due: 'Apr 18' },
+    ],
+  },
+  {
+    id: 'cm-m16', title: 'Weekly Check-in', client: 'Wipro Tech',
+    am: 'Rohan Desai', date: 'Apr 21', time: 'Mon · 11:00', type: 'Escalation',
+    status: 'booked',
+    tasks: [
+      { label: 'FM action status update',      status: 'pending', due: 'Apr 20' },
+      { label: 'Share improvement metrics',    status: 'pending', due: 'Apr 21' },
+    ],
+  },
+  {
+    id: 'cm-m17', title: 'Weekly Sync', client: 'Cognizant',
+    am: 'Aditi Nair', date: 'Apr 22', time: 'Tue · 10:00', type: 'Recurring',
+    status: 'booked',
+    tasks: [
+      { label: 'Prepare agenda',               status: 'pending', due: 'Apr 21' },
+    ],
+  },
+  {
+    id: 'cm-m18', title: 'HVAC RCA Review', client: 'TechCorp India',
+    am: 'Meera Krishnan', date: 'Apr 22', time: 'Tue · 15:00', type: 'Incident',
+    status: 'booked',
+    tasks: [
+      { label: '14-day corrective action report', status: 'pending', due: 'Apr 22' },
+      { label: 'Maintenance vendor sign-off',    status: 'pending', due: 'Apr 22' },
+    ],
+  },
+  {
+    id: 'cm-m19', title: 'Quarterly Business Review', client: 'Accenture',
+    am: 'Priya Sharma', date: 'Apr 25', time: 'Fri · 11:00', type: 'QBR',
+    status: 'booked',
+    tasks: [
+      { label: 'Q1 facilities performance deck', status: 'pending', due: 'Apr 24' },
+      { label: 'Renewal commercial summary',     status: 'pending', due: 'Apr 24' },
+      { label: 'CSAT analysis across 6 months',  status: 'pending', due: 'Apr 25' },
+    ],
+  },
+  {
+    id: 'cm-m20', title: 'Monthly Sync', client: 'Capgemini',
+    am: 'Karan Patel', date: 'Apr 28', time: 'Mon · 14:00', type: 'Recurring',
+    status: 'booked',
+    tasks: [
+      { label: 'Prepare agenda',               status: 'pending', due: 'Apr 27' },
+    ],
+  },
+  {
+    id: 'cm-m21', title: 'Weekly Sync', client: 'NorthStar Bank',
+    am: 'Rahul Mehta', date: 'Apr 9', time: 'Wed · 10:00', type: 'Notice Exit',
+    status: 'violated',
+    tasks: [
+      { label: 'Exit checklist preparation',   status: 'delayed',  due: 'Apr 7', delayedBy: '3d' },
+      { label: 'Data destruction compliance',  status: 'pending',  due: 'Apr 15' },
+    ],
+  },
+  {
+    id: 'cm-m22', title: 'Dispute Follow-up', client: 'Infosys BPO',
+    am: 'Sneha Iyer', date: 'Apr 8', time: 'Tue · 11:00', type: 'Dispute',
+    status: 'violated',
+    tasks: [
+      { label: 'Legal review on clause 8.4',   status: 'delayed',  due: 'Apr 5', delayedBy: '4d' },
+      { label: 'Draft CN for ₹5.8L',           status: 'pending',  due: 'Apr 12' },
+    ],
+  },
+]
+
+// ─── NEW: AAM — Metric modal data ─────────────────────────────────────────────
+const aamMetricModals = {
+  'Daily Checklist': {
+    title: 'Daily Checklist — Today',
+    subtitle: '6 of 8 items completed · Shift close pending',
+    type: 'checklist',
+    data: {
+      items: [
+        { label: 'Morning walkthrough — all floors',    status: 'done' },
+        { label: 'Housekeeping inspection sign-off',    status: 'done' },
+        { label: 'HVAC + MEP system check & readings',  status: 'done' },
+        { label: 'Cafeteria & pantry cleanliness check',status: 'done' },
+        { label: 'Parking & security access log',       status: 'done' },
+        { label: 'Lift & escalator daily check',        status: 'done' },
+        { label: 'Vendor delivery & materials log',     status: 'pending' },
+        { label: 'Shift close report submitted',        status: 'pending' },
+      ],
+    },
+  },
+  'Incidents Open': {
+    title: 'Open Incidents — My Queue',
+    subtitle: '6 incidents · 2 breached SLA',
+    type: 'ticketList',
+    data: {
+      tickets: [
+        { id: 'INC-1882', title: 'HVAC failure — floor 3',     client: 'Deutsche Bank GCC', category: 'HVAC',     priority: 1, openDays: 1, slaStatus: 'At Risk',    assignee: 'Tech Ops' },
+        { id: 'INC-1883', title: 'Lift outage — main bank',    client: 'Infosys BPO',       category: 'Mechanical', priority: 1, openDays: 2, slaStatus: 'Breached',   assignee: 'Facilities' },
+        { id: 'INC-1884', title: 'WiFi drop — east wing',      client: 'Accenture',         category: 'IT/Network', priority: 2, openDays: 1, slaStatus: 'Within SLA', assignee: 'IT Ops' },
+        { id: 'INC-1876', title: 'Housekeeping complaint',     client: 'Wipro Tech',        category: 'FM',         priority: 2, openDays: 3, slaStatus: 'Breached',   assignee: 'FM Team' },
+        { id: 'INC-1870', title: 'Chiller unit trip',          client: 'NorthStar Bank',    category: 'HVAC',       priority: 1, openDays: 4, slaStatus: 'Breached',   assignee: 'Tech Ops' },
+        { id: 'INC-1865', title: 'Security access card fault', client: 'Cognizant',         category: 'Security',   priority: 2, openDays: 2, slaStatus: 'Within SLA', assignee: 'Security' },
+      ],
+    },
+  },
+  'Disputes — CN Pending': {
+    title: 'Disputes — Credit Note Pending',
+    subtitle: '3 disputes · ₹4.2L total',
+    type: 'invoiceList',
+    data: {
+      invoices: [
+        { id: 'DSP-0841', client: 'Cognizant',      invoiceNo: 'DSP-0841', category: 'Service Quality',  amount: '₹1.8L', dueDate: 'Apr 11', overdueDays: 5 },
+        { id: 'DSP-0838', client: 'Wipro Tech',     invoiceNo: 'DSP-0838', category: 'Billing Error',    amount: '₹1.4L', dueDate: 'Apr 10', overdueDays: 6 },
+        { id: 'DSP-0834', client: 'TechCorp India', invoiceNo: 'DSP-0834', category: 'SLA Breach',       amount: '₹1.0L', dueDate: 'Apr 09', overdueDays: 7 },
+      ],
+    },
+  },
+  'Invoices to Create': {
+    title: 'Invoices to Create — April Cycle',
+    subtitle: '4 invoices pending AM review',
+    type: 'invoiceList',
+    data: {
+      invoices: [
+        { id: 'INV-T01', client: 'Deutsche Bank GCC', invoiceNo: 'DBG-APR-DRAFT', category: 'Monthly',     amount: '₹16.4L', dueDate: 'Apr 15', overdueDays: 0 },
+        { id: 'INV-T02', client: 'HSBC GCC',          invoiceNo: 'HSB-APR-DRAFT', category: 'Monthly',     amount: '₹7.8L',  dueDate: 'Apr 15', overdueDays: 0 },
+        { id: 'INV-T03', client: 'Infosys BPO',       invoiceNo: 'INF-APR-DRAFT', category: 'VAS + Base',  amount: '₹10.2L', dueDate: 'Apr 18', overdueDays: 0 },
+        { id: 'INV-T04', client: 'Cognizant',          invoiceNo: 'COG-APR-DRAFT', category: 'Monthly',    amount: '₹8.6L',  dueDate: 'Apr 20', overdueDays: 0 },
+      ],
+    },
+  },
+  'Out of Lock-in (AM book)': {
+    title: 'Out of Lock-in — AM Portfolio',
+    subtitle: '8 clients · Engagement support required',
+    type: 'clientList',
+    data: {
+      note: '⚠ These clients are outside lock-in and can exit with 30d notice. Support AM in retention.',
+      clients: [
+        { name: 'Accenture',    location: 'ORR',       am: 'Priya Sharma',   seats: '640', health: '82', lockin: 'Out since Mar 2026', status: 'Renewing' },
+        { name: 'Wipro Tech',   location: 'Whitefield',am: 'Rohan Desai',    seats: '320', health: '68', lockin: 'Out since Jan 2026', status: 'Monitor'  },
+        { name: 'GlobalTech',   location: 'BKC',       am: 'Priya Sharma',   seats: '180', health: '72', lockin: 'Out since Feb 2026', status: 'Monitor'  },
+        { name: 'NovaCorp',     location: 'Kharadi',   am: 'Aditi Nair',     seats: '120', health: '74', lockin: 'Out since Apr 2026', status: 'Good'     },
+        { name: 'AlphaFinance', location: 'ORR',       am: 'Karan Patel',    seats: '200', health: '71', lockin: 'Out since Mar 2026', status: 'Monitor'  },
+        { name: 'TechVision',   location: 'Baner',     am: 'Sneha Iyer',     seats: '160', health: '75', lockin: 'Out since Apr 2026', status: 'Good'     },
+        { name: 'DataBridge',   location: 'Whitefield',am: 'Rohan Desai',    seats: '140', health: '69', lockin: 'Out since Feb 2026', status: 'Monitor'  },
+        { name: 'CloudSystems', location: 'ORR',       am: 'Karan Patel',    seats: '110', health: '73', lockin: 'Out since Mar 2026', status: 'Good'     },
+      ],
+    },
+  },
+  'Unpaid Invoices': {
+    title: 'Unpaid Invoices — AM Portfolio',
+    subtitle: '12 invoices · ₹84L total outstanding',
+    type: 'invoiceList',
+    data: {
+      invoices: [
+        { id: 'INV-001', client: 'Infosys BPO',       invoiceNo: 'INF-APR-001', category: 'Monthly',     amount: '₹18.2L', dueDate: '20 Mar', overdueDays: 26 },
+        { id: 'INV-002', client: 'Cognizant',          invoiceNo: 'COG-MAR-002', category: 'Monthly',     amount: '₹12.4L', dueDate: '25 Mar', overdueDays: 21 },
+        { id: 'INV-003', client: 'Accenture',          invoiceNo: 'ACC-APR-001', category: 'Monthly',     amount: '₹9.8L',  dueDate: '01 Apr', overdueDays: 14 },
+        { id: 'INV-004', client: 'Wipro Tech',         invoiceNo: 'WIP-MAR-003', category: 'VAS',         amount: '₹6.4L',  dueDate: '28 Mar', overdueDays: 18 },
+        { id: 'INV-005', client: 'TechCorp India',     invoiceNo: 'TCI-APR-002', category: 'Monthly',     amount: '₹5.8L',  dueDate: '05 Apr', overdueDays: 10 },
+        { id: 'INV-006', client: 'Capgemini',          invoiceNo: 'CAP-APR-001', category: 'Mod Project', amount: '₹4.2L',  dueDate: '10 Apr', overdueDays: 3  },
+      ],
+    },
+  },
+  'Under Notice Period': {
+    title: 'Clients Under Notice Period',
+    subtitle: 'No active notice exits currently',
+    type: 'clientList',
+    data: {
+      note: '✅ No clients are in active exit process at this time.',
+      clients: [],
+    },
+  },
+  'Avg Client Health': {
+    title: 'Client Health Scores — AM Portfolio',
+    subtitle: '82/100 avg · 1 client below 60 (at-risk)',
+    type: 'clientList',
+    data: {
+      clients: [
+        { name: 'Deutsche Bank GCC', am: 'Self', seats: '1,240', health: '94', lockin: 'In LI',     status: 'Excellent' },
+        { name: 'Infosys BPO',       am: 'Self', seats: '820',   health: '88', lockin: 'In LI',     status: 'Excellent' },
+        { name: 'HSBC GCC',          am: 'Self', seats: '280',   health: '86', lockin: 'In LI',     status: 'Good' },
+        { name: 'Accenture',         am: 'Self', seats: '640',   health: '82', lockin: 'Out of LI', status: 'Renewing' },
+        { name: 'Capgemini',         am: 'Self', seats: '220',   health: '80', lockin: 'In LI',     status: 'Good' },
+        { name: 'Cognizant',         am: 'Self', seats: '520',   health: '76', lockin: 'In LI',     status: 'Good' },
+        { name: 'TechCorp India',    am: 'Self', seats: '380',   health: '74', lockin: 'In LI',     status: 'Monitor' },
+        { name: 'Wipro Tech',        am: 'Self', seats: '320',   health: '68', lockin: 'Out of LI', status: 'Monitor' },
+      ],
+    },
+  },
+}
+
+const aamMetricsWithModals = aamMetrics.map(m => ({
+  ...m,
+  ...(aamMetricModals[m.label] ? { modal: aamMetricModals[m.label] } : {}),
+}))
+
 // ─── EXPORT ───────────────────────────────────────────────────────────────────
 export const nexusAMData = {
   mgmt: {
@@ -1317,53 +1739,48 @@ export const nexusAMData = {
   },
   amhead: {
     compositeNote,
-    tasksList: amheadTasks,
-    tasksTitle: 'AM Head — tasks this week',
-    taskComposite: amheadTaskComposite,
-    meetingComposite: amheadMeetingComposite,
+    // Tasks strip hidden — AM Head looks at country-wide zones, not daily tasks
+    hideTasksStrip: true,
+    // No task/meeting composites at this level
     metrics: amheadMetrics,
     actions: amheadActions,
-    topFive: amheadTopFive,
-    charts: amheadCharts,
+    actionsTitle: 'National Portfolio Decisions',
+    // Zone-based charts: pie (client distribution), grouped bar (outstanding vs collection), line (health trend)
+    charts: amheadZoneCharts,
+    // Zone comparison lists instead of AM-specific top/bottom
+    topFive: amheadZoneTopFive,
     columns: amheadColumns,
     grid: amheadGrid,
     gridTitle: 'AM Performance Scorecard',
   },
   rehead: {
     compositeNote,
-    tasksList: reheadTasks,
-    tasksTitle: 'Regional Head — priority decisions this week',
-    // centreCards replaces metric row — rich per-centre KPI cards
+    // Tasks strip hidden
+    hideTasksStrip: true,
+    // Centre cards render first (before composites) via DashboardPage ordering
     centreCards: reheadCentreCards,
-    // Keep composites at portfolio level
     taskComposite: reheadTaskComposite,
     meetingComposite: reheadMeetingComposite,
-    // Insight charts (health trend, out-of-LI by centre, CSAT decline)
     charts: reheadInsightCharts,
-    // TopFive: client health + pending settlements (remove AM-specific lists)
     topFive: [reheadTopFive[0], reheadTopFive[1], reheadTopFive[2]],
-    // Grid: centre overview (unchanged)
     columns: reheadColumns,
     grid: reheadGrid,
     gridTitle: 'Regional Centre Performance',
-    // No AM-specific actions — rehead is insight/decision-making
     actions: reheadActions,
     actionsTitle: 'Regional Insights & Decisions',
   },
   cm: {
     compositeNote,
-    tasksList: cmTasks,
-    tasksTitle: 'Centre Manager — tasks this week',
+    // Tasks strip hidden — actions move to top
+    hideTasksStrip: true,
     taskComposite: cmTaskComposite,
     meetingComposite: cmMeetingComposite,
-    // Metrics with clickable modal data merged
     metrics: cmMetricsWithModals,
-    // Top 3 unpaid invoices alert panel
     topInvoices: cmTopInvoices,
     invoicesPageLink: true,
-    // Dispute management panel
     disputes: cmDisputes,
-    // Actions — CM level (includes tickets, mod projects, invoicing)
+    // Actions at top for CM
+    actionsFirst: true,
     actions: cmActions,
     actionsTitle: 'Priority Actions — This Centre',
     topFive: cmTopFive,
@@ -1371,42 +1788,46 @@ export const nexusAMData = {
     columns: cmColumns,
     grid: cmGrid,
     gridTitle: 'Centre Client Book',
+    // Monthly calendar view (moved from AAM meetings grid)
+    meetingsCalendar: cmMeetingsCalendarData,
   },
   am: {
     compositeNote,
-    tasksList: amTasks,
-    tasksTitle: 'Account Manager — tasks this week',
+    // Tasks strip hidden
+    hideTasksStrip: true,
     taskComposite: amTaskComposite,
     meetingComposite: amMeetingComposite,
-    // Metrics with clickable modal data
     metrics: amMetricsWithModals,
-    // Collapsible KPI section
     collapsibleMetrics: true,
-    // Actions at top (AM workflow priority)
     actionsFirst: true,
-    // Task management daily/weekly with AAM delegation
     taskView: amTaskView,
-    funnel: amFunnel,
-    // Filtered actions — incidents/disputes handled by AAM/CM
+    // Funnel removed per round-2 requirements
     actions: amActionsFiltered,
     actionsTitle: 'Action Required',
-    topFive: amTopFive,
-    charts: amCharts,
+    // Top 3 AAMs — SLA Violations removed (index 2); keep health top+bottom only
+    topFive: [amTopFive[0], amTopFive[1]],
+    // Chart 0: health vs CSAT bar | Chart 1: meetings trend line (replaces aging area)
+    charts: [amCharts[0], amMeetingsTrendChart],
     columns: amColumns,
     grid: amGrid,
     gridTitle: 'My Client Book — Account Summary',
   },
   aam: {
     compositeNote,
-    tasksList: aamTasks,
-    tasksTitle: 'Assistant AM — tasks for shift',
+    // Tasks strip hidden
+    hideTasksStrip: true,
     taskComposite: aamTaskComposite,
     meetingComposite: aamMeetingComposite,
-    metrics: aamMetrics,
+    // All metrics clickable with modals
+    metrics: aamMetricsWithModals,
+    collapsibleMetrics: true,
+    // Actions appear after composites (between composites and metric row)
+    actionsAfterComposites: true,
     actions: aamActions,
+    actionsTitle: 'Action Required',
     topFive: aamTopFive,
     charts: aamCharts,
-    meetingsGrid: aamMeetingsGrid,
+    // meetingsGrid removed — moved to CM as calendar
     columns: aamColumns,
     grid: aamGrid,
     gridTitle: "Today's Task & Action Queue",
