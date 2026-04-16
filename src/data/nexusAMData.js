@@ -11,6 +11,7 @@ export const nexusAMPersonas = [
   { id: 'cm',      label: 'Centre Manager' },
   { id: 'am',      label: 'Account Manager' },
   { id: 'aam',     label: 'Assistant AM' },
+  { id: 'gre',     label: 'GRE' },
 ]
 
 export const nexusAMFilters = [
@@ -1765,6 +1766,67 @@ const aamMetricsWithModals = aamMetrics.map(m => ({
   ...(aamMetricModals[m.label] ? { modal: aamMetricModals[m.label] } : {}),
 }))
 
+// ─── GRE (Guest Relations Executive) ─────────────────────────────────────────
+const greTasks = [
+  { label: 'Morning walkthrough — visit sites for open P1 tickets', priority: 'high',   due: 'Today' },
+  { label: 'Follow up IT team on 3 pending WiFi/network tickets',   priority: 'high',   due: 'Today' },
+  { label: 'Close 5 verified-resolved tickets in Workctrl',         priority: 'high',   due: 'Today' },
+  { label: 'Escalate 2 SLA-breached P1s to Ops Head',               priority: 'medium', due: 'Today' },
+  { label: 'Assign 8 new Workctrl tickets to respective teams',      priority: 'medium', due: 'EOD' },
+  { label: 'Update ticket states for afternoon handover',            priority: 'low',    due: 'EOD' },
+]
+
+const greMetrics = [
+  { label: 'Total Open Tickets',   value: '28',   change: '14 assigned · 14 to do',              trend: 'up',   status: 'warning',  icon: Shield,       highlight: true },
+  { label: 'To Do',                value: '14',   change: 'not yet picked up by teams',           trend: 'up',   status: 'negative', icon: Clock },
+  { label: 'Under Review',         value: '8',    change: 'GRE verifying resolution on-site',     trend: 'up',   status: 'info',     icon: Activity },
+  { label: 'SLA Breached',         value: '6',    change: '4 P1 · 2 P2 overdue',                  trend: 'up',   status: 'negative', icon: AlertCircle },
+  { label: 'P1 Tickets Open',      value: '4',    change: '2 SLA breached · 2 at-risk',           trend: 'up',   status: 'negative', icon: AlertCircle },
+  { label: 'Closed Today',         value: '5',    change: 'verified on-site and closed',          trend: 'up',   status: 'positive', icon: CheckCircle2 },
+  { label: 'Avg Resolution Time',  value: '18h',  change: 'target 12h · P1 target 4h',            trend: 'down', status: 'warning',  icon: Clock },
+  { label: 'SLA Compliance',       value: '78%',  change: 'target 90% · −12% gap this week',      trend: 'down', status: 'negative', icon: Shield },
+]
+
+const greTaskComposite = taskComposite({
+  total: 28, open: 14, closedSla: 8, violated: 6,
+  subtitle: 'My ticket queue · 6 SLA breached · 8 under verification',
+})
+
+const greActions = [
+  { priority: 'high',   text: 'TKT-4421: HVAC failure floor 3 (Deutsche Bank GCC) — SLA breached 28h. Call Tech Ops lead, get ETA, update ticket', due: 'Immediate', category: 'P1 Escalation' },
+  { priority: 'high',   text: 'TKT-4418: Lift outage main bank (Infosys BPO) — 2d open, Facilities not responding. Escalate to Ops Head immediately', due: 'Immediate', category: 'P1 Escalation' },
+  { priority: 'high',   text: 'TKT-4410: WiFi drop east wing (Accenture) — IT team assigned 6h ago, no update. Follow up and log response on Workctrl', due: 'Today', category: 'P1 Follow-up' },
+  { priority: 'medium', text: 'TKT-4405, TKT-4401: 2 P1s moved to Under Review — go on-site, verify fix, close in Workctrl and notify AM', due: 'Today', category: 'Close Tickets' },
+  { priority: 'medium', text: 'TKT-4398: Housekeeping complaint (Cognizant) — FM claims resolved. Verify on-site. Close if confirmed; re-open with photo if not', due: 'Today', category: 'Verification' },
+  { priority: 'medium', text: 'TKT-4392, TKT-4389: Parking + cafeteria tickets under review — check with Admin and FM, close verified ones by EOD', due: 'Today', category: 'Under Review' },
+  { priority: 'low',    text: '8 new tickets in Workctrl today — assign: IT ×3 (TKT-4430, 31, 32), Tech Ops ×2 (TKT-4433, 34), FM ×2 (TKT-4435, 36), IoT ×1 (TKT-4437)', due: 'EOD', category: 'Assignment' },
+]
+
+const greColumns = [
+  { key: 'id',        label: 'Ticket ID' },
+  { key: 'title',     label: 'Issue' },
+  { key: 'client',    label: 'Client' },
+  { key: 'category',  label: 'Dept' },
+  { key: 'priority',  label: 'Priority' },
+  { key: 'openDays',  label: 'Open (d)' },
+  { key: 'assignee',  label: 'Assigned To' },
+  { key: 'slaStatus', label: 'SLA', type: 'status' },
+  { key: 'state',     label: 'State', type: 'status' },
+]
+
+const greGrid = [
+  { id: 'TKT-4421', title: 'HVAC failure — floor 3',       client: 'Deutsche Bank GCC', category: 'Tech Ops',   priority: 'P1', openDays: 2, assignee: 'Tech Ops',   slaStatus: 'Breached',    state: 'To Do' },
+  { id: 'TKT-4418', title: 'Lift outage — main bank',      client: 'Infosys BPO',       category: 'Facilities', priority: 'P1', openDays: 2, assignee: 'Facilities',  slaStatus: 'Breached',    state: 'To Do' },
+  { id: 'TKT-4410', title: 'WiFi drop — east wing',        client: 'Accenture',         category: 'IT Ops',     priority: 'P1', openDays: 1, assignee: 'IT Ops',      slaStatus: 'At Risk',     state: 'To Do' },
+  { id: 'TKT-4405', title: 'Chiller unit trip',            client: 'NorthStar Bank',    category: 'Tech Ops',   priority: 'P1', openDays: 4, assignee: 'Tech Ops',   slaStatus: 'Breached',    state: 'Under Review' },
+  { id: 'TKT-4401', title: 'Security access card failure', client: 'Wipro Tech',        category: 'Security',   priority: 'P2', openDays: 2, assignee: 'Security',    slaStatus: 'Breached',    state: 'Under Review' },
+  { id: 'TKT-4398', title: 'Housekeeping complaint',       client: 'Cognizant',         category: 'FM',         priority: 'P2', openDays: 5, assignee: 'FM Team',     slaStatus: 'Within SLA',  state: 'Under Review' },
+  { id: 'TKT-4392', title: 'Parking allocation issue',     client: 'TechCorp India',    category: 'Admin',      priority: 'P3', openDays: 6, assignee: 'Admin',       slaStatus: 'Within SLA',  state: 'Under Review' },
+  { id: 'TKT-4389', title: 'Cafeteria cleanliness',        client: 'Capgemini',         category: 'FM',         priority: 'P3', openDays: 3, assignee: 'FM Team',     slaStatus: 'Within SLA',  state: 'To Do' },
+  { id: 'TKT-4381', title: 'IoT sensor malfunction',       client: 'HSBC GCC',          category: 'IoT',        priority: 'P2', openDays: 1, assignee: 'IoT Team',    slaStatus: 'Within SLA',  state: 'To Do' },
+  { id: 'TKT-4375', title: 'Printer offline — level 8',    client: 'Deutsche Bank GCC', category: 'IT Ops',     priority: 'P3', openDays: 1, assignee: 'IT Ops',      slaStatus: 'Within SLA',  state: 'To Do' },
+]
+
 // ─── EXPORT ───────────────────────────────────────────────────────────────────
 export const nexusAMData = {
   mgmt: {
@@ -1855,6 +1917,24 @@ export const nexusAMData = {
     columns: amColumns,
     grid: amGrid,
     gridTitle: 'My Client Book — Account Summary',
+  },
+  gre: {
+    compositeNote,
+    tasksList: greTasks,
+    tasksTitle: 'GRE — tasks for today',
+    taskComposite: greTaskComposite,
+    // Actions at top — ticket follow-ups are the primary workflow
+    actionsFirst: true,
+    actions: greActions,
+    actionsTitle: 'Action Required — Ticket Follow-ups',
+    // Collapsible metric row — GRE needs quick scan, not deep dive
+    metrics: greMetrics,
+    collapsibleMetrics: true,
+    // No charts, no meetings
+    hideCharts: true,
+    columns: greColumns,
+    grid: greGrid,
+    gridTitle: 'Ticket Queue — All Open',
   },
   aam: {
     compositeNote,
