@@ -3,8 +3,9 @@
  * Shows per-centre aggregated KPIs with health sparkline and status badge.
  * Each mini-metric is clickable to open a modal.
  */
-import { Building2, TrendingUp, TrendingDown, Minus, ChevronRight } from 'lucide-react'
+import { Building2, ChevronRight } from 'lucide-react'
 import { AreaChart, Area, ResponsiveContainer, Tooltip } from 'recharts'
+import { useTheme } from '../ThemeContext.jsx'
 
 const STATUS_COLOR = {
   positive: '#3fb950', warning: '#d29922', negative: '#f85149',
@@ -17,29 +18,29 @@ const STATUS_BG = {
   'at-risk': { bg: 'rgba(248,81,73,0.12)', color: '#f85149', label: 'At Risk' },
 }
 
-function MiniMetric({ label, value, status = 'neutral', highlighted, onClick }) {
+function MiniMetric({ label, value, status = 'neutral', highlighted, onClick, t }) {
   const color = STATUS_COLOR[status] || STATUS_COLOR.neutral
   return (
     <div
       onClick={onClick}
       title={onClick ? `Click to view ${label} details` : undefined}
       style={{
-        background: highlighted ? color + '14' : 'rgba(255,255,255,0.03)',
-        border: `1px solid ${highlighted ? color + '50' : '#21262d'}`,
+        background: highlighted ? color + '14' : t.bgCardHover,
+        border: `1px solid ${highlighted ? color + '50' : t.borderSub}`,
         borderRadius: 6, padding: '8px 10px',
         cursor: onClick ? 'pointer' : 'default',
         transition: 'all 0.15s', position: 'relative', overflow: 'hidden',
       }}
       onMouseEnter={e => { if (onClick) e.currentTarget.style.borderColor = color + '80' }}
-      onMouseLeave={e => { if (onClick) e.currentTarget.style.borderColor = highlighted ? color + '50' : '#21262d' }}
+      onMouseLeave={e => { if (onClick) e.currentTarget.style.borderColor = highlighted ? color + '50' : t.borderSub }}
     >
       {highlighted && (
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: color, borderRadius: '6px 6px 0 0' }} />
       )}
-      <div style={{ fontSize: 10, color: '#8b949e', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: 4 }}>
+      <div style={{ fontSize: 10, color: t.textMuted, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: 4 }}>
         {label}
       </div>
-      <div style={{ fontSize: 14, fontWeight: 700, color: '#e6edf3' }}>{value}</div>
+      <div style={{ fontSize: 14, fontWeight: 700, color: t.textPrimary }}>{value}</div>
       {onClick && (
         <ChevronRight size={9} color={color} style={{ position: 'absolute', top: 8, right: 6, opacity: 0.6 }} />
       )}
@@ -48,17 +49,18 @@ function MiniMetric({ label, value, status = 'neutral', highlighted, onClick }) 
 }
 
 export default function CentreKPICard({ name, location, cm, status = 'good', metrics = [], sparkline = [], onMetricClick }) {
+  const { t } = useTheme()
   const badge = STATUS_BG[status] || STATUS_BG.good
 
   return (
     <div style={{
-      background: '#1c2333', border: '1px solid #30363d',
+      background: t.bgCard, border: `1px solid ${t.border}`,
       borderRadius: 10, overflow: 'hidden', display: 'flex', flexDirection: 'column',
     }}>
       {/* Card header */}
       <div style={{
         padding: '12px 14px 10px',
-        borderBottom: '1px solid #21262d',
+        borderBottom: `1px solid ${t.borderSub}`,
         display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between',
       }}>
         <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
@@ -70,8 +72,8 @@ export default function CentreKPICard({ name, location, cm, status = 'good', met
             <Building2 size={14} color="white" />
           </div>
           <div>
-            <div style={{ fontWeight: 700, fontSize: 13, color: '#e6edf3' }}>{name}</div>
-            <div style={{ fontSize: 11, color: '#8b949e', marginTop: 1 }}>
+            <div style={{ fontWeight: 700, fontSize: 13, color: t.textPrimary }}>{name}</div>
+            <div style={{ fontSize: 11, color: t.textMuted, marginTop: 1 }}>
               {location}{cm ? ` · CM: ${cm}` : ''}
             </div>
           </div>
@@ -97,6 +99,7 @@ export default function CentreKPICard({ name, location, cm, status = 'good', met
             status={m.status}
             highlighted={m.highlighted}
             onClick={m.modal ? () => onMetricClick && onMetricClick(m.modal) : undefined}
+            t={t}
           />
         ))}
       </div>
@@ -118,7 +121,7 @@ export default function CentreKPICard({ name, location, cm, status = 'good', met
                 fill={`url(#sg-${name})`} dot={false}
               />
               <Tooltip
-                contentStyle={{ background: '#1c2333', border: '1px solid #30363d', borderRadius: 4, fontSize: 10 }}
+                contentStyle={{ background: t.bgCard, border: `1px solid ${t.border}`, borderRadius: 4, fontSize: 10, color: t.textPrimary }}
                 labelFormatter={() => 'Health'}
                 formatter={v => [v, '']}
               />

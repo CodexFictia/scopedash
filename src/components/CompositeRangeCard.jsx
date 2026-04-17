@@ -6,14 +6,17 @@
  * Used for Tasks (Open + Closed-in-SLA + Violated) and
  * Meetings (Booked + Pending + Completed).
  */
+import { useTheme } from '../ThemeContext.jsx'
+
 export default function CompositeRangeCard({ title, total, subtitle, segments = [], icon: Icon, accent = '#f97316' }) {
+  const { t } = useTheme()
   const sum = segments.reduce((s, x) => s + (Number(x.value) || 0), 0) || 1
   const fmt = (n) => (n >= 1000 ? (n / 1000).toFixed(n >= 10000 ? 1 : 2) + 'K' : n.toLocaleString())
 
   return (
     <div
       style={{
-        background: '#1c2333',
+        background: t.bgCard,
         border: `1px solid ${accent}40`,
         borderRadius: 8,
         padding: '16px 18px',
@@ -34,7 +37,7 @@ export default function CompositeRangeCard({ title, total, subtitle, segments = 
             style={{
               fontSize: 11,
               fontWeight: 600,
-              color: '#8b949e',
+              color: t.textMuted,
               textTransform: 'uppercase',
               letterSpacing: '0.5px',
               lineHeight: 1.3,
@@ -46,7 +49,7 @@ export default function CompositeRangeCard({ title, total, subtitle, segments = 
             style={{
               fontSize: 28,
               fontWeight: 700,
-              color: '#e6edf3',
+              color: t.textPrimary,
               marginTop: 6,
               lineHeight: 1,
             }}
@@ -54,7 +57,7 @@ export default function CompositeRangeCard({ title, total, subtitle, segments = 
             {fmt(total ?? sum)}
           </div>
           {subtitle && (
-            <div style={{ fontSize: 11, color: '#656d76', marginTop: 4 }}>{subtitle}</div>
+            <div style={{ fontSize: 11, color: t.textSubtle, marginTop: 4 }}>{subtitle}</div>
           )}
         </div>
         {Icon && (
@@ -83,8 +86,8 @@ export default function CompositeRangeCard({ title, total, subtitle, segments = 
           height: 12,
           borderRadius: 6,
           overflow: 'hidden',
-          background: '#0d1117',
-          border: '1px solid #30363d',
+          background: t.bgRoot,
+          border: `1px solid ${t.border}`,
         }}
       >
         {segments.map((s, i) => (
@@ -94,7 +97,7 @@ export default function CompositeRangeCard({ title, total, subtitle, segments = 
             style={{
               flex: (Number(s.value) || 0) + 0.001,
               background: s.color,
-              borderRight: i < segments.length - 1 ? '1px solid #0d1117' : 'none',
+              borderRight: i < segments.length - 1 ? `1px solid ${t.bgRoot}` : 'none',
             }}
           />
         ))}
@@ -107,9 +110,9 @@ export default function CompositeRangeCard({ title, total, subtitle, segments = 
           return (
             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
               <div style={{ width: 9, height: 9, borderRadius: 2, background: s.color, flexShrink: 0 }} />
-              <span style={{ fontSize: 11, color: '#8b949e' }}>{s.label}</span>
-              <span style={{ fontSize: 12, color: '#e6edf3', fontWeight: 700 }}>{fmt(s.value)}</span>
-              <span style={{ fontSize: 10, color: '#656d76' }}>({pct}%)</span>
+              <span style={{ fontSize: 11, color: t.textMuted }}>{s.label}</span>
+              <span style={{ fontSize: 12, color: t.textPrimary, fontWeight: 700 }}>{fmt(s.value)}</span>
+              <span style={{ fontSize: 10, color: t.textSubtle }}>({pct}%)</span>
             </div>
           )
         })}

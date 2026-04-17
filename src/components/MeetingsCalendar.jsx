@@ -6,6 +6,7 @@
 import { useState } from 'react'
 import { Calendar, CheckCircle2, Clock, AlertCircle, Star, ChevronDown, ChevronUp } from 'lucide-react'
 import Modal from './Modal'
+import { useTheme } from '../ThemeContext.jsx'
 
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 // April 2026: April 1 = Wednesday → offset 2 from Monday
@@ -26,6 +27,7 @@ const TASK_ICON  = { completed: CheckCircle2, 'on-time': CheckCircle2, delayed: 
 
 function StarRating({ value, onChange }) {
   const [hover, setHover] = useState(0)
+  const { t } = useTheme()
   return (
     <div style={{ display: 'flex', gap: 3 }}>
       {[1, 2, 3, 4, 5].map(n => (
@@ -35,7 +37,7 @@ function StarRating({ value, onChange }) {
         >
           <Star size={20}
             fill={(hover || value) >= n ? '#f97316' : 'none'}
-            color={(hover || value) >= n ? '#f97316' : '#30363d'}
+            color={(hover || value) >= n ? '#f97316' : t.border}
           />
         </button>
       ))}
@@ -44,6 +46,7 @@ function StarRating({ value, onChange }) {
 }
 
 export default function MeetingsCalendar({ title = 'Meetings Calendar', meetings = [] }) {
+  const { t } = useTheme()
   const [selected, setSelected]     = useState(null)
   const [scores, setScores]         = useState({})
   const [comments, setComments]     = useState({})
@@ -72,16 +75,16 @@ export default function MeetingsCalendar({ title = 'Meetings Calendar', meetings
 
   return (
     <>
-      <div style={{ background: '#1c2333', border: '1px solid #30363d', borderRadius: 10, overflow: 'hidden' }}>
+      <div style={{ background: t.bgCard, border: `1px solid ${t.border}`, borderRadius: 10, overflow: 'hidden' }}>
         {/* Header */}
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '12px 16px', borderBottom: '1px solid #30363d',
+          padding: '12px 16px', borderBottom: `1px solid ${t.border}`,
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <Calendar size={15} color="#f97316" />
-            <span style={{ fontWeight: 700, fontSize: 14, color: '#e6edf3' }}>{title}</span>
-            <span style={{ fontSize: 12, color: '#8b949e' }}>April 2026</span>
+            <span style={{ fontWeight: 700, fontSize: 14, color: t.textPrimary }}>{title}</span>
+            <span style={{ fontSize: 12, color: t.textMuted }}>April 2026</span>
             {/* Count pills */}
             {Object.entries(counts).map(([key, n]) => n > 0 && (
               <span key={key} style={{
@@ -98,13 +101,13 @@ export default function MeetingsCalendar({ title = 'Meetings Calendar', meetings
               {Object.entries(STATUS).map(([k, v]) => (
                 <div key={k} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                   <div style={{ width: 7, height: 7, borderRadius: '50%', background: v.dot }} />
-                  <span style={{ fontSize: 10, color: '#8b949e' }}>{v.label}</span>
+                  <span style={{ fontSize: 10, color: t.textMuted }}>{v.label}</span>
                 </div>
               ))}
             </div>
             <button
               onClick={() => setCollapsed(c => !c)}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#8b949e', padding: 4 }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: t.textMuted, padding: 4 }}
             >
               {collapsed ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
             </button>
@@ -114,9 +117,9 @@ export default function MeetingsCalendar({ title = 'Meetings Calendar', meetings
         {!collapsed && (
           <>
             {/* Day-of-week headers */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', borderBottom: '1px solid #21262d' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', borderBottom: `1px solid ${t.borderSub}` }}>
               {DAYS.map(d => (
-                <div key={d} style={{ padding: '5px 0', textAlign: 'center', fontSize: 10, fontWeight: 700, color: '#656d76', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                <div key={d} style={{ padding: '5px 0', textAlign: 'center', fontSize: 10, fontWeight: 700, color: t.textSubtle, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                   {d}
                 </div>
               ))}
@@ -134,11 +137,11 @@ export default function MeetingsCalendar({ title = 'Meetings Calendar', meetings
                 return (
                   <div key={i} style={{
                     minHeight: 88, padding: '5px 5px',
-                    borderRight: col < 6 ? '1px solid #21262d' : 'none',
-                    borderBottom: row < totalRows - 1 ? '1px solid #21262d' : 'none',
+                    borderRight: col < 6 ? `1px solid ${t.borderSub}` : 'none',
+                    borderBottom: row < totalRows - 1 ? `1px solid ${t.borderSub}` : 'none',
                     background: isToday
                       ? 'rgba(249,115,22,0.05)'
-                      : isPast ? 'rgba(0,0,0,0.1)' : 'transparent',
+                      : isPast ? t.bgCardHover : 'transparent',
                   }}>
                     {cell.day && (
                       <>
@@ -153,7 +156,7 @@ export default function MeetingsCalendar({ title = 'Meetings Calendar', meetings
                               {cell.day}
                             </span>
                           ) : (
-                            <span style={{ fontSize: 11, color: isPast ? '#656d76' : '#8b949e', fontWeight: 400 }}>
+                            <span style={{ fontSize: 11, color: isPast ? t.textSubtle : t.textMuted, fontWeight: 400 }}>
                               {cell.day}
                             </span>
                           )}
@@ -179,7 +182,7 @@ export default function MeetingsCalendar({ title = 'Meetings Calendar', meetings
                             )
                           })}
                           {cell.mtgs.length > 3 && (
-                            <span style={{ fontSize: 9, color: '#656d76', paddingLeft: 2 }}>
+                            <span style={{ fontSize: 9, color: t.textSubtle, paddingLeft: 2 }}>
                               +{cell.mtgs.length - 3} more
                             </span>
                           )}
@@ -203,8 +206,8 @@ export default function MeetingsCalendar({ title = 'Meetings Calendar', meetings
         const done    = submitted[m.id] || !!m.csatScore
         const isCompleted = m.status === 'completed'
 
-        const taskCounts = (m.tasks || []).reduce((acc, t) => {
-          acc[t.status] = (acc[t.status] || 0) + 1; return acc
+        const taskCounts = (m.tasks || []).reduce((acc, task) => {
+          acc[task.status] = (acc[task.status] || 0) + 1; return acc
         }, {})
 
         return (
@@ -219,8 +222,8 @@ export default function MeetingsCalendar({ title = 'Meetings Calendar', meetings
               <span style={{ background: sc.bg, color: sc.text, fontSize: 11, fontWeight: 700, borderRadius: 20, padding: '3px 10px' }}>
                 {sc.label}
               </span>
-              {m.am    && <span style={{ fontSize: 12, color: '#8b949e' }}>AM: {m.am}</span>}
-              {m.time  && <span style={{ fontSize: 12, color: '#8b949e' }}>{m.time}</span>}
+              {m.am    && <span style={{ fontSize: 12, color: t.textMuted }}>AM: {m.am}</span>}
+              {m.time  && <span style={{ fontSize: 12, color: t.textMuted }}>{m.time}</span>}
             </div>
 
             {/* Task summary strip */}
@@ -244,29 +247,29 @@ export default function MeetingsCalendar({ title = 'Meetings Calendar', meetings
             {/* Tasks */}
             {m.tasks && m.tasks.length > 0 && (
               <div style={{ marginBottom: 16 }}>
-                <div style={{ fontSize: 12, fontWeight: 600, color: '#8b949e', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 8 }}>
+                <div style={{ fontSize: 12, fontWeight: 600, color: t.textMuted, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 8 }}>
                   Meeting Tasks
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-                  {m.tasks.map((t, i) => {
-                    const c = TASK_COLOR[t.status] || '#8b949e'
-                    const TIcon = TASK_ICON[t.status] || Clock
+                  {m.tasks.map((task, i) => {
+                    const c = TASK_COLOR[task.status] || '#8b949e'
+                    const TIcon = TASK_ICON[task.status] || Clock
                     return (
                       <div key={i} style={{
                         display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: 8, alignItems: 'center',
-                        background: 'rgba(255,255,255,0.02)', border: '1px solid #21262d',
+                        background: t.bgCardHover, border: `1px solid ${t.borderSub}`,
                         borderRadius: 6, padding: '8px 10px',
                       }}>
                         <TIcon size={13} color={c} />
                         <div>
-                          <div style={{ fontSize: 12, color: '#e6edf3' }}>{t.label}</div>
-                          <div style={{ fontSize: 10, color: '#8b949e', marginTop: 1 }}>
-                            Due {t.due}
-                            {t.delayedBy && <span style={{ color: '#f85149' }}> · Delayed {t.delayedBy}</span>}
+                          <div style={{ fontSize: 12, color: t.textPrimary }}>{task.label}</div>
+                          <div style={{ fontSize: 10, color: t.textMuted, marginTop: 1 }}>
+                            Due {task.due}
+                            {task.delayedBy && <span style={{ color: '#f85149' }}> · Delayed {task.delayedBy}</span>}
                           </div>
                         </div>
                         <span style={{ fontSize: 10, fontWeight: 700, color: c, background: c + '18', borderRadius: 20, padding: '2px 8px', textTransform: 'capitalize', whiteSpace: 'nowrap' }}>
-                          {t.status}
+                          {task.status}
                         </span>
                       </div>
                     )
@@ -278,30 +281,30 @@ export default function MeetingsCalendar({ title = 'Meetings Calendar', meetings
             {/* CSAT — completed meetings only */}
             {isCompleted && (
               <div style={{ background: 'rgba(249,115,22,0.05)', border: '1px solid rgba(249,115,22,0.18)', borderRadius: 8, padding: '14px' }}>
-                <div style={{ fontSize: 12, fontWeight: 700, color: '#e6edf3', marginBottom: 10 }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: t.textPrimary, marginBottom: 10 }}>
                   Client Meeting Feedback
                 </div>
                 {done ? (
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#3fb950', fontSize: 13 }}>
                     <CheckCircle2 size={16} /> Feedback recorded · {score}/5 stars
-                    {comment && <span style={{ color: '#8b949e', fontSize: 11 }}>· "{comment}"</span>}
+                    {comment && <span style={{ color: t.textMuted, fontSize: 11 }}>· "{comment}"</span>}
                   </div>
                 ) : (
                   <>
                     <div style={{ marginBottom: 10 }}>
-                      <div style={{ fontSize: 11, color: '#8b949e', marginBottom: 6 }}>Overall meeting rating</div>
+                      <div style={{ fontSize: 11, color: t.textMuted, marginBottom: 6 }}>Overall meeting rating</div>
                       <StarRating value={score} onChange={v => setScores(s => ({ ...s, [m.id]: v }))} />
                     </div>
                     <div style={{ marginBottom: 12 }}>
-                      <div style={{ fontSize: 11, color: '#8b949e', marginBottom: 6 }}>Client notes / feedback</div>
+                      <div style={{ fontSize: 11, color: t.textMuted, marginBottom: 6 }}>Client notes / feedback</div>
                       <textarea
                         value={comment}
                         onChange={e => setComments(s => ({ ...s, [m.id]: e.target.value }))}
                         placeholder="e.g. Client satisfied with resolution. Flagged renewal discussion for next month."
                         rows={3}
                         style={{
-                          width: '100%', background: '#0d1117', border: '1px solid #30363d',
-                          borderRadius: 6, padding: '8px 10px', color: '#e6edf3', fontSize: 12,
+                          width: '100%', background: t.bgInput, border: `1px solid ${t.border}`,
+                          borderRadius: 6, padding: '8px 10px', color: t.textPrimary, fontSize: 12,
                           resize: 'none', fontFamily: 'inherit', boxSizing: 'border-box',
                         }}
                       />
@@ -310,9 +313,9 @@ export default function MeetingsCalendar({ title = 'Meetings Calendar', meetings
                       onClick={() => score && setSubmitted(s => ({ ...s, [m.id]: true }))}
                       disabled={!score}
                       style={{
-                        background: score ? 'rgba(249,115,22,0.15)' : 'rgba(255,255,255,0.04)',
-                        border: `1px solid ${score ? 'rgba(249,115,22,0.35)' : '#30363d'}`,
-                        color: score ? '#f97316' : '#8b949e', borderRadius: 6,
+                        background: score ? 'rgba(249,115,22,0.15)' : t.bgCardHover,
+                        border: `1px solid ${score ? 'rgba(249,115,22,0.35)' : t.border}`,
+                        color: score ? '#f97316' : t.textMuted, borderRadius: 6,
                         cursor: score ? 'pointer' : 'default', padding: '6px 18px',
                         fontSize: 12, fontWeight: 600,
                       }}

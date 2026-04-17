@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Info, X } from 'lucide-react'
+import { useTheme } from '../ThemeContext.jsx'
 
 /**
  * Dismissable info banner that explains how composite metrics
@@ -7,6 +8,7 @@ import { Info, X } from 'lucide-react'
  */
 export default function CompositeNote({ title = 'About composite metrics', items = [] }) {
   const [open, setOpen] = useState(true)
+  const { t } = useTheme()
   if (!open) return null
 
   return (
@@ -37,11 +39,11 @@ export default function CompositeNote({ title = 'About composite metrics', items
       </div>
 
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 12, fontWeight: 700, color: '#e6edf3', marginBottom: 6 }}>{title}</div>
+        <div style={{ fontSize: 12, fontWeight: 700, color: t.textPrimary, marginBottom: 6 }}>{title}</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
           {items.map((it, i) => (
-            <div key={i} style={{ fontSize: 11, color: '#8b949e', lineHeight: 1.55 }}>
-              <span style={{ color: '#c9d1d9', fontWeight: 600 }}>{it.label}: </span>
+            <div key={i} style={{ fontSize: 11, color: t.textMuted, lineHeight: 1.55 }}>
+              <span style={{ color: t.textBody, fontWeight: 600 }}>{it.label}: </span>
               {it.formula}
             </div>
           ))}
@@ -54,7 +56,7 @@ export default function CompositeNote({ title = 'About composite metrics', items
         style={{
           background: 'transparent',
           border: 'none',
-          color: '#8b949e',
+          color: t.textMuted,
           cursor: 'pointer',
           padding: 2,
           borderRadius: 4,

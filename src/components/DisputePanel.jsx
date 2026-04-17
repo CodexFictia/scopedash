@@ -4,6 +4,7 @@
  */
 import { useState } from 'react'
 import { CheckCircle2, XCircle, FileText, Bell, ChevronDown, ChevronRight } from 'lucide-react'
+import { useTheme } from '../ThemeContext.jsx'
 
 const STATUS_STYLE = {
   'CN Pending':  { color: '#d29922', bg: 'rgba(210,153,34,0.12)' },
@@ -27,6 +28,7 @@ function StatusBadge({ status }) {
 }
 
 export default function DisputePanel({ title = 'Dispute Management', disputes = [] }) {
+  const { t } = useTheme()
   const [rows, setRows] = useState(disputes)
   const [expanded, setExpanded] = useState(null)
   const [notification, setNotification] = useState(null)
@@ -46,15 +48,15 @@ export default function DisputePanel({ title = 'Dispute Management', disputes = 
   const openCount = rows.filter(r => !['Rejected', 'CN Issued'].includes(r.status)).length
 
   return (
-    <div style={{ background: '#1c2333', border: '1px solid #30363d', borderRadius: 10 }}>
+    <div style={{ background: t.bgCard, border: `1px solid ${t.border}`, borderRadius: 10 }}>
       {/* Header */}
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '12px 16px', borderBottom: '1px solid #30363d',
+        padding: '12px 16px', borderBottom: `1px solid ${t.border}`,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <FileText size={15} color="#f97316" />
-          <span style={{ fontWeight: 700, fontSize: 14, color: '#e6edf3' }}>{title}</span>
+          <span style={{ fontWeight: 700, fontSize: 14, color: t.textPrimary }}>{title}</span>
           {openCount > 0 && (
             <span style={{
               background: 'rgba(249,115,22,0.15)', color: '#f97316',
@@ -79,7 +81,7 @@ export default function DisputePanel({ title = 'Dispute Management', disputes = 
 
       {/* Rows */}
       {rows.length === 0 ? (
-        <div style={{ padding: '24px', textAlign: 'center', color: '#8b949e', fontSize: 13 }}>
+        <div style={{ padding: '24px', textAlign: 'center', color: t.textMuted, fontSize: 13 }}>
           No disputes open
         </div>
       ) : (
@@ -89,7 +91,7 @@ export default function DisputePanel({ title = 'Dispute Management', disputes = 
             return (
               <div
                 key={d.id}
-                style={{ borderBottom: i < rows.length - 1 ? '1px solid #21262d' : 'none' }}
+                style={{ borderBottom: i < rows.length - 1 ? `1px solid ${t.borderSub}` : 'none' }}
               >
                 {/* Row */}
                 <div style={{
@@ -103,16 +105,16 @@ export default function DisputePanel({ title = 'Dispute Management', disputes = 
                       onClick={() => setExpanded(isOpen ? null : d.id)}
                       style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: 4 }}
                     >
-                      {isOpen ? <ChevronDown size={12} color="#8b949e" /> : <ChevronRight size={12} color="#8b949e" />}
-                      <span style={{ fontWeight: 600, fontSize: 13, color: '#e6edf3' }}>{d.client}</span>
+                      {isOpen ? <ChevronDown size={12} color={t.textMuted} /> : <ChevronRight size={12} color={t.textMuted} />}
+                      <span style={{ fontWeight: 600, fontSize: 13, color: t.textPrimary }}>{d.client}</span>
                     </button>
-                    <div style={{ fontSize: 10, color: '#8b949e', marginTop: 2, paddingLeft: 16 }}>{d.id} · {d.category}</div>
+                    <div style={{ fontSize: 10, color: t.textMuted, marginTop: 2, paddingLeft: 16 }}>{d.id} · {d.category}</div>
                   </div>
 
                   {/* Amount + raised */}
                   <div>
-                    <div style={{ fontWeight: 600, fontSize: 13, color: '#e6edf3' }}>{d.amount}</div>
-                    <div style={{ fontSize: 10, color: '#8b949e', marginTop: 1 }}>Raised {d.raised} · {d.overdueDays}d old</div>
+                    <div style={{ fontWeight: 600, fontSize: 13, color: t.textPrimary }}>{d.amount}</div>
+                    <div style={{ fontSize: 10, color: t.textMuted, marginTop: 1 }}>Raised {d.raised} · {d.overdueDays}d old</div>
                   </div>
 
                   {/* Status badge */}
@@ -197,16 +199,16 @@ export default function DisputePanel({ title = 'Dispute Management', disputes = 
                 {isOpen && (
                   <div style={{
                     padding: '0 16px 12px', paddingLeft: 32,
-                    background: 'rgba(0,0,0,0.15)',
-                    borderTop: '1px solid #21262d',
+                    background: t.bgCardHover,
+                    borderTop: `1px solid ${t.borderSub}`,
                   }}>
-                    <div style={{ fontSize: 12, color: '#8b949e', paddingTop: 10, lineHeight: 1.8 }}>
-                      <span style={{ color: '#e6edf3', fontWeight: 600 }}>Description: </span>{d.description}
+                    <div style={{ fontSize: 12, color: t.textMuted, paddingTop: 10, lineHeight: 1.8 }}>
+                      <span style={{ color: t.textPrimary, fontWeight: 600 }}>Description: </span>{d.description}
                     </div>
                     {d.am && (
-                      <div style={{ fontSize: 11, color: '#8b949e', marginTop: 4 }}>
-                        <span style={{ color: '#e6edf3' }}>AM: </span>{d.am} &nbsp;·&nbsp;
-                        <span style={{ color: '#e6edf3' }}>Finance approved: </span>{d.financeApproved ? 'Yes' : 'Pending'}
+                      <div style={{ fontSize: 11, color: t.textMuted, marginTop: 4 }}>
+                        <span style={{ color: t.textPrimary }}>AM: </span>{d.am} &nbsp;·&nbsp;
+                        <span style={{ color: t.textPrimary }}>Finance approved: </span>{d.financeApproved ? 'Yes' : 'Pending'}
                       </div>
                     )}
                   </div>

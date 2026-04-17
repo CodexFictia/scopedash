@@ -4,8 +4,10 @@
  */
 import { useState } from 'react'
 import { Receipt, Bell, ExternalLink, AlertTriangle } from 'lucide-react'
+import { useTheme } from '../ThemeContext.jsx'
 
 export default function InvoiceAlertPanel({ title = 'Top Unpaid Invoices', invoices = [], onViewAll }) {
+  const { t } = useTheme()
   const [reminded, setReminded] = useState({})
   const [animating, setAnimating] = useState(null)
 
@@ -18,7 +20,7 @@ export default function InvoiceAlertPanel({ title = 'Top Unpaid Invoices', invoi
   }
 
   return (
-    <div style={{ background: '#1c2333', border: '1px solid rgba(248,81,73,0.3)', borderRadius: 10, overflow: 'hidden' }}>
+    <div style={{ background: t.bgCard, border: '1px solid rgba(248,81,73,0.3)', borderRadius: 10, overflow: 'hidden' }}>
       {/* Header */}
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -27,8 +29,8 @@ export default function InvoiceAlertPanel({ title = 'Top Unpaid Invoices', invoi
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <AlertTriangle size={14} color="#f85149" />
-          <span style={{ fontWeight: 700, fontSize: 13, color: '#e6edf3' }}>{title}</span>
-          <span style={{ fontSize: 10, color: '#8b949e' }}>— by value</span>
+          <span style={{ fontWeight: 700, fontSize: 13, color: t.textPrimary }}>{title}</span>
+          <span style={{ fontSize: 10, color: t.textMuted }}>— by value</span>
         </div>
         {onViewAll && (
           <button
@@ -55,21 +57,21 @@ export default function InvoiceAlertPanel({ title = 'Top Unpaid Invoices', invoi
               display: 'grid',
               gridTemplateColumns: '1fr 110px 80px 100px',
               gap: 12, padding: '10px 16px', alignItems: 'center',
-              borderBottom: i < 2 ? '1px solid #21262d' : 'none',
+              borderBottom: i < 2 ? `1px solid ${t.borderSub}` : 'none',
             }}
           >
             {/* Client + invoice ref */}
             <div>
-              <div style={{ fontWeight: 600, fontSize: 13, color: '#e6edf3' }}>{inv.client}</div>
-              <div style={{ fontSize: 10, color: '#8b949e', marginTop: 2 }}>
+              <div style={{ fontWeight: 600, fontSize: 13, color: t.textPrimary }}>{inv.client}</div>
+              <div style={{ fontSize: 10, color: t.textMuted, marginTop: 2 }}>
                 {inv.invoiceNo} · {inv.category}
               </div>
             </div>
 
             {/* Amount */}
             <div>
-              <div style={{ fontWeight: 700, fontSize: 13, color: '#e6edf3' }}>{inv.amount}</div>
-              <div style={{ fontSize: 10, color: '#8b949e', marginTop: 1 }}>Due {inv.dueDate}</div>
+              <div style={{ fontWeight: 700, fontSize: 13, color: t.textPrimary }}>{inv.amount}</div>
+              <div style={{ fontSize: 10, color: t.textMuted, marginTop: 1 }}>Due {inv.dueDate}</div>
             </div>
 
             {/* Overdue badge */}
