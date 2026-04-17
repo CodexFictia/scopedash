@@ -23,6 +23,7 @@ import InvoiceAlertPanel from '../components/InvoiceAlertPanel'
 import {
   ChevronDown, ChevronUp, UserCheck, Bell, CheckCircle2, AlertCircle, Clock,
 } from 'lucide-react'
+import { useTheme } from '../ThemeContext.jsx'
 
 // ─── Modal content renderers ──────────────────────────────────────────────────
 
@@ -55,16 +56,16 @@ function ClientListModal({ data }) {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         {clients.map((c, i) => (
           <div key={i} style={{
-            background: 'rgba(255,255,255,0.02)', border: '1px solid #21262d',
+            background: 'var(--bgCardHover)', border: '1px solid var(--borderSub)',
             borderRadius: 6, padding: '10px 12px',
             display: 'grid', gridTemplateColumns: '1fr auto', gap: 10, alignItems: 'center',
           }}>
             <div>
-              <div style={{ fontWeight: 600, fontSize: 13, color: '#e6edf3', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--textPrimary)', display: 'flex', alignItems: 'center', gap: 6 }}>
                 {c.name}
                 {c.status && <span style={{ width: 7, height: 7, borderRadius: '50%', background: STATUS_DOT[c.status] || '#8b949e', display: 'inline-block' }} />}
               </div>
-              <div style={{ fontSize: 11, color: '#8b949e', marginTop: 2 }}>
+              <div style={{ fontSize: 11, color: 'var(--textMuted)', marginTop: 2 }}>
                 {[c.location, c.am && `AM: ${c.am}`, c.seats && `${c.seats} seats`, c.lockin, c.health && `Health: ${c.health}`, c.daysNoticed && `${c.daysNoticed}d noticed`].filter(Boolean).join(' · ')}
               </div>
               {c.unpaid && <div style={{ fontSize: 11, color: '#d29922', marginTop: 1 }}>{c.unpaid}</div>}
@@ -84,10 +85,10 @@ function ClientListModal({ data }) {
                     <UserCheck size={11} /> Assign AAM
                   </button>
                   {delegateTarget === c.name && (
-                    <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: 4, zIndex: 200, background: '#1c2333', border: '1px solid #30363d', borderRadius: 6, minWidth: 160, boxShadow: '0 8px 24px rgba(0,0,0,0.5)' }}>
+                    <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: 4, zIndex: 200, background: 'var(--bgCard)', border: '1px solid var(--border)', borderRadius: 6, minWidth: 160, boxShadow: '0 8px 24px var(--shadow)' }}>
                       {aamOptions.map(a => (
                         <button key={a} onClick={() => { setDelegated(d => ({ ...d, [c.name]: a })); setDelegateTarget(null) }}
-                          style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '7px 12px', color: '#e6edf3', fontSize: 12, borderBottom: '1px solid #21262d' }}>
+                          style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '7px 12px', color: 'var(--textPrimary)', fontSize: 12, borderBottom: '1px solid var(--borderSub)' }}>
                           {a}
                         </button>
                       ))}
@@ -115,12 +116,12 @@ function InvoiceListModal({ data }) {
       {(data?.invoices || []).map((inv, i) => {
         const sent = reminded[inv.id]
         return (
-          <div key={i} style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid #21262d', borderRadius: 6, padding: '10px 12px', display: 'grid', gridTemplateColumns: '1fr 100px 80px 110px', gap: 8, alignItems: 'center' }}>
+          <div key={i} style={{ background: 'var(--bgCardHover)', border: '1px solid var(--borderSub)', borderRadius: 6, padding: '10px 12px', display: 'grid', gridTemplateColumns: '1fr 100px 80px 110px', gap: 8, alignItems: 'center' }}>
             <div>
-              <div style={{ fontWeight: 600, fontSize: 13, color: '#e6edf3' }}>{inv.client}</div>
-              <div style={{ fontSize: 11, color: '#8b949e', marginTop: 2 }}>{inv.invoiceNo} · {inv.category}</div>
+              <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--textPrimary)' }}>{inv.client}</div>
+              <div style={{ fontSize: 11, color: 'var(--textMuted)', marginTop: 2 }}>{inv.invoiceNo} · {inv.category}</div>
             </div>
-            <div style={{ fontWeight: 600, fontSize: 12, color: '#e6edf3' }}>{inv.amount}</div>
+            <div style={{ fontWeight: 600, fontSize: 12, color: 'var(--textPrimary)' }}>{inv.amount}</div>
             <div>
               {inv.overdueDays > 0
                 ? <span style={{ fontSize: 10, color: inv.overdueDays > 30 ? '#f85149' : '#d29922', fontWeight: 600 }}>{inv.overdueDays}d overdue</span>
@@ -145,14 +146,14 @@ function TicketListModal({ data }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
       {(data?.tickets || []).map((t, i) => (
-        <div key={i} style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid #21262d', borderRadius: 6, padding: '10px 12px', display: 'grid', gridTemplateColumns: '1fr 70px 90px 80px', gap: 8, alignItems: 'center' }}>
+        <div key={i} style={{ background: 'var(--bgCardHover)', border: '1px solid var(--borderSub)', borderRadius: 6, padding: '10px 12px', display: 'grid', gridTemplateColumns: '1fr 70px 90px 80px', gap: 8, alignItems: 'center' }}>
           <div>
-            <div style={{ fontWeight: 600, fontSize: 12, color: '#e6edf3' }}>{t.id} — {t.title}</div>
-            <div style={{ fontSize: 11, color: '#8b949e', marginTop: 2 }}>{t.client} · {t.category} · P{t.priority}</div>
+            <div style={{ fontWeight: 600, fontSize: 12, color: 'var(--textPrimary)' }}>{t.id} — {t.title}</div>
+            <div style={{ fontSize: 11, color: 'var(--textMuted)', marginTop: 2 }}>{t.client} · {t.category} · P{t.priority}</div>
           </div>
-          <span style={{ fontSize: 10, color: '#8b949e' }}>{t.openDays}d open</span>
+          <span style={{ fontSize: 10, color: 'var(--textMuted)' }}>{t.openDays}d open</span>
           <span style={{ fontSize: 10, fontWeight: 700, color: SLA_COLOR[t.slaStatus] || '#8b949e', background: (SLA_COLOR[t.slaStatus] || '#8b949e') + '18', borderRadius: 20, padding: '2px 7px', display: 'inline-block' }}>{t.slaStatus}</span>
-          <span style={{ fontSize: 11, color: '#8b949e' }}>{t.assignee}</span>
+          <span style={{ fontSize: 11, color: 'var(--textMuted)' }}>{t.assignee}</span>
         </div>
       ))}
     </div>
@@ -169,11 +170,11 @@ function ChecklistModal({ data }) {
         const C = isComplete ? '#3fb950' : item.status === 'overdue' ? '#f85149' : '#d29922'
         const Icon = isComplete ? CheckCircle2 : item.status === 'overdue' ? AlertCircle : Clock
         return (
-          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(255,255,255,0.02)', border: '1px solid #21262d', borderRadius: 6, padding: '10px 12px' }}>
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'var(--bgCardHover)', border: '1px solid var(--borderSub)', borderRadius: 6, padding: '10px 12px' }}>
             <Icon size={14} color={C} />
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 13, color: '#e6edf3' }}>{item.label}</div>
-              {item.sub && <div style={{ fontSize: 11, color: '#8b949e', marginTop: 1 }}>{item.sub}</div>}
+              <div style={{ fontSize: 13, color: 'var(--textPrimary)' }}>{item.label}</div>
+              {item.sub && <div style={{ fontSize: 11, color: 'var(--textMuted)', marginTop: 1 }}>{item.sub}</div>}
             </div>
             {!isComplete && (
               <button onClick={() => setDone(d => ({ ...d, [i]: true }))} style={{ background: 'rgba(63,185,80,0.1)', border: '1px solid rgba(63,185,80,0.25)', borderRadius: 5, cursor: 'pointer', padding: '3px 8px', color: '#3fb950', fontSize: 11, fontWeight: 600 }}>
@@ -197,15 +198,15 @@ function TaskViewPanel({ taskView }) {
   const PRIORITY_COLOR = { high: '#f85149', medium: '#d29922', low: '#8b949e' }
 
   return (
-    <div style={{ background: '#1c2333', border: '1px solid #30363d', borderRadius: 10, overflow: 'hidden' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', borderBottom: '1px solid #30363d' }}>
+    <div style={{ background: 'var(--bgCard)', border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', borderBottom: '1px solid var(--border)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <CheckCircle2 size={15} color="#f97316" />
-          <span style={{ fontWeight: 700, fontSize: 14, color: '#e6edf3' }}>Task Management</span>
+          <span style={{ fontWeight: 700, fontSize: 14, color: 'var(--textPrimary)' }}>Task Management</span>
         </div>
         <div style={{ display: 'flex', gap: 4 }}>
           {['daily', 'weekly'].map(t => (
-            <button key={t} onClick={() => setTab(t)} style={{ background: tab === t ? 'rgba(249,115,22,0.15)' : 'transparent', color: tab === t ? '#f97316' : '#8b949e', border: `1px solid ${tab === t ? 'rgba(249,115,22,0.4)' : '#30363d'}`, borderRadius: 6, cursor: 'pointer', padding: '4px 12px', fontSize: 12, fontWeight: 600, textTransform: 'capitalize' }}>
+            <button key={t} onClick={() => setTab(t)} style={{ background: tab === t ? 'rgba(249,115,22,0.15)' : 'transparent', color: tab === t ? '#f97316' : 'var(--textMuted)', border: `1px solid ${tab === t ? 'rgba(249,115,22,0.4)' : 'var(--border)'}`, borderRadius: 6, cursor: 'pointer', padding: '4px 12px', fontSize: 12, fontWeight: 600, textTransform: 'capitalize' }}>
               {t === 'daily' ? 'Today' : 'This Week'}
             </button>
           ))}
@@ -215,11 +216,11 @@ function TaskViewPanel({ taskView }) {
         {tasks.map((task, i) => {
           const isDelegated = delegated[task.id]
           return (
-            <div key={task.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, padding: '10px 16px', borderBottom: i < tasks.length - 1 ? '1px solid #21262d' : 'none' }}>
+            <div key={task.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, padding: '10px 16px', borderBottom: i < tasks.length - 1 ? '1px solid var(--borderSub)' : 'none' }}>
               <div style={{ width: 8, height: 8, borderRadius: '50%', marginTop: 5, flexShrink: 0, background: PRIORITY_COLOR[task.priority] || '#8b949e' }} />
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 13, color: '#e6edf3', fontWeight: 500 }}>{task.label}</div>
-                <div style={{ fontSize: 11, color: '#8b949e', marginTop: 2 }}>
+                <div style={{ fontSize: 13, color: 'var(--textPrimary)', fontWeight: 500 }}>{task.label}</div>
+                <div style={{ fontSize: 11, color: 'var(--textMuted)', marginTop: 2 }}>
                   {[task.client, task.due && `Due: ${task.due}`, task.category].filter(Boolean).join(' · ')}
                 </div>
               </div>
@@ -229,9 +230,9 @@ function TaskViewPanel({ taskView }) {
                     <UserCheck size={10} /> Assign AAM
                   </button>
                   {delegateTarget === task.id && (
-                    <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: 3, zIndex: 100, background: '#1c2333', border: '1px solid #30363d', borderRadius: 6, minWidth: 150, boxShadow: '0 8px 24px rgba(0,0,0,0.5)' }}>
+                    <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: 3, zIndex: 100, background: 'var(--bgCard)', border: '1px solid var(--border)', borderRadius: 6, minWidth: 150, boxShadow: '0 8px 24px var(--shadow)' }}>
                       {aamOptions.map(a => (
-                        <button key={a} onClick={() => { setDelegated(d => ({ ...d, [task.id]: a })); setDelegateTarget(null) }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '7px 12px', color: '#e6edf3', fontSize: 12, borderBottom: '1px solid #21262d' }}>
+                        <button key={a} onClick={() => { setDelegated(d => ({ ...d, [task.id]: a })); setDelegateTarget(null) }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '7px 12px', color: 'var(--textPrimary)', fontSize: 12, borderBottom: '1px solid var(--borderSub)' }}>
                           {a}
                         </button>
                       ))}
@@ -243,7 +244,7 @@ function TaskViewPanel({ taskView }) {
             </div>
           )
         })}
-        {tasks.length === 0 && <div style={{ padding: '20px', textAlign: 'center', color: '#8b949e', fontSize: 12 }}>No tasks for this period</div>}
+        {tasks.length === 0 && <div style={{ padding: '20px', textAlign: 'center', color: 'var(--textMuted)', fontSize: 12 }}>No tasks for this period</div>}
       </div>
     </div>
   )
@@ -307,7 +308,7 @@ export default function DashboardPage({
         {/* 5. Centre KPI cards (rehead) — BEFORE composites */}
         {d.centreCards && d.centreCards.length > 0 && (
           <div>
-            <div style={{ fontSize: 11, fontWeight: 600, color: '#656d76', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 8 }}>Centre Overview</div>
+            <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--textSubtle)', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 8 }}>Centre Overview</div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))', gap: 12 }}>
               {d.centreCards.map((c, i) => (
                 <CentreKPICard key={i} name={c.name} location={c.location} cm={c.cm} status={c.status} metrics={c.metrics} sparkline={c.sparkline} onMetricClick={openModal} />
@@ -334,10 +335,10 @@ export default function DashboardPage({
         {d.metrics && d.metrics.length > 0 && (
           <div>
             {d.collapsibleMetrics && (
-              <button onClick={() => setMetricsOpen(o => !o)} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6, background: 'none', border: 'none', cursor: 'pointer', color: '#8b949e', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px', padding: 0 }}>
+              <button onClick={() => setMetricsOpen(o => !o)} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--textMuted)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px', padding: 0 }}>
                 {metricsOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
                 KPI Metrics
-                <span style={{ color: '#656d76', fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>
+                <span style={{ color: 'var(--textSubtle)', fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>
                   — {metricsOpen ? 'collapse' : 'expand'}
                 </span>
               </button>
@@ -409,7 +410,7 @@ export default function DashboardPage({
           {activeModal.type === 'ticketList'   && <TicketListModal   data={activeModal.data} />}
           {activeModal.type === 'checklist'    && <ChecklistModal    data={activeModal.data} />}
           {activeModal.type === 'info' && (
-            <div style={{ fontSize: 13, color: '#c9d1d9', lineHeight: 1.7 }}>{activeModal.data?.content}</div>
+            <div style={{ fontSize: 13, color: 'var(--textBody)', lineHeight: 1.7 }}>{activeModal.data?.content}</div>
           )}
         </Modal>
       )}

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react'
+import { useTheme } from '../ThemeContext.jsx'
 
 const BADGE = {
   Pending:    { color: '#d29922', bg: '#d2992225' },
@@ -39,6 +40,7 @@ function StatusBadge({ value }) {
 }
 
 export default function DataGrid({ title, columns, data }) {
+  const { t } = useTheme()
   const [sortKey, setSortKey] = useState(null)
   const [sortDir, setSortDir] = useState('asc')
   const [page, setPage] = useState(0)
@@ -60,10 +62,10 @@ export default function DataGrid({ title, columns, data }) {
   const totalPages = Math.ceil(data.length / PAGE)
 
   return (
-    <div style={{ background: '#1c2333', border: '1px solid #30363d', borderRadius: 8, overflow: 'hidden' }}>
-      <div style={{ padding: '12px 16px', borderBottom: '1px solid #30363d', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <h3 style={{ margin: 0, fontSize: 13, fontWeight: 600, color: '#e6edf3' }}>{title}</h3>
-        <span style={{ fontSize: 11, color: '#656d76' }}>{data.length} records</span>
+    <div style={{ background: t.bgCard, border: `1px solid ${t.border}`, borderRadius: 8, overflow: 'hidden' }}>
+      <div style={{ padding: '12px 16px', borderBottom: `1px solid ${t.border}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <h3 style={{ margin: 0, fontSize: 13, fontWeight: 600, color: t.textPrimary }}>{title}</h3>
+        <span style={{ fontSize: 11, color: t.textSubtle }}>{data.length} records</span>
       </div>
       <div style={{ overflowX: 'auto' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
@@ -75,8 +77,8 @@ export default function DataGrid({ title, columns, data }) {
                   onClick={() => col.sortable !== false && handleSort(col.key)}
                   style={{
                     padding: '8px 14px', textAlign: 'left', fontSize: 10, fontWeight: 600,
-                    color: '#8b949e', textTransform: 'uppercase', letterSpacing: '0.5px',
-                    background: '#161b22', borderBottom: '1px solid #30363d',
+                    color: t.textMuted, textTransform: 'uppercase', letterSpacing: '0.5px',
+                    background: t.bgSurface, borderBottom: `1px solid ${t.border}`,
                     cursor: col.sortable !== false ? 'pointer' : 'default',
                     whiteSpace: 'nowrap', userSelect: 'none',
                   }}
@@ -97,12 +99,12 @@ export default function DataGrid({ title, columns, data }) {
             {paged.map((row, i) => (
               <tr
                 key={i}
-                style={{ borderBottom: '1px solid #30363d', transition: 'background 0.1s', cursor: 'pointer' }}
-                onMouseEnter={e => e.currentTarget.style.background = '#21262d'}
+                style={{ borderBottom: `1px solid ${t.border}`, transition: 'background 0.1s', cursor: 'pointer' }}
+                onMouseEnter={e => e.currentTarget.style.background = t.bgCardHover}
                 onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
               >
                 {columns.map(col => (
-                  <td key={col.key} style={{ padding: '9px 14px', color: '#e6edf3', whiteSpace: 'nowrap' }}>
+                  <td key={col.key} style={{ padding: '9px 14px', color: t.textPrimary, whiteSpace: 'nowrap' }}>
                     {col.type === 'status' ? (
                       <StatusBadge value={row[col.key]} />
                     ) : col.type === 'action' ? (
@@ -111,13 +113,13 @@ export default function DataGrid({ title, columns, data }) {
                       </button>
                     ) : col.type === 'progress' ? (
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <div style={{ width: 60, height: 4, background: '#30363d', borderRadius: 2 }}>
+                        <div style={{ width: 60, height: 4, background: t.border, borderRadius: 2 }}>
                           <div style={{ width: `${row[col.key]}%`, height: '100%', background: row[col.key] >= 80 ? '#3fb950' : row[col.key] >= 50 ? '#d29922' : '#f85149', borderRadius: 2 }} />
                         </div>
                         <span style={{ color: '#8b949e', fontSize: 11 }}>{row[col.key]}%</span>
                       </div>
                     ) : (
-                      <span style={{ color: col.muted ? '#8b949e' : '#e6edf3' }}>{row[col.key]}</span>
+                      <span style={{ color: col.muted ? t.textMuted : t.textPrimary }}>{row[col.key]}</span>
                     )}
                   </td>
                 ))}
@@ -127,13 +129,13 @@ export default function DataGrid({ title, columns, data }) {
         </table>
       </div>
       {totalPages > 1 && (
-        <div style={{ padding: '8px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #30363d' }}>
+        <div style={{ padding: '8px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: `1px solid ${t.border}` }}>
           <span style={{ fontSize: 11, color: '#656d76' }}>
             {page * PAGE + 1}–{Math.min((page + 1) * PAGE, data.length)} of {data.length}
           </span>
           <div style={{ display: 'flex', gap: 4 }}>
             {Array.from({ length: totalPages }, (_, i) => (
-              <button key={i} onClick={() => setPage(i)} style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid', borderColor: page === i ? '#f97316' : '#30363d', background: page === i ? 'rgba(249,115,22,0.15)' : 'transparent', color: page === i ? '#f97316' : '#8b949e', fontSize: 11, cursor: 'pointer' }}>{i + 1}</button>
+              <button key={i} onClick={() => setPage(i)} style={{ width: 24, height: 24, borderRadius: 4, border: '1px solid', borderColor: page === i ? '#f97316' : t.border, background: page === i ? 'rgba(249,115,22,0.15)' : 'transparent', color: page === i ? '#f97316' : t.textMuted, fontSize: 11, cursor: 'pointer' }}>{i + 1}</button>
             ))}
           </div>
         </div>

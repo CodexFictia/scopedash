@@ -1,4 +1,5 @@
-import { Layers, Ticket, Building2, Users, Briefcase, Bell, MessageSquarePlus, ChevronRight, Zap, LayoutDashboard, ShoppingBag } from 'lucide-react'
+import { Layers, Ticket, Building2, Users, Briefcase, Bell, MessageSquarePlus, ChevronRight, Zap, ShoppingBag } from 'lucide-react'
+import { useTheme } from '../ThemeContext.jsx'
 
 const NAV = [
   { id: 'cspoc',         label: 'Vendor Reports',  Icon: Layers,       desc: 'Vendor Reports — Finance · VAS · Tech Ops' },
@@ -9,18 +10,7 @@ const NAV = [
   { id: 'crm',           label: 'CRM',              Icon: Briefcase,    desc: 'Sales Pipeline' },
 ]
 
-const S = {
-  sidebar: { width: 220, background: '#161b22', borderRight: '1px solid #30363d', display: 'flex', flexDirection: 'column', flexShrink: 0 },
-  logo: { padding: '18px 16px', borderBottom: '1px solid #30363d', display: 'flex', alignItems: 'center', gap: 10 },
-  logoIcon: { width: 34, height: 34, background: 'linear-gradient(135deg, #f97316, #ea580c)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 },
-  logoText: { fontSize: 14, fontWeight: 700, color: '#e6edf3', lineHeight: 1.2 },
-  logoSub: { fontSize: 10, color: '#8b949e', marginTop: 1 },
-  nav: { flex: 1, padding: '10px 8px', display: 'flex', flexDirection: 'column', gap: 2, overflowY: 'auto' },
-  sectionLabel: { fontSize: 10, fontWeight: 600, color: '#656d76', textTransform: 'uppercase', letterSpacing: '0.6px', padding: '6px 8px 4px', marginBottom: 2 },
-  bottom: { padding: '8px', borderTop: '1px solid #30363d', display: 'flex', flexDirection: 'column', gap: 2 },
-}
-
-function NavBtn({ id, label, Icon, desc, active, onClick }) {
+function NavBtn({ id, label, Icon, desc, active, onClick, t }) {
   return (
     <button
       onClick={() => onClick(id)}
@@ -29,7 +19,7 @@ function NavBtn({ id, label, Icon, desc, active, onClick }) {
         display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px',
         borderRadius: 6, border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left',
         background: active ? 'rgba(249,115,22,0.12)' : 'transparent',
-        color: active ? '#f97316' : '#8b949e', fontSize: 13,
+        color: active ? '#f97316' : t.textMuted, fontSize: 13,
         fontWeight: active ? 600 : 400, transition: 'all 0.15s',
       }}
     >
@@ -40,14 +30,14 @@ function NavBtn({ id, label, Icon, desc, active, onClick }) {
   )
 }
 
-function BottomBtn({ icon: Icon, label, badge, onClick }) {
+function BottomBtn({ icon: Icon, label, badge, onClick, t }) {
   return (
     <button
       onClick={onClick}
       style={{
         display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px',
         borderRadius: 6, border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left',
-        background: 'transparent', color: '#8b949e', fontSize: 12, transition: 'all 0.15s',
+        background: 'transparent', color: t.textMuted, fontSize: 12, transition: 'all 0.15s',
       }}
     >
       <Icon size={14} style={{ flexShrink: 0 }} />
@@ -62,35 +52,38 @@ function BottomBtn({ icon: Icon, label, badge, onClick }) {
 }
 
 export default function Sidebar({ activePage, onPageChange, onNotifications, onProfile, onFeedback }) {
+  const { t } = useTheme()
   return (
-    <div style={S.sidebar}>
+    <div style={{ width: 220, background: t.bgSurface, borderRight: `1px solid ${t.border}`, display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
       {/* Logo */}
-      <div style={S.logo}>
-        <div style={S.logoIcon}><Zap size={16} color="white" /></div>
+      <div style={{ padding: '18px 16px', borderBottom: `1px solid ${t.border}`, display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ width: 34, height: 34, background: 'linear-gradient(135deg, #f97316, #ea580c)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <Zap size={16} color="white" />
+        </div>
         <div>
-          <div style={S.logoText}>Smartworks</div>
-          <div style={S.logoSub}>Dashboard Suite</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: t.textPrimary, lineHeight: 1.2 }}>Smartworks</div>
+          <div style={{ fontSize: 10, color: t.textMuted, marginTop: 1 }}>Dashboard Suite</div>
         </div>
       </div>
 
       {/* Nav */}
-      <nav style={S.nav}>
-        <div style={S.sectionLabel}>Products</div>
+      <nav style={{ flex: 1, padding: '10px 8px', display: 'flex', flexDirection: 'column', gap: 2, overflowY: 'auto' }}>
+        <div style={{ fontSize: 10, fontWeight: 600, color: t.textSubtle, textTransform: 'uppercase', letterSpacing: '0.6px', padding: '6px 8px 4px', marginBottom: 2 }}>Products</div>
         {NAV.map(n => (
-          <NavBtn key={n.id} {...n} active={activePage === n.id} onClick={onPageChange} />
+          <NavBtn key={n.id} {...n} t={t} active={activePage === n.id} onClick={onPageChange} />
         ))}
       </nav>
 
       {/* Bottom */}
-      <div style={S.bottom}>
-        <BottomBtn icon={MessageSquarePlus} label="Feedback" onClick={onFeedback} />
-        <BottomBtn icon={Bell} label="Notifications" badge="7" onClick={onNotifications} />
+      <div style={{ padding: '8px', borderTop: `1px solid ${t.border}`, display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <BottomBtn icon={MessageSquarePlus} label="Feedback" onClick={onFeedback} t={t} />
+        <BottomBtn icon={Bell} label="Notifications" badge="7" onClick={onNotifications} t={t} />
         <button
           onClick={onProfile}
           style={{
             display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px',
             borderRadius: 6, border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left',
-            background: 'transparent', color: '#8b949e', fontSize: 12, transition: 'all 0.15s',
+            background: 'transparent', color: t.textMuted, fontSize: 12, transition: 'all 0.15s',
           }}
         >
           <div style={{ width: 20, height: 20, borderRadius: '50%', background: 'linear-gradient(135deg,#f97316,#ea580c)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 700, color: '#fff', flexShrink: 0 }}>J</div>

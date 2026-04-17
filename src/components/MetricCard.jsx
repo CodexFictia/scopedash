@@ -1,4 +1,5 @@
 import { TrendingUp, TrendingDown, Minus, ChevronRight } from 'lucide-react'
+import { useTheme } from '../ThemeContext.jsx'
 
 const STATUS_COLOR = {
   positive: '#3fb950', warning: '#d29922', negative: '#f85149',
@@ -6,6 +7,7 @@ const STATUS_COLOR = {
 }
 
 export default function MetricCard({ label, value, sub, change, changeLabel, trend, status = 'neutral', icon: Icon, highlight, onClick }) {
+  const { t } = useTheme()
   const color = STATUS_COLOR[status]
   const TrendIcon = trend === 'up' ? TrendingUp : trend === 'down' ? TrendingDown : Minus
   const trendColor = trend === 'up' ? '#3fb950' : trend === 'down' ? '#f85149' : '#8b949e'
@@ -16,15 +18,15 @@ export default function MetricCard({ label, value, sub, change, changeLabel, tre
       onClick={onClick}
       title={isClickable ? `Click to view ${label} details` : undefined}
       style={{
-        background: '#1c2333',
-        border: `1px solid ${highlight ? color + '60' : '#30363d'}`,
+        background: t.bgCard,
+        border: `1px solid ${highlight ? color + '60' : t.border}`,
         borderRadius: 8, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 8,
         position: 'relative', overflow: 'hidden',
         cursor: isClickable ? 'pointer' : 'default',
         transition: isClickable ? 'border-color 0.15s, background 0.15s' : 'none',
       }}
-      onMouseEnter={e => { if (isClickable) { e.currentTarget.style.background = '#222d3f'; e.currentTarget.style.borderColor = color + '90' } }}
-      onMouseLeave={e => { if (isClickable) { e.currentTarget.style.background = '#1c2333'; e.currentTarget.style.borderColor = highlight ? color + '60' : '#30363d' } }}
+      onMouseEnter={e => { if (isClickable) { e.currentTarget.style.background = t.bgCardHover; e.currentTarget.style.borderColor = color + '90' } }}
+      onMouseLeave={e => { if (isClickable) { e.currentTarget.style.background = t.bgCard; e.currentTarget.style.borderColor = highlight ? color + '60' : t.border } }}
     >
       {/* Top glow strip if highlight */}
       {highlight && (
@@ -32,7 +34,7 @@ export default function MetricCard({ label, value, sub, change, changeLabel, tre
       )}
 
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-        <span style={{ fontSize: 11, fontWeight: 600, color: '#8b949e', textTransform: 'uppercase', letterSpacing: '0.5px', lineHeight: 1.3, maxWidth: '78%' }}>
+        <span style={{ fontSize: 11, fontWeight: 600, color: t.textMuted, textTransform: 'uppercase', letterSpacing: '0.5px', lineHeight: 1.3, maxWidth: '78%' }}>
           {label}
         </span>
         <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
@@ -45,16 +47,15 @@ export default function MetricCard({ label, value, sub, change, changeLabel, tre
         </div>
       </div>
 
-      <div style={{ fontSize: 22, fontWeight: 700, color: '#e6edf3', lineHeight: 1 }}>{value}</div>
+      <div style={{ fontSize: 22, fontWeight: 700, color: t.textPrimary, lineHeight: 1 }}>{value}</div>
 
-      {/* sub or change */}
       {(sub || change) !== undefined && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11 }}>
           {trend && <TrendIcon size={11} color={trendColor} />}
-          <span style={{ color: trend ? trendColor : '#8b949e', fontWeight: trend ? 500 : 400 }}>
+          <span style={{ color: trend ? trendColor : t.textMuted, fontWeight: trend ? 500 : 400 }}>
             {sub || change}
           </span>
-          {changeLabel && <span style={{ color: '#656d76' }}> {changeLabel}</span>}
+          {changeLabel && <span style={{ color: t.textSubtle }}> {changeLabel}</span>}
         </div>
       )}
     </div>

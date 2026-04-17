@@ -9,8 +9,10 @@ import CRMPage from './pages/CRMPage'
 import NotificationsPanel from './components/NotificationsPanel'
 import FeedbackModal from './components/FeedbackModal'
 import ProfilePanel from './components/ProfilePanel'
+import { useTheme } from './ThemeContext.jsx'
 
 export default function App() {
+  const { t } = useTheme()
   const [activePage, setActivePage] = useState('cspoc')
   const [showNotifications, setShowNotifications] = useState(false)
   const [showProfile, setShowProfile] = useState(false)
@@ -29,7 +31,7 @@ export default function App() {
   }
 
   return (
-    <div style={{ display: 'flex', height: '100vh', background: '#0d1117', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', height: '100vh', background: t.bgRoot, overflow: 'hidden' }}>
       <Sidebar
         activePage={activePage}
         onPageChange={setActivePage}
