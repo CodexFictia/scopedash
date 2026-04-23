@@ -227,6 +227,109 @@ const amheadMeetingComposite = meetingComposite({
   subtitle: '186 pending meetings past SLA — bulk re-plan',
 })
 
+// ─── AM HEAD — task/meeting modal hierarchy + items ───────────────────────────
+const amheadHierarchy = {
+  zones: ['South', 'North', 'West', 'East'],
+  cities: {
+    South: ['Bengaluru', 'Hyderabad', 'Chennai'],
+    North: ['Delhi', 'Gurgaon', 'Noida'],
+    West:  ['Mumbai', 'Pune'],
+    East:  ['Kolkata'],
+  },
+  centres: {
+    Bengaluru:  ['Whitefield', 'ORR', 'Koramangala', 'Electronic City'],
+    Hyderabad:  ['HiTec City', 'Gachibowli', 'Cyber City'],
+    Chennai:    ['Tidel Park', 'OMR Hub'],
+    Delhi:      ['Connaught Place', 'Aerocity'],
+    Gurgaon:    ['Golf Course', 'Cyber City Gurgaon'],
+    Noida:      ['Sector 62', 'Noida One'],
+    Mumbai:     ['BKC', 'Lower Parel', 'Andheri'],
+    Pune:       ['Baner', 'Kharadi'],
+    Kolkata:    ['Salt Lake', 'New Town'],
+  },
+}
+
+const amheadTaskItems = [
+  { id: 'AT001', label: 'Deutsche Bank GCC — renewal commercial review',   am: 'Priya Sharma',   client: 'Deutsche Bank GCC',  category: 'Renewal',      zone: 'South', city: 'Bengaluru', centre: 'Whitefield',         status: 'open',       due: 'Apr 15' },
+  { id: 'AT002', label: 'Approve mod-project commercials — 8 projects',    am: 'Priya Sharma',   client: 'Multi-client',        category: 'Approvals',    zone: 'South', city: 'Bengaluru', centre: 'Whitefield',         status: 'open',       due: 'Apr 12' },
+  { id: 'AT003', label: 'XYZ Fintech — health intervention plan',          am: 'Sneha Iyer',     client: 'XYZ Fintech',         category: 'Retention',    zone: 'South', city: 'Bengaluru', centre: 'Koramangala',        status: 'open',       due: 'Apr 11' },
+  { id: 'AT004', label: 'VectorAI Labs — exit notice response',            am: 'Meera Krishnan', client: 'VectorAI Labs',       category: 'Exit Mgmt',   zone: 'South', city: 'Bengaluru', centre: 'ORR',                status: 'violated',   due: 'Apr 2'  },
+  { id: 'AT005', label: 'NorthStar Bank — overdue invoice 62d follow-up',  am: 'Anjali Gupta',   client: 'NorthStar Bank',      category: 'Collections',  zone: 'South', city: 'Bengaluru', centre: 'Electronic City',    status: 'violated',   due: 'Mar 28' },
+  { id: 'AT006', label: 'Salesforce India — upgrade seat capacity plan',   am: 'Aditi Nair',     client: 'Salesforce India',    category: 'Expansion',    zone: 'South', city: 'Bengaluru', centre: 'ORR',                status: 'open',       due: 'Apr 14' },
+  { id: 'AT007', label: 'Adani Group — Q2 service review package',         am: 'Aditi Nair',     client: 'Adani Group',         category: 'Account Review',zone: 'South', city: 'Hyderabad', centre: 'HiTec City',        status: 'closed-sla', due: 'Apr 9'  },
+  { id: 'AT008', label: 'GlobalMed — CSAT improvement plan',               am: 'Vikram Rao',     client: 'GlobalMed',           category: 'CSAT',         zone: 'South', city: 'Hyderabad', centre: 'Gachibowli',         status: 'violated',   due: 'Apr 4'  },
+  { id: 'AT009', label: 'HiTec City expansion — feasibility report',       am: 'Aditi Nair',     client: null,                  category: 'Project',      zone: 'South', city: 'Hyderabad', centre: 'HiTec City',         status: 'open',       due: 'Apr 16' },
+  { id: 'AT010', label: 'QuantBridge Capital — credit note clearance',     am: 'Rahul Mehta',    client: 'QuantBridge Capital', category: 'Billing',      zone: 'South', city: 'Hyderabad', centre: 'Cyber City',          status: 'violated',   due: 'Apr 3'  },
+  { id: 'AT011', label: 'Tidel Park — housekeeping SLA escalation',        am: 'Meera Krishnan', client: 'Cognizant',           category: 'FM',           zone: 'South', city: 'Chennai',   centre: 'Tidel Park',         status: 'violated',   due: 'Apr 5'  },
+  { id: 'AT012', label: 'TCS GBS — renewal negotiation docs',              am: 'Meera Krishnan', client: 'TCS GBS',             category: 'Renewal',      zone: 'South', city: 'Chennai',   centre: 'OMR Hub',            status: 'open',       due: 'Apr 18' },
+  { id: 'AT013', label: 'Chennai region — monthly MIS submission',         am: 'Meera Krishnan', client: null,                  category: 'Reporting',    zone: 'South', city: 'Chennai',   centre: 'Tidel Park',         status: 'closed-sla', due: 'Apr 11' },
+  { id: 'AT014', label: 'HDFC Securities — lock-in expiry communication',  am: 'Rohan Desai',    client: 'HDFC Securities',     category: 'Retention',    zone: 'North', city: 'Delhi',     centre: 'Connaught Place',    status: 'open',       due: 'Apr 13' },
+  { id: 'AT015', label: 'Air India GCC — billing dispute resolution',      am: 'Rohan Desai',    client: 'Air India GCC',       category: 'Billing',      zone: 'North', city: 'Delhi',     centre: 'Aerocity',           status: 'violated',   due: 'Apr 6'  },
+  { id: 'AT016', label: 'Aerocity centre — IoT sensor replacement',        am: 'Rohan Desai',    client: null,                  category: 'Tech Ops',     zone: 'North', city: 'Delhi',     centre: 'Aerocity',           status: 'closed-sla', due: 'Apr 10' },
+  { id: 'AT017', label: 'Rahul Mehta — rescue plan approval, 4 at-risk',  am: 'Rahul Mehta',    client: 'Multi-client',        category: 'Retention',    zone: 'North', city: 'Gurgaon',   centre: 'Golf Course',        status: 'open',       due: 'Apr 12' },
+  { id: 'AT018', label: 'PwC India — expansion seat projection',           am: 'Rahul Mehta',    client: 'PwC India',           category: 'Expansion',    zone: 'North', city: 'Gurgaon',   centre: 'Golf Course',        status: 'open',       due: 'Apr 14' },
+  { id: 'AT019', label: 'Cyber City Gurgaon — CSAT drop investigation',   am: 'Rahul Mehta',    client: null,                  category: 'CSAT',         zone: 'North', city: 'Gurgaon',   centre: 'Cyber City Gurgaon', status: 'violated',   due: 'Apr 7'  },
+  { id: 'AT020', label: 'HCL Tech — notice period response plan',          am: 'Anjali Gupta',   client: 'HCL Tech',            category: 'Exit Mgmt',   zone: 'North', city: 'Noida',     centre: 'Sector 62',          status: 'open',       due: 'Apr 15' },
+  { id: 'AT021', label: 'Noida One — security audit closure',              am: 'Anjali Gupta',   client: null,                  category: 'Compliance',   zone: 'North', city: 'Noida',     centre: 'Noida One',          status: 'closed-sla', due: 'Apr 8'  },
+  { id: 'AT022', label: 'Morgan Stanley — renewal proposal submission',    am: 'Karan Patel',    client: 'Morgan Stanley',      category: 'Renewal',      zone: 'West',  city: 'Mumbai',    centre: 'BKC',                status: 'open',       due: 'Apr 16' },
+  { id: 'AT023', label: 'Axis Bank — overdue 45d collection call',         am: 'Karan Patel',    client: 'Axis Bank',           category: 'Collections',  zone: 'West',  city: 'Mumbai',    centre: 'BKC',                status: 'violated',   due: 'Apr 1'  },
+  { id: 'AT024', label: 'Lower Parel — FM vendor re-tendering',            am: 'Rohan Desai',    client: null,                  category: 'FM',           zone: 'West',  city: 'Mumbai',    centre: 'Lower Parel',        status: 'open',       due: 'Apr 19' },
+  { id: 'AT025', label: 'Andheri centre — WiFi infra SLA escalation',      am: 'Rohan Desai',    client: 'Wipro Tech',          category: 'IT Ops',       zone: 'West',  city: 'Mumbai',    centre: 'Andheri',            status: 'violated',   due: 'Apr 3'  },
+  { id: 'AT026', label: 'Bajaj Finserv — CSAT 90-day review',              am: 'Sneha Iyer',     client: 'Bajaj Finserv',       category: 'CSAT',         zone: 'West',  city: 'Pune',      centre: 'Baner',              status: 'closed-sla', due: 'Apr 9'  },
+  { id: 'AT027', label: 'Kharadi — power backup maintenance closure',      am: 'Sneha Iyer',     client: null,                  category: 'Tech Ops',     zone: 'West',  city: 'Pune',      centre: 'Kharadi',            status: 'violated',   due: 'Apr 5'  },
+  { id: 'AT028', label: 'Capgemini Pune — lock-in renewal discussion',     am: 'Sneha Iyer',     client: 'Capgemini',           category: 'Retention',    zone: 'West',  city: 'Pune',      centre: 'Baner',              status: 'open',       due: 'Apr 17' },
+  { id: 'AT029', label: 'ITC GBC — new client onboarding plan',            am: 'Vikram Rao',     client: 'ITC GBC',             category: 'Onboarding',   zone: 'East',  city: 'Kolkata',   centre: 'Salt Lake',          status: 'open',       due: 'Apr 15' },
+  { id: 'AT030', label: 'New Town centre — FM SLA report Apr',             am: 'Vikram Rao',     client: null,                  category: 'Reporting',    zone: 'East',  city: 'Kolkata',   centre: 'New Town',           status: 'closed-sla', due: 'Apr 12' },
+  { id: 'AT031', label: 'Coal India — billing reconciliation Q4',          am: 'Vikram Rao',     client: 'Coal India',          category: 'Billing',      zone: 'East',  city: 'Kolkata',   centre: 'Salt Lake',          status: 'violated',   due: 'Apr 4'  },
+  { id: 'AT032', label: 'East zone — SLA violation root cause analysis',   am: 'Vikram Rao',     client: null,                  category: 'Operations',   zone: 'East',  city: 'Kolkata',   centre: 'New Town',           status: 'open',       due: 'Apr 18' },
+]
+
+const amheadMeetingItems = [
+  { id: 'AM001', label: 'Deutsche Bank GCC — renewal QBR',               am: 'Priya Sharma',   client: 'Deutsche Bank GCC',  category: 'Renewal',       zone: 'South', city: 'Bengaluru', centre: 'Whitefield',      status: 'booked',    due: 'Apr 15' },
+  { id: 'AM002', label: 'XYZ Fintech — executive retention meeting',      am: 'Sneha Iyer',     client: 'XYZ Fintech',        category: 'Retention',     zone: 'South', city: 'Bengaluru', centre: 'Koramangala',     status: 'booked',    due: 'Apr 11' },
+  { id: 'AM003', label: 'Salesforce India — expansion planning call',     am: 'Aditi Nair',     client: 'Salesforce India',   category: 'Expansion',     zone: 'South', city: 'Bengaluru', centre: 'ORR',             status: 'completed', due: 'Apr 10' },
+  { id: 'AM004', label: 'VectorAI Labs — exit negotiation',               am: 'Meera Krishnan', client: 'VectorAI Labs',      category: 'Exit Mgmt',    zone: 'South', city: 'Bengaluru', centre: 'ORR',             status: 'violated',  due: 'Apr 2'  },
+  { id: 'AM005', label: 'Adani Group — Q2 service review',                am: 'Aditi Nair',     client: 'Adani Group',        category: 'Account Review',zone: 'South', city: 'Hyderabad', centre: 'HiTec City',      status: 'completed', due: 'Apr 9'  },
+  { id: 'AM006', label: 'GlobalMed — health score deep-dive',             am: 'Vikram Rao',     client: 'GlobalMed',          category: 'CSAT',          zone: 'South', city: 'Hyderabad', centre: 'Gachibowli',      status: 'violated',  due: 'Apr 4'  },
+  { id: 'AM007', label: 'QuantBridge Capital — dispute hearing',          am: 'Rahul Mehta',    client: 'QuantBridge Capital',category: 'Billing',       zone: 'South', city: 'Hyderabad', centre: 'Cyber City',       status: 'pending',   due: 'Apr 14' },
+  { id: 'AM008', label: 'TCS GBS — renewal negotiation session',          am: 'Meera Krishnan', client: 'TCS GBS',            category: 'Renewal',       zone: 'South', city: 'Chennai',   centre: 'OMR Hub',         status: 'booked',    due: 'Apr 18' },
+  { id: 'AM009', label: 'Cognizant — CSAT feedback workshop',             am: 'Meera Krishnan', client: 'Cognizant',          category: 'CSAT',          zone: 'South', city: 'Chennai',   centre: 'Tidel Park',      status: 'pending',   due: 'Apr 16' },
+  { id: 'AM010', label: 'HDFC Securities — retention call',               am: 'Rohan Desai',    client: 'HDFC Securities',    category: 'Retention',     zone: 'North', city: 'Delhi',     centre: 'Connaught Place', status: 'booked',    due: 'Apr 13' },
+  { id: 'AM011', label: 'Air India GCC — billing resolution',             am: 'Rohan Desai',    client: 'Air India GCC',      category: 'Billing',       zone: 'North', city: 'Delhi',     centre: 'Aerocity',        status: 'violated',  due: 'Apr 6'  },
+  { id: 'AM012', label: 'PwC India — expansion discussion',               am: 'Rahul Mehta',    client: 'PwC India',          category: 'Expansion',     zone: 'North', city: 'Gurgaon',   centre: 'Golf Course',     status: 'booked',    due: 'Apr 14' },
+  { id: 'AM013', label: 'At-risk portfolio — AM rescue session',          am: 'Rahul Mehta',    client: 'Multi-client',       category: 'Retention',     zone: 'North', city: 'Gurgaon',   centre: 'Golf Course',     status: 'completed', due: 'Apr 9'  },
+  { id: 'AM014', label: 'HCL Tech — notice response meeting',             am: 'Anjali Gupta',   client: 'HCL Tech',           category: 'Exit Mgmt',    zone: 'North', city: 'Noida',     centre: 'Sector 62',       status: 'pending',   due: 'Apr 15' },
+  { id: 'AM015', label: 'Morgan Stanley — renewal signing call',          am: 'Karan Patel',    client: 'Morgan Stanley',     category: 'Renewal',       zone: 'West',  city: 'Mumbai',    centre: 'BKC',             status: 'booked',    due: 'Apr 16' },
+  { id: 'AM016', label: 'Axis Bank — overdue resolution call',            am: 'Karan Patel',    client: 'Axis Bank',          category: 'Collections',   zone: 'West',  city: 'Mumbai',    centre: 'BKC',             status: 'violated',  due: 'Apr 1'  },
+  { id: 'AM017', label: 'Andheri centre — infra escalation',              am: 'Rohan Desai',    client: 'Wipro Tech',         category: 'IT Ops',        zone: 'West',  city: 'Mumbai',    centre: 'Andheri',         status: 'completed', due: 'Apr 8'  },
+  { id: 'AM018', label: 'Bajaj Finserv — CSAT review call',               am: 'Sneha Iyer',     client: 'Bajaj Finserv',      category: 'CSAT',          zone: 'West',  city: 'Pune',      centre: 'Baner',           status: 'completed', due: 'Apr 9'  },
+  { id: 'AM019', label: 'Capgemini Pune — lock-in discussion',            am: 'Sneha Iyer',     client: 'Capgemini',          category: 'Retention',     zone: 'West',  city: 'Pune',      centre: 'Baner',           status: 'booked',    due: 'Apr 17' },
+  { id: 'AM020', label: 'ITC GBC — onboarding kickoff',                   am: 'Vikram Rao',     client: 'ITC GBC',            category: 'Onboarding',    zone: 'East',  city: 'Kolkata',   centre: 'Salt Lake',       status: 'booked',    due: 'Apr 15' },
+  { id: 'AM021', label: 'Coal India — billing clarification call',         am: 'Vikram Rao',     client: 'Coal India',         category: 'Billing',       zone: 'East',  city: 'Kolkata',   centre: 'Salt Lake',       status: 'violated',  due: 'Apr 4'  },
+  { id: 'AM022', label: 'East zone portfolio review',                      am: 'Vikram Rao',     client: null,                 category: 'Ops Review',    zone: 'East',  city: 'Kolkata',   centre: 'New Town',        status: 'pending',   due: 'Apr 18' },
+]
+
+const amheadTaskCompositeWithModal = {
+  ...amheadTaskComposite,
+  modal: {
+    type: 'taskMeetingList',
+    title: 'All Team Tasks',
+    subtitle: `${amheadTaskItems.length} tasks · National Portfolio`,
+    width: 720,
+    data: { kind: 'task', filterType: 'zone-city-centre', hierarchy: amheadHierarchy, items: amheadTaskItems },
+  },
+}
+const amheadMeetingCompositeWithModal = {
+  ...amheadMeetingComposite,
+  modal: {
+    type: 'taskMeetingList',
+    title: 'All Team Meetings',
+    subtitle: `${amheadMeetingItems.length} meetings · National Portfolio`,
+    width: 720,
+    data: { kind: 'meeting', filterType: 'zone-city-centre', hierarchy: amheadHierarchy, items: amheadMeetingItems },
+  },
+}
+
 const amheadActions = [
   { priority: 'high',   text: '6 AMs below 75% task SLA — 1:1 reviews and reassignment plan', due: 'This week', category: 'AM Performance' },
   { priority: 'high',   text: 'Rahul Mehta — 4 at-risk clients in portfolio (health < 60), approve rescue plan', due: 'Apr 11', category: 'Escalation' },
@@ -362,6 +465,83 @@ const reheadMeetingComposite = meetingComposite({
   total: 420, booked: 128, pending: 38, completed: 254,
   subtitle: '38 pending past SLA · Whitefield leading',
 })
+
+// ─── REGION HEAD — task/meeting modal hierarchy + items ───────────────────────
+const reheadHierarchy = {
+  cities: ['Bengaluru', 'Mysuru', 'Mangaluru'],
+  centres: {
+    Bengaluru:  ['Whitefield', 'ORR', 'Koramangala', 'Indiranagar', 'MG Road', 'Electronic City'],
+    Mysuru:     ['Infosys Mysuru', 'Mysuru Centrium'],
+    Mangaluru:  ['Coastal Hub'],
+  },
+}
+
+const reheadTaskItems = [
+  { id: 'RT001', label: 'Deutsche Bank GCC — renewal commercial review',  am: 'Priya Sharma',   client: 'Deutsche Bank GCC',  category: 'Renewal',     city: 'Bengaluru', centre: 'Whitefield',      status: 'open',       due: 'Apr 15' },
+  { id: 'RT002', label: 'Approve mod-project commercials — 8 projects',   am: 'Priya Sharma',   client: 'Multi-client',        category: 'Approvals',   city: 'Bengaluru', centre: 'Whitefield',      status: 'open',       due: 'Apr 12' },
+  { id: 'RT003', label: 'HSBC GCC — Q2 contract renewal docs',            am: 'Priya Sharma',   client: 'HSBC GCC',            category: 'Renewal',     city: 'Bengaluru', centre: 'Whitefield',      status: 'open',       due: 'Apr 18' },
+  { id: 'RT004', label: 'Q1 CSAT survey follow-up — Whitefield',          am: 'Priya Sharma',   client: 'Multi-client',        category: 'CSAT',        city: 'Bengaluru', centre: 'Whitefield',      status: 'closed-sla', due: 'Apr 10' },
+  { id: 'RT005', label: 'Security audit report submission',                am: 'Priya Sharma',   client: 'Deutsche Bank GCC',  category: 'Compliance',  city: 'Bengaluru', centre: 'Whitefield',      status: 'closed-sla', due: 'Apr 8'  },
+  { id: 'RT006', label: 'Salesforce India — upgrade seat capacity plan',  am: 'Aditi Nair',     client: 'Salesforce India',   category: 'Expansion',   city: 'Bengaluru', centre: 'ORR',             status: 'open',       due: 'Apr 14' },
+  { id: 'RT007', label: 'Billing dispute escalation — Q4 arrears',        am: 'Aditi Nair',     client: 'Infosys BPO',         category: 'Billing',     city: 'Bengaluru', centre: 'ORR',             status: 'violated',   due: 'Apr 5'  },
+  { id: 'RT008', label: 'Infosys BPO — CSAT 30-day follow-up',           am: 'Aditi Nair',     client: 'Infosys BPO',         category: 'CSAT',        city: 'Bengaluru', centre: 'ORR',             status: 'closed-sla', due: 'Apr 9'  },
+  { id: 'RT009', label: 'XYZ Fintech — health intervention plan',         am: 'Sneha Iyer',     client: 'XYZ Fintech',         category: 'Retention',   city: 'Bengaluru', centre: 'Koramangala',     status: 'open',       due: 'Apr 11' },
+  { id: 'RT010', label: 'Parking reconfig — floor 3, Koramangala',        am: 'Sneha Iyer',     client: 'XYZ Fintech',         category: 'FM',          city: 'Bengaluru', centre: 'Koramangala',     status: 'violated',   due: 'Apr 3'  },
+  { id: 'RT011', label: 'IBM India — renewal notice letter',               am: 'Sneha Iyer',     client: 'IBM India',           category: 'Renewal',     city: 'Bengaluru', centre: 'Koramangala',     status: 'open',       due: 'Apr 16' },
+  { id: 'RT012', label: 'Capgemini — invoice reconciliation Apr',         am: 'Karan Patel',    client: 'Capgemini',           category: 'Billing',     city: 'Bengaluru', centre: 'Indiranagar',     status: 'open',       due: 'Apr 15' },
+  { id: 'RT013', label: 'GRE handoff — chiller maintenance SLA',          am: 'Karan Patel',    client: 'Capgemini',           category: 'Operations',  city: 'Bengaluru', centre: 'Indiranagar',     status: 'closed-sla', due: 'Apr 7'  },
+  { id: 'RT014', label: 'TechCorp — lock-in expiry communication',        am: 'Meera Krishnan', client: 'TechCorp India',      category: 'Retention',   city: 'Bengaluru', centre: 'MG Road',         status: 'open',       due: 'Apr 13' },
+  { id: 'RT015', label: 'VectorAI Labs — exit notice response',           am: 'Meera Krishnan', client: 'VectorAI Labs',       category: 'Exit Mgmt',  city: 'Bengaluru', centre: 'MG Road',         status: 'violated',   due: 'Apr 2'  },
+  { id: 'RT016', label: 'NorthStar Bank — overdue invoice 62d follow-up', am: 'Anjali Gupta',   client: 'NorthStar Bank',      category: 'Collections', city: 'Bengaluru', centre: 'Electronic City', status: 'violated',   due: 'Mar 28' },
+  { id: 'RT017', label: 'Wipro Tech — CSAT improvement plan',             am: 'Anjali Gupta',   client: 'Wipro Tech',          category: 'CSAT',        city: 'Bengaluru', centre: 'Electronic City', status: 'open',       due: 'Apr 17' },
+  { id: 'RT018', label: 'Region weekly ops report — Apr W2',              am: 'Anjali Gupta',   client: null,                  category: 'Reporting',   city: 'Bengaluru', centre: 'Electronic City', status: 'closed-sla', due: 'Apr 12' },
+  { id: 'RT019', label: 'Infosys Campus — seat expansion feasibility',    am: 'Rohan Desai',    client: 'Infosys',             category: 'Expansion',   city: 'Mysuru',    centre: 'Infosys Mysuru',  status: 'open',       due: 'Apr 16' },
+  { id: 'RT020', label: 'Power backup SLA breach — escalation',           am: 'Rohan Desai',    client: 'Infosys',             category: 'Tech Ops',    city: 'Mysuru',    centre: 'Infosys Mysuru',  status: 'violated',   due: 'Apr 6'  },
+  { id: 'RT021', label: 'Mysuru Centrium — new client onboarding docs',   am: 'Vikram Rao',     client: 'GlobalMed',           category: 'Onboarding',  city: 'Mysuru',    centre: 'Mysuru Centrium', status: 'open',       due: 'Apr 14' },
+  { id: 'RT022', label: 'Coastal Hub — housekeeping vendor renewal',      am: 'Vikram Rao',     client: null,                  category: 'FM',          city: 'Mangaluru', centre: 'Coastal Hub',     status: 'open',       due: 'Apr 20' },
+  { id: 'RT023', label: 'QuantBridge Capital — credit note clearance',    am: 'Vikram Rao',     client: 'QuantBridge Capital', category: 'Billing',     city: 'Mangaluru', centre: 'Coastal Hub',     status: 'violated',   due: 'Apr 4'  },
+]
+
+const reheadMeetingItems = [
+  { id: 'RM001', label: 'Deutsche Bank GCC — renewal QBR',               am: 'Priya Sharma',   client: 'Deutsche Bank GCC',  category: 'Renewal',       city: 'Bengaluru', centre: 'Whitefield',      status: 'booked',    due: 'Apr 15' },
+  { id: 'RM002', label: 'HSBC GCC — Q2 service review',                  am: 'Priya Sharma',   client: 'HSBC GCC',           category: 'Service Review', city: 'Bengaluru', centre: 'Whitefield',      status: 'completed', due: 'Apr 8'  },
+  { id: 'RM003', label: 'Mod-project stakeholder walkthrough',            am: 'Priya Sharma',   client: 'Multi-client',       category: 'Project',        city: 'Bengaluru', centre: 'Whitefield',      status: 'pending',   due: 'Apr 12' },
+  { id: 'RM004', label: 'Salesforce India — expansion planning call',    am: 'Aditi Nair',     client: 'Salesforce India',   category: 'Expansion',      city: 'Bengaluru', centre: 'ORR',             status: 'booked',    due: 'Apr 14' },
+  { id: 'RM005', label: 'Infosys BPO — collections escalation call',     am: 'Aditi Nair',     client: 'Infosys BPO',        category: 'Collections',    city: 'Bengaluru', centre: 'ORR',             status: 'violated',  due: 'Apr 3'  },
+  { id: 'RM006', label: 'ORR centre — operations review',                 am: 'Aditi Nair',     client: null,                 category: 'Ops Review',     city: 'Bengaluru', centre: 'ORR',             status: 'completed', due: 'Apr 10' },
+  { id: 'RM007', label: 'XYZ Fintech — executive retention meeting',      am: 'Sneha Iyer',     client: 'XYZ Fintech',        category: 'Retention',      city: 'Bengaluru', centre: 'Koramangala',     status: 'booked',    due: 'Apr 11' },
+  { id: 'RM008', label: 'IBM India — renewal intro meeting',              am: 'Sneha Iyer',     client: 'IBM India',          category: 'Renewal',        city: 'Bengaluru', centre: 'Koramangala',     status: 'pending',   due: 'Apr 16' },
+  { id: 'RM009', label: 'Capgemini — monthly account review',             am: 'Karan Patel',    client: 'Capgemini',          category: 'Account Review', city: 'Bengaluru', centre: 'Indiranagar',     status: 'completed', due: 'Apr 9'  },
+  { id: 'RM010', label: 'TechCorp India — lock-in discussion',            am: 'Meera Krishnan', client: 'TechCorp India',     category: 'Retention',      city: 'Bengaluru', centre: 'MG Road',         status: 'booked',    due: 'Apr 13' },
+  { id: 'RM011', label: 'VectorAI Labs — exit negotiation call',          am: 'Meera Krishnan', client: 'VectorAI Labs',      category: 'Exit Mgmt',     city: 'Bengaluru', centre: 'MG Road',         status: 'violated',  due: 'Apr 2'  },
+  { id: 'RM012', label: 'NorthStar Bank — overdue resolution call',       am: 'Anjali Gupta',   client: 'NorthStar Bank',     category: 'Collections',    city: 'Bengaluru', centre: 'Electronic City', status: 'violated',  due: 'Apr 1'  },
+  { id: 'RM013', label: 'Wipro Tech — CSAT deep-dive session',            am: 'Anjali Gupta',   client: 'Wipro Tech',         category: 'CSAT',           city: 'Bengaluru', centre: 'Electronic City', status: 'pending',   due: 'Apr 17' },
+  { id: 'RM014', label: 'Infosys — seat expansion walk-through',          am: 'Rohan Desai',    client: 'Infosys',            category: 'Expansion',      city: 'Mysuru',    centre: 'Infosys Mysuru',  status: 'booked',    due: 'Apr 16' },
+  { id: 'RM015', label: 'GlobalMed — onboarding kickoff',                 am: 'Vikram Rao',     client: 'GlobalMed',          category: 'Onboarding',     city: 'Mysuru',    centre: 'Mysuru Centrium', status: 'booked',    due: 'Apr 14' },
+  { id: 'RM016', label: 'QuantBridge Capital — dispute resolution',       am: 'Vikram Rao',     client: 'QuantBridge Capital',category: 'Billing',        city: 'Mangaluru', centre: 'Coastal Hub',     status: 'violated',  due: 'Apr 4'  },
+  { id: 'RM017', label: 'Coastal Hub — FM vendor review',                 am: 'Vikram Rao',     client: null,                 category: 'FM',             city: 'Mangaluru', centre: 'Coastal Hub',     status: 'pending',   due: 'Apr 20' },
+]
+
+const reheadTaskCompositeWithModal = {
+  ...reheadTaskComposite,
+  modal: {
+    type: 'taskMeetingList',
+    title: 'All Region Tasks',
+    subtitle: `${reheadTaskItems.length} tasks · Bengaluru Region`,
+    width: 700,
+    data: { kind: 'task', filterType: 'city-centre', hierarchy: reheadHierarchy, items: reheadTaskItems },
+  },
+}
+const reheadMeetingCompositeWithModal = {
+  ...reheadMeetingComposite,
+  modal: {
+    type: 'taskMeetingList',
+    title: 'All Region Meetings',
+    subtitle: `${reheadMeetingItems.length} meetings · Bengaluru Region`,
+    width: 700,
+    data: { kind: 'meeting', filterType: 'city-centre', hierarchy: reheadHierarchy, items: reheadMeetingItems },
+  },
+}
 
 const reheadActions = [
   { priority: 'high',   text: 'XYZ Fintech health dropped to 48 — schedule exec meeting with client & AM', due: 'Apr 11', category: 'Retention' },
@@ -1847,7 +2027,8 @@ export const nexusAMData = {
     compositeNote,
     // Tasks strip hidden — AM Head looks at country-wide zones, not daily tasks
     hideTasksStrip: true,
-    // No task/meeting composites at this level
+    taskComposite: amheadTaskCompositeWithModal,
+    meetingComposite: amheadMeetingCompositeWithModal,
     metrics: amheadMetrics,
     actions: amheadActions,
     actionsTitle: 'National Portfolio Decisions',
@@ -1865,8 +2046,8 @@ export const nexusAMData = {
     hideTasksStrip: true,
     // Centre cards render first (before composites) via DashboardPage ordering
     centreCards: reheadCentreCards,
-    taskComposite: reheadTaskComposite,
-    meetingComposite: reheadMeetingComposite,
+    taskComposite: reheadTaskCompositeWithModal,
+    meetingComposite: reheadMeetingCompositeWithModal,
     charts: reheadInsightCharts,
     topFive: [reheadTopFive[0], reheadTopFive[1], reheadTopFive[2]],
     columns: reheadColumns,

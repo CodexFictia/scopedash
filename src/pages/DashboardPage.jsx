@@ -20,6 +20,7 @@ import Modal from '../components/Modal'
 import CentreKPICard from '../components/CentreKPICard'
 import DisputePanel from '../components/DisputePanel'
 import InvoiceAlertPanel from '../components/InvoiceAlertPanel'
+import TaskMeetingModal from '../components/TaskMeetingModal'
 import {
   ChevronDown, ChevronUp, UserCheck, Bell, CheckCircle2, AlertCircle, Clock,
 } from 'lucide-react'
@@ -261,6 +262,7 @@ export default function DashboardPage({
 
   const [activeModal, setActiveModal] = useState(null)
   const [metricsOpen, setMetricsOpen] = useState(true)
+  const [centreCardsOpen, setCentreCardsOpen] = useState(true)
   const openModal  = (modal) => setActiveModal(modal)
   const closeModal = () => setActiveModal(null)
 
@@ -305,15 +307,26 @@ export default function DashboardPage({
         {/* 4. Task management panel (daily/weekly) */}
         {d.taskView && <TaskViewPanel taskView={d.taskView} />}
 
-        {/* 5. Centre KPI cards (rehead) — BEFORE composites */}
+        {/* 5. Centre KPI cards (rehead) — BEFORE composites, collapsible */}
         {d.centreCards && d.centreCards.length > 0 && (
           <div>
-            <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--textSubtle)', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 8 }}>Centre Overview</div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))', gap: 12 }}>
-              {d.centreCards.map((c, i) => (
-                <CentreKPICard key={i} name={c.name} location={c.location} cm={c.cm} status={c.status} metrics={c.metrics} sparkline={c.sparkline} onMetricClick={openModal} />
-              ))}
-            </div>
+            <button
+              onClick={() => setCentreCardsOpen(o => !o)}
+              style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--textSubtle)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.6px', padding: 0 }}
+            >
+              {centreCardsOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+              Centre Metrics
+              <span style={{ color: 'var(--textSubtle)', fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>
+                — {centreCardsOpen ? 'collapse' : 'expand'}
+              </span>
+            </button>
+            {centreCardsOpen && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))', gap: 12 }}>
+                {d.centreCards.map((c, i) => (
+                  <CentreKPICard key={i} name={c.name} location={c.location} cm={c.cm} status={c.status} metrics={c.metrics} sparkline={c.sparkline} onMetricClick={openModal} />
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -321,7 +334,7 @@ export default function DashboardPage({
         {composites.length > 0 && (
           <div style={{ display: 'grid', gridTemplateColumns: `repeat(${composites.length}, minmax(0, 1fr))`, gap: 12 }}>
             {composites.map((c, i) => (
-              <CompositeRangeCard key={i} title={c.title} total={c.total} subtitle={c.subtitle} segments={c.segments} icon={c.icon} accent={c.accent} />
+              <CompositeRangeCard key={i} title={c.title} total={c.total} subtitle={c.subtitle} segments={c.segments} icon={c.icon} accent={c.accent} onClick={c.modal ? () => openModal(c.modal) : undefined} />
             ))}
           </div>
         )}
@@ -409,6 +422,7 @@ export default function DashboardPage({
           {activeModal.type === 'invoiceList'  && <InvoiceListModal  data={activeModal.data} />}
           {activeModal.type === 'ticketList'   && <TicketListModal   data={activeModal.data} />}
           {activeModal.type === 'checklist'    && <ChecklistModal    data={activeModal.data} />}
+          {activeModal.type === 'taskMeetingList' && <TaskMeetingModal data={activeModal.data} />}
           {activeModal.type === 'info' && (
             <div style={{ fontSize: 13, color: 'var(--textBody)', lineHeight: 1.7 }}>{activeModal.data?.content}</div>
           )}

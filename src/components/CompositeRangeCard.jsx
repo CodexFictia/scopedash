@@ -8,13 +8,15 @@
  */
 import { useTheme } from '../ThemeContext.jsx'
 
-export default function CompositeRangeCard({ title, total, subtitle, segments = [], icon: Icon, accent = '#f97316' }) {
+export default function CompositeRangeCard({ title, total, subtitle, segments = [], icon: Icon, accent = '#f97316', onClick }) {
   const { t } = useTheme()
   const sum = segments.reduce((s, x) => s + (Number(x.value) || 0), 0) || 1
   const fmt = (n) => (n >= 1000 ? (n / 1000).toFixed(n >= 10000 ? 1 : 2) + 'K' : n.toLocaleString())
 
   return (
     <div
+      onClick={onClick}
+      title={onClick ? `Click to view all ${title.toLowerCase()} details` : undefined}
       style={{
         background: t.bgCard,
         border: `1px solid ${accent}40`,
@@ -25,7 +27,11 @@ export default function CompositeRangeCard({ title, total, subtitle, segments = 
         gap: 12,
         position: 'relative',
         overflow: 'hidden',
+        cursor: onClick ? 'pointer' : 'default',
+        transition: 'border-color 0.15s, background 0.15s',
       }}
+      onMouseEnter={e => { if (onClick) { e.currentTarget.style.borderColor = accent + '80'; e.currentTarget.style.background = t.bgCardHover } }}
+      onMouseLeave={e => { if (onClick) { e.currentTarget.style.borderColor = accent + '40'; e.currentTarget.style.background = t.bgCard } }}
     >
       {/* accent bar */}
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: accent }} />
