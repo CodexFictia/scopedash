@@ -263,17 +263,19 @@ export default function DashboardPage({
   const [activeModal, setActiveModal] = useState(null)
   const [metricsOpen, setMetricsOpen] = useState(true)
   const [centreCardsOpen, setCentreCardsOpen] = useState(true)
+  const [zoneInsightsOpen, setZoneInsightsOpen] = useState(true)
   const openModal  = (modal) => setActiveModal(modal)
   const closeModal = () => setActiveModal(null)
 
-  const handlePersonaChange = (p) => { setActiveModal(null); setMetricsOpen(true); setActivePersona(p) }
+  const handlePersonaChange = (p) => { setActiveModal(null); setMetricsOpen(true); setZoneInsightsOpen(true); setActivePersona(p) }
 
-  const hideCharts          = d.hideCharts === true
-  const hideTasksStrip      = d.hideTasksStrip === true
-  const actionsFirst        = d.actionsFirst === true
+  const hideCharts             = d.hideCharts === true
+  const hideTasksStrip         = d.hideTasksStrip === true
+  const actionsFirst           = d.actionsFirst === true
   const actionsAfterComposites = d.actionsAfterComposites === true
-  const composites          = [d.taskComposite, d.meetingComposite].filter(Boolean)
-  const metricOnClick       = (m) => m.modal ? () => openModal(m.modal) : undefined
+  const collapsibleZoneInsights = d.collapsibleZoneInsights === true
+  const composites             = [d.taskComposite, d.meetingComposite].filter(Boolean)
+  const metricOnClick          = (m) => m.modal ? () => openModal(m.modal) : undefined
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
@@ -370,36 +372,76 @@ export default function DashboardPage({
         {/* 9. Dispute management panel (CM) */}
         {d.disputes && d.disputes.length > 0 && <DisputePanel title="Dispute Management" disputes={d.disputes} />}
 
-        {/* 10. Mid-row: Actions (standard position) + TopFive */}
-        {!actionsFirst && !actionsAfterComposites ? (
-          <div className="mid-row">
-            <ActionList title={d.actionsTitle || 'Action Required'} items={d.actions} />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {(d.topFive || []).map((tf, i) => <TopFiveList key={i} title={tf.title} items={tf.items} />)}
-            </div>
+        {/* 10 + 11. TopFive + Charts — wrapped in Zone Insights collapsible for amhead, standard otherwise */}
+        {collapsibleZoneInsights ? (
+          <div>
+            <button
+              onClick={() => setZoneInsightsOpen(o => !o)}
+              style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--textSubtle)', fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.6px', padding: 0 }}
+            >
+              {zoneInsightsOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+              Zone insights
+              <span style={{ color: 'var(--textSubtle)', fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>
+                {zoneInsightsOpen ? ' — collapse' : ' — View Zone insights — expand'}
+              </span>
+            </button>
+            {zoneInsightsOpen && (
+              <>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 12 }}>
+                  {(d.topFive || []).map((tf, i) => <TopFiveList key={i} title={tf.title} items={tf.items} />)}
+                </div>
+                {!hideCharts && d.charts && d.charts.length > 3 ? (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
+                    {d.charts.map((c, i) => <TrendChart key={i} type={c.type} title={c.title} data={c.data} lines={c.lines} />)}
+                  </div>
+                ) : !hideCharts && d.charts && d.charts.length === 3 ? (
+                  <div className="chart-row-3">
+                    {d.charts.map((c, i) => <TrendChart key={i} type={c.type} title={c.title} data={c.data} lines={c.lines} />)}
+                  </div>
+                ) : !hideCharts && d.charts && d.charts.length === 2 ? (
+                  <div className="chart-row">
+                    {d.charts.map((c, i) => <TrendChart key={i} type={c.type} title={c.title} data={c.data} lines={c.lines} />)}
+                  </div>
+                ) : !hideCharts && d.charts && d.charts.length === 1 ? (
+                  <TrendChart type={d.charts[0].type} title={d.charts[0].title} data={d.charts[0].data} lines={d.charts[0].lines} height={240} />
+                ) : null}
+              </>
+            )}
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {(d.topFive || []).map((tf, i) => <TopFiveList key={i} title={tf.title} items={tf.items} />)}
-          </div>
-        )}
+          <>
+            {/* 10. Mid-row: Actions (standard position) + TopFive */}
+            {!actionsFirst && !actionsAfterComposites ? (
+              <div className="mid-row">
+                <ActionList title={d.actionsTitle || 'Action Required'} items={d.actions} />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  {(d.topFive || []).map((tf, i) => <TopFiveList key={i} title={tf.title} items={tf.items} />)}
+                </div>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {(d.topFive || []).map((tf, i) => <TopFiveList key={i} title={tf.title} items={tf.items} />)}
+              </div>
+            )}
 
-        {/* 11. Charts — 1/2/3 charts use dedicated layouts; 4+ render in a responsive 3-col grid */}
-        {!hideCharts && d.charts && d.charts.length > 3 ? (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
-            {d.charts.map((c, i) => <TrendChart key={i} type={c.type} title={c.title} data={c.data} lines={c.lines} />)}
-          </div>
-        ) : !hideCharts && d.charts && d.charts.length === 3 ? (
-          <div className="chart-row-3">
-            {d.charts.map((c, i) => <TrendChart key={i} type={c.type} title={c.title} data={c.data} lines={c.lines} />)}
-          </div>
-        ) : !hideCharts && d.charts && d.charts.length === 2 ? (
-          <div className="chart-row">
-            {d.charts.map((c, i) => <TrendChart key={i} type={c.type} title={c.title} data={c.data} lines={c.lines} />)}
-          </div>
-        ) : !hideCharts && d.charts && d.charts.length === 1 ? (
-          <TrendChart type={d.charts[0].type} title={d.charts[0].title} data={d.charts[0].data} lines={d.charts[0].lines} height={240} />
-        ) : null}
+            {/* 11. Charts — 1/2/3 charts use dedicated layouts; 4+ render in a responsive 3-col grid */}
+            {!hideCharts && d.charts && d.charts.length > 3 ? (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
+                {d.charts.map((c, i) => <TrendChart key={i} type={c.type} title={c.title} data={c.data} lines={c.lines} />)}
+              </div>
+            ) : !hideCharts && d.charts && d.charts.length === 3 ? (
+              <div className="chart-row-3">
+                {d.charts.map((c, i) => <TrendChart key={i} type={c.type} title={c.title} data={c.data} lines={c.lines} />)}
+              </div>
+            ) : !hideCharts && d.charts && d.charts.length === 2 ? (
+              <div className="chart-row">
+                {d.charts.map((c, i) => <TrendChart key={i} type={c.type} title={c.title} data={c.data} lines={c.lines} />)}
+              </div>
+            ) : !hideCharts && d.charts && d.charts.length === 1 ? (
+              <TrendChart type={d.charts[0].type} title={d.charts[0].title} data={d.charts[0].data} lines={d.charts[0].lines} height={240} />
+            ) : null}
+          </>
+        )}
 
         {/* 12. Meetings Calendar (CM) */}
         {d.meetingsCalendar && (

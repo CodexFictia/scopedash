@@ -1332,6 +1332,172 @@ const amMetricsWithModals = amMetrics.map(m => ({
 // ─── NEW: AM — filtered actions (remove incidents open, disputes/CN — those are AAM/CM level) ──
 const amActionsFiltered = amActions.filter(a => !['Dispute', 'Checklist'].includes(a.category))
 
+// ─── AM Head — metric modal data keyed by label ───────────────────────────────
+const amheadMetricModals = {
+  'AMs Under Management': {
+    title: 'AM Team — All 24 AMs',
+    subtitle: 'National Portfolio · 6 zones · Performance scored 0–100',
+    type: 'clientList',
+    data: {
+      clients: [
+        { name: 'Priya Sharma',   location: 'South · Bengaluru · Whitefield',    lockin: 'SLA 94%', health: '96', status: 'Excellent' },
+        { name: 'Aditi Nair',     location: 'South · Hyderabad · HiTec City',    lockin: 'SLA 91%', health: '93', status: 'Excellent' },
+        { name: 'Sneha Iyer',     location: 'West · Pune · Baner',               lockin: 'SLA 89%', health: '91', status: 'Excellent' },
+        { name: 'Karan Patel',    location: 'West · Mumbai · BKC',               lockin: 'SLA 87%', health: '88', status: 'Good' },
+        { name: 'Meera Krishnan', location: 'South · Chennai · Tidel Park',      lockin: 'SLA 85%', health: '87', status: 'Good' },
+        { name: 'Rohan Desai',    location: 'North · Delhi · Connaught Place',   lockin: 'SLA 82%', health: '84', status: 'Good' },
+        { name: 'Anjali Gupta',   location: 'North · Noida · Sector 62',         lockin: 'SLA 78%', health: '80', status: 'Monitor' },
+        { name: 'Vikram Rao',     location: 'East · Kolkata · Salt Lake',        lockin: 'SLA 74%', health: '78', status: 'Monitor' },
+        { name: 'Rahul Mehta',    location: 'North · Gurgaon · Golf Course',     lockin: 'SLA 68%', health: '72', status: 'At Risk' },
+        { name: 'Dev Kapoor',     location: 'South · Bengaluru · ORR',           lockin: 'SLA 88%', health: '85', status: 'Good' },
+        { name: 'Riya Menon',     location: 'South · Hyderabad · Gachibowli',    lockin: 'SLA 83%', health: '82', status: 'Good' },
+        { name: 'Arun Mathews',   location: 'North · Delhi · Aerocity',          lockin: 'SLA 79%', health: '79', status: 'Monitor' },
+      ],
+    },
+  },
+  'AMs Below SLA': {
+    title: 'AMs Below SLA Threshold — 6 AMs',
+    subtitle: 'Task SLA < 75% · Immediate 1:1 review required',
+    type: 'clientList',
+    data: {
+      note: '⚠ SLA threshold is 75%. These AMs require immediate performance intervention.',
+      clients: [
+        { name: 'Meera Krishnan', location: 'South · Chennai · OMR Hub',         lockin: 'SLA 65%', health: '65', status: 'At Risk' },
+        { name: 'Rahul Mehta',    location: 'North · Gurgaon · Golf Course',     lockin: 'SLA 68%', health: '68', status: 'At Risk' },
+        { name: 'Karan Patel',    location: 'West · Mumbai · Andheri',           lockin: 'SLA 68%', health: '68', status: 'At Risk' },
+        { name: 'Rohan Desai',    location: 'North · Delhi · Aerocity',          lockin: 'SLA 70%', health: '70', status: 'At Risk' },
+        { name: 'Anjali Gupta',   location: 'North · Noida · Sector 62',         lockin: 'SLA 72%', health: '72', status: 'At Risk' },
+        { name: 'Vikram Rao',     location: 'East · Kolkata · Salt Lake',        lockin: 'SLA 74%', health: '74', status: 'Monitor' },
+      ],
+    },
+  },
+  'Out of Lock-in': {
+    title: 'Out of Lock-in Clients — National Portfolio',
+    subtitle: '163 of 447 clients outside lock-in · Highest-risk accounts shown',
+    type: 'clientList',
+    data: {
+      note: '⚠ 163 clients (36%) are outside lock-in. Shown: highest-risk by health score.',
+      clients: [
+        { name: 'XYZ Fintech',      location: 'Koramangala · Bengaluru',  am: 'Sneha Iyer',     lockin: 'Out since Feb 2026', health: '48', status: 'At Risk' },
+        { name: 'NorthStar Bank',   location: 'Whitefield · Bengaluru',   am: 'Rahul Mehta',    lockin: 'Out since Jan 2026', health: '52', status: 'At Risk' },
+        { name: 'QuantBridge Cap',  location: 'Cyber City · Hyderabad',   am: 'Rahul Mehta',    lockin: 'Out since Mar 2026', health: '55', status: 'At Risk' },
+        { name: 'GlobalMed',        location: 'Gachibowli · Hyderabad',   am: 'Vikram Rao',     lockin: 'Out since Feb 2026', health: '57', status: 'At Risk' },
+        { name: 'VectorAI Labs',    location: 'ORR · Bengaluru',           am: 'Meera Krishnan', lockin: 'Out since Mar 2026', health: '58', status: 'At Risk' },
+        { name: 'AlphaFinance',     location: 'ORR · Bengaluru',           am: 'Priya Sharma',   lockin: 'Out since Mar 2026', health: '71', status: 'Monitor' },
+        { name: 'GlobalTech',       location: 'BKC · Mumbai',              am: 'Karan Patel',    lockin: 'Out since Feb 2026', health: '72', status: 'Monitor' },
+        { name: 'Accenture ORR',    location: 'ORR · Bengaluru',           am: 'Dev Kapoor',     lockin: 'Out since Mar 2026', health: '78', health: '78', status: 'Good' },
+        { name: 'Wipro Tech',       location: 'Whitefield · Bengaluru',    am: 'Rohan Desai',    lockin: 'Out since Jan 2026', health: '68', status: 'Monitor' },
+        { name: 'HCL Tech',         location: 'Sector 62 · Noida',         am: 'Anjali Gupta',   lockin: 'Out since Apr 2026', health: '74', status: 'Monitor' },
+      ],
+    },
+  },
+  'Under Notice Period': {
+    title: 'Clients Under Notice Period — National Portfolio',
+    subtitle: '12 clients · Sorted by days remaining (ascending)',
+    type: 'clientList',
+    data: {
+      note: '⛔ These clients have served notice. Coordinate exit checklist with RE, Finance & Ops.',
+      clients: [
+        { name: 'VectorAI Labs',    location: 'ORR · Bengaluru',           am: 'Meera Krishnan', lockin: 'Notice Apr 2 · 8d left',   health: '58', daysNoticed: 8,  status: 'Notice' },
+        { name: 'Air India GCC',    location: 'Aerocity · Delhi',          am: 'Rohan Desai',    lockin: 'Notice Apr 6 · 9d left',   health: '62', daysNoticed: 9,  status: 'Notice' },
+        { name: 'Coal India',       location: 'Salt Lake · Kolkata',       am: 'Vikram Rao',     lockin: 'Notice Apr 4 · 12d left',  health: '64', daysNoticed: 12, status: 'Notice' },
+        { name: 'NorthStar Bank',   location: 'Whitefield · Bengaluru',    am: 'Rahul Mehta',    lockin: 'Notice Mar 28 · 14d left', health: '52', daysNoticed: 14, status: 'Notice' },
+        { name: 'Axis Bank',        location: 'BKC · Mumbai',              am: 'Karan Patel',    lockin: 'Notice Apr 1 · 16d left',  health: '66', daysNoticed: 16, status: 'Notice' },
+        { name: 'QuantBridge Cap',  location: 'Cyber City · Hyderabad',    am: 'Rahul Mehta',    lockin: 'Notice Apr 3 · 18d left',  health: '55', daysNoticed: 18, status: 'Notice' },
+        { name: 'Wipro Tech',       location: 'Whitefield · Bengaluru',    am: 'Rohan Desai',    lockin: 'Notice Mar 15 · 22d left', health: '68', daysNoticed: 22, status: 'Notice' },
+        { name: 'HCL Tech',         location: 'Sector 62 · Noida',         am: 'Anjali Gupta',   lockin: 'Notice Apr 8 · 24d left',  health: '74', daysNoticed: 24, status: 'Notice' },
+        { name: 'GlobalMed',        location: 'Gachibowli · Hyderabad',    am: 'Vikram Rao',     lockin: 'Notice Mar 20 · 26d left', health: '57', daysNoticed: 26, status: 'Notice' },
+        { name: 'XYZ Fintech',      location: 'Koramangala · Bengaluru',   am: 'Sneha Iyer',     lockin: 'Notice Apr 5 · 28d left',  health: '48', daysNoticed: 28, status: 'Notice' },
+        { name: 'DataBridge',       location: 'Baner · Pune',              am: 'Sneha Iyer',     lockin: 'Notice Mar 25 · 30d left', health: '62', daysNoticed: 30, status: 'Notice' },
+        { name: 'TechVision',       location: 'Golf Course · Gurgaon',     am: 'Rahul Mehta',    lockin: 'Notice Apr 10 · 30d left', health: '65', daysNoticed: 30, status: 'Notice' },
+      ],
+    },
+  },
+  'Unpaid Invoices': {
+    title: 'Unpaid Invoices — National Portfolio (Top 10 by Value)',
+    subtitle: '1,284 invoices · ₹4.26B total outstanding',
+    type: 'invoiceList',
+    data: {
+      invoices: [
+        { id: 'N-INV-001', client: 'Deutsche Bank GCC', invoiceNo: 'DBG-Q1-008',  category: 'Quarterly',    amount: '₹82.4L',  dueDate: '15 Mar', overdueDays: 31 },
+        { id: 'N-INV-002', client: 'Infosys BPO',       invoiceNo: 'INF-APR-003', category: 'Monthly + VAS',amount: '₹64.8L',  dueDate: '20 Mar', overdueDays: 26 },
+        { id: 'N-INV-003', client: 'Morgan Stanley',    invoiceNo: 'MS-Q1-004',   category: 'Quarterly',    amount: '₹58.6L',  dueDate: '25 Mar', overdueDays: 21 },
+        { id: 'N-INV-004', client: 'HSBC GCC',          invoiceNo: 'HSB-APR-002', category: 'Monthly',      amount: '₹48.2L',  dueDate: '28 Mar', overdueDays: 18 },
+        { id: 'N-INV-005', client: 'Accenture',         invoiceNo: 'ACC-Q1-006',  category: 'Quarterly',    amount: '₹42.4L',  dueDate: '01 Apr', overdueDays: 14 },
+        { id: 'N-INV-006', client: 'PwC India',         invoiceNo: 'PWC-APR-001', category: 'Monthly',      amount: '₹36.8L',  dueDate: '05 Apr', overdueDays: 10 },
+        { id: 'N-INV-007', client: 'Bajaj Finserv',     invoiceNo: 'BAJ-APR-002', category: 'Monthly + VAS',amount: '₹32.4L',  dueDate: '08 Apr', overdueDays: 7  },
+        { id: 'N-INV-008', client: 'TCS GBS',           invoiceNo: 'TCS-APR-001', category: 'Monthly',      amount: '₹28.6L',  dueDate: '10 Apr', overdueDays: 5  },
+        { id: 'N-INV-009', client: 'Capgemini',         invoiceNo: 'CAP-APR-003', category: 'Monthly',      amount: '₹24.8L',  dueDate: '12 Apr', overdueDays: 3  },
+        { id: 'N-INV-010', client: 'NorthStar Bank',    invoiceNo: 'NSB-MAR-008', category: 'Overdue 31d',  amount: '₹24.6L',  dueDate: '15 Mar', overdueDays: 31 },
+      ],
+    },
+  },
+  'Renewals Due (90d)': {
+    title: 'Renewals Due — Next 90 Days (38 Accounts)',
+    subtitle: 'Sorted by days to renewal · ₹14.8Cr ARR at stake',
+    type: 'clientList',
+    data: {
+      clients: [
+        { name: 'Accenture',       location: 'ORR · Bengaluru',           am: 'Dev Kapoor',     lockin: 'Exp Apr 20 · 8d',  health: '82', status: 'Renewing', unpaid: '2 invoices pending' },
+        { name: 'HDFC Securities', location: 'Connaught Place · Delhi',   am: 'Rohan Desai',    lockin: 'Exp Apr 22 · 10d', health: '76', status: 'Monitor',  unpaid: '1 invoice pending'  },
+        { name: 'HCL Tech',        location: 'Sector 62 · Noida',         am: 'Anjali Gupta',   lockin: 'Exp Apr 25 · 13d', health: '74', status: 'Monitor',  unpaid: '3 invoices pending' },
+        { name: 'Wipro Tech',      location: 'Whitefield · Bengaluru',    am: 'Rohan Desai',    lockin: 'Exp Apr 28 · 16d', health: '68', status: 'At Risk',  unpaid: '5 invoices pending' },
+        { name: 'Capgemini',       location: 'Baner · Pune',              am: 'Sneha Iyer',     lockin: 'Exp May 5 · 23d',  health: '80', status: 'Good',     unpaid: '1 invoice pending'  },
+        { name: 'TCS GBS',         location: 'OMR Hub · Chennai',         am: 'Meera Krishnan', lockin: 'Exp May 12 · 30d', health: '78', status: 'Good',     unpaid: '0 invoices'         },
+        { name: 'PwC India',       location: 'Golf Course · Gurgaon',     am: 'Rahul Mehta',    lockin: 'Exp May 18 · 36d', health: '84', status: 'Good',     unpaid: '1 invoice pending'  },
+        { name: 'Morgan Stanley',  location: 'BKC · Mumbai',              am: 'Karan Patel',    lockin: 'Exp May 25 · 43d', health: '87', status: 'Renewing', unpaid: '0 invoices'         },
+        { name: 'Bajaj Finserv',   location: 'Baner · Pune',              am: 'Sneha Iyer',     lockin: 'Exp Jun 5 · 54d',  health: '82', status: 'Good',     unpaid: '0 invoices'         },
+        { name: 'HSBC GCC',        location: 'Whitefield · Bengaluru',    am: 'Priya Sharma',   lockin: 'Exp Jun 20 · 69d', health: '86', status: 'Good',     unpaid: '1 invoice pending'  },
+      ],
+    },
+  },
+  'Mod Projects Pipeline': {
+    title: 'Mod Projects Pipeline — ₹14.6Cr (136 Projects)',
+    subtitle: '82 in progress · 54 pending approval · Sorted by value (desc)',
+    type: 'clientList',
+    data: {
+      clients: [
+        { name: 'BKC Lobby Redesign',           location: 'BKC · Mumbai',              am: 'Karan Patel',    lockin: '₹2.4Cr',  health: '60', status: 'In Progress' },
+        { name: 'Whitefield Cafeteria Reno.',   location: 'Whitefield · Bengaluru',    am: 'Priya Sharma',   lockin: '₹1.8Cr',  health: '75', status: 'In Progress' },
+        { name: 'HiTec City Coworking Fit-out', location: 'HiTec City · Hyderabad',   am: 'Aditi Nair',     lockin: '₹1.6Cr',  health: '45', status: 'Pending Approval' },
+        { name: 'Golf Course Wellness Zone',    location: 'Golf Course · Gurgaon',     am: 'Rahul Mehta',    lockin: '₹1.2Cr',  health: '80', status: 'In Progress' },
+        { name: 'ORR Meeting Pods (Batch 2)',   location: 'ORR · Bengaluru',           am: 'Dev Kapoor',     lockin: '₹96L',    health: '65', status: 'In Progress' },
+        { name: 'Salt Lake AV Upgrade',         location: 'Salt Lake · Kolkata',       am: 'Vikram Rao',     lockin: '₹84L',    health: '55', status: 'Pending Approval' },
+        { name: 'Aerocity IoT Sensors (P2)',    location: 'Aerocity · Delhi',          am: 'Rohan Desai',    lockin: '₹72L',    health: '70', status: 'In Progress' },
+        { name: 'Kharadi Server Room Fit-out',  location: 'Kharadi · Pune',            am: 'Sneha Iyer',     lockin: '₹64L',    health: '40', status: 'Pending Approval' },
+        { name: 'Tidel Park Signage Refresh',   location: 'Tidel Park · Chennai',      am: 'Meera Krishnan', lockin: '₹48L',    health: '85', status: 'In Progress' },
+        { name: 'Noida One Cabin Conversion',   location: 'Noida One · Noida',         am: 'Anjali Gupta',   lockin: '₹42L',    health: '60', status: 'Pending Approval' },
+      ],
+    },
+  },
+  'Avg Portfolio Health': {
+    title: 'Portfolio Health — Clients Below 60',
+    subtitle: '18 clients at-risk · Health < 60 · Sorted lowest first',
+    type: 'clientList',
+    data: {
+      note: '⚠ 18 clients have portfolio health below 60. Immediate AM intervention recommended.',
+      clients: [
+        { name: 'XYZ Fintech',      location: 'Koramangala · Bengaluru',  am: 'Sneha Iyer',     lockin: 'Out since Feb 2026', health: '48', status: 'At Risk' },
+        { name: 'NorthStar Bank',   location: 'Whitefield · Bengaluru',   am: 'Rahul Mehta',    lockin: 'Out since Jan 2026', health: '52', status: 'At Risk' },
+        { name: 'QuantBridge Cap',  location: 'Cyber City · Hyderabad',   am: 'Rahul Mehta',    lockin: 'Out since Mar 2026', health: '55', status: 'At Risk' },
+        { name: 'GlobalMed',        location: 'Gachibowli · Hyderabad',   am: 'Vikram Rao',     lockin: 'Out since Feb 2026', health: '57', status: 'At Risk' },
+        { name: 'VectorAI Labs',    location: 'ORR · Bengaluru',           am: 'Meera Krishnan', lockin: 'Out since Mar 2026', health: '58', status: 'At Risk' },
+        { name: 'Coal India',       location: 'Salt Lake · Kolkata',       am: 'Vikram Rao',     lockin: 'Notice served',      health: '59', status: 'Notice' },
+        { name: 'DataBridge',       location: 'Baner · Pune',              am: 'Sneha Iyer',     lockin: 'Out since Mar 2026', health: '62', status: 'At Risk' },
+        { name: 'Air India GCC',    location: 'Aerocity · Delhi',          am: 'Rohan Desai',    lockin: 'Notice served',      health: '62', status: 'Notice' },
+        { name: 'TechVision',       location: 'Golf Course · Gurgaon',     am: 'Rahul Mehta',    lockin: 'Out since Apr 2026', health: '65', status: 'At Risk' },
+        { name: 'Axis Bank',        location: 'BKC · Mumbai',              am: 'Karan Patel',    lockin: 'Notice served',      health: '66', status: 'Notice' },
+      ],
+    },
+  },
+}
+
+// AM Head — updated metrics with modal data merged
+const amheadMetricsWithModals = amheadMetrics.map(m => ({
+  ...m,
+  ...(amheadMetricModals[m.label] ? { modal: amheadMetricModals[m.label] } : {}),
+}))
+
 // ─── NEW: Regional Head — Centre KPI Cards ────────────────────────────────────
 const reheadCentreCards = [
   {
@@ -1358,14 +1524,37 @@ const reheadCentreCards = [
     status: 'good',
     sparkline: [70, 71, 73, 75, 76, 77, 78],
     metrics: [
-      { label: 'Active Clients', value: '24', status: 'info' },
-      { label: 'Out of Lock-in', value: '8', status: 'warning', highlighted: true, modal: { title: 'ORR — Out of Lock-in', type: 'clientList', data: { note: '⚠ 8 clients outside lock-in.', clients: [{ name: 'Accenture ORR', am: 'Priya Sharma', seats: '420', health: '78', lockin: 'Out of LI', status: 'Good' }, { name: 'GlobalTech', am: 'Vikram Rao', seats: '280', health: '72', lockin: 'Out of LI', status: 'Monitor' }] } } },
+      { label: 'Active Clients', value: '24', status: 'info', modal: { title: 'ORR — Active Clients', type: 'clientList', data: { clients: [
+        { name: 'Accenture ORR',   am: 'Dev Kapoor',   seats: '420', health: '78', lockin: 'In LI',     status: 'Good' },
+        { name: 'Salesforce India', am: 'Dev Kapoor',   seats: '360', health: '86', lockin: 'In LI',     status: 'Good' },
+        { name: 'VectorAI Labs',    am: 'Meera Krishnan',seats: '180', health: '58', lockin: 'Out of LI', status: 'At Risk' },
+        { name: 'GlobalTech',       am: 'Dev Kapoor',   seats: '280', health: '72', lockin: 'Out of LI', status: 'Monitor' },
+        { name: 'AlphaFinance',     am: 'Priya Sharma', seats: '200', health: '71', lockin: 'Out of LI', status: 'Monitor' },
+      ] } } },
+      { label: 'Out of Lock-in', value: '8', status: 'warning', highlighted: true, modal: { title: 'ORR — Out of Lock-in', type: 'clientList', data: { note: '⚠ 8 clients outside lock-in.', clients: [
+        { name: 'Accenture ORR',  am: 'Dev Kapoor',    seats: '420', health: '78', lockin: 'Out since Mar 2026', status: 'Good' },
+        { name: 'GlobalTech',      am: 'Dev Kapoor',    seats: '280', health: '72', lockin: 'Out since Feb 2026', status: 'Monitor' },
+        { name: 'AlphaFinance',    am: 'Priya Sharma',  seats: '200', health: '71', lockin: 'Out since Mar 2026', status: 'Monitor' },
+        { name: 'VectorAI Labs',   am: 'Meera Krishnan',seats: '180', health: '58', lockin: 'Out since Mar 2026', status: 'At Risk' },
+        { name: 'CloudSystems',    am: 'Dev Kapoor',    seats: '110', health: '73', lockin: 'Out since Apr 2026', status: 'Good' },
+      ] } } },
       { label: 'Under Notice', value: '0', status: 'positive' },
-      { label: 'Unpaid Inv.', value: '38 · ₹2.4Cr', status: 'warning' },
+      { label: 'Unpaid Inv.', value: '38 · ₹2.4Cr', status: 'warning', modal: { title: 'ORR — Unpaid Invoices', type: 'invoiceList', data: { invoices: [
+        { id: 'O-INV-001', client: 'Accenture ORR',   invoiceNo: 'ACC-MAR-004', category: 'Monthly',  amount: '₹36.8L', dueDate: '20 Mar', overdueDays: 26 },
+        { id: 'O-INV-002', client: 'GlobalTech',       invoiceNo: 'GLT-APR-002', category: 'Monthly',  amount: '₹24.4L', dueDate: '01 Apr', overdueDays: 14 },
+        { id: 'O-INV-003', client: 'AlphaFinance',     invoiceNo: 'ALF-APR-001', category: 'VAS',      amount: '₹18.2L', dueDate: '05 Apr', overdueDays: 10 },
+        { id: 'O-INV-004', client: 'Salesforce India', invoiceNo: 'SAL-APR-003', category: 'Monthly',  amount: '₹14.6L', dueDate: '10 Apr', overdueDays: 5  },
+      ] } } },
       { label: 'Renewals 90d', value: '3', status: 'warning' },
       { label: 'Avg CSAT', value: '8.2', status: 'positive' },
       { label: 'Avg Health', value: '76', status: 'positive' },
-      { label: 'Open Tickets', value: '18 · 4 P1', status: 'warning' },
+      { label: 'Open Tickets', value: '18 · 4 P1', status: 'warning', modal: { title: 'ORR — Open Tickets', type: 'ticketList', data: { tickets: [
+        { id: 'TKT-4430', title: 'Chiller unit trip — east block',   client: 'Accenture ORR',  category: 'HVAC',       priority: 1, openDays: 2, slaStatus: 'Breached',   assignee: 'Tech Ops' },
+        { id: 'TKT-4426', title: 'Lift outage — tower B',            client: 'Salesforce India',category: 'Mechanical', priority: 1, openDays: 1, slaStatus: 'At Risk',    assignee: 'Facilities' },
+        { id: 'TKT-4422', title: 'WiFi dead zone — floor 4',         client: 'GlobalTech',      category: 'IT/Network', priority: 1, openDays: 3, slaStatus: 'Breached',   assignee: 'IT Ops' },
+        { id: 'TKT-4419', title: 'Access card reader failure',       client: 'AlphaFinance',    category: 'Security',   priority: 1, openDays: 2, slaStatus: 'At Risk',    assignee: 'Security' },
+        { id: 'TKT-4414', title: 'Pantry equipment breakdown',       client: 'VectorAI Labs',   category: 'FM',         priority: 2, openDays: 4, slaStatus: 'Within SLA', assignee: 'FM Team' },
+      ] } } },
     ],
   },
   {
@@ -1375,14 +1564,35 @@ const reheadCentreCards = [
     status: 'good',
     sparkline: [68, 70, 72, 73, 74, 75, 76],
     metrics: [
-      { label: 'Active Clients', value: '22', status: 'info' },
-      { label: 'Out of Lock-in', value: '7', status: 'warning', highlighted: true },
+      { label: 'Active Clients', value: '22', status: 'info', modal: { title: 'Koramangala — Active Clients', type: 'clientList', data: { clients: [
+        { name: 'XYZ Fintech',      am: 'Sneha Iyer',  seats: '240', health: '48', lockin: 'Out of LI', status: 'At Risk' },
+        { name: 'Cognizant KOR',    am: 'Sneha Iyer',  seats: '480', health: '76', lockin: 'In LI',     status: 'Good' },
+        { name: 'TechCorp India',   am: 'Aditi Nair',  seats: '380', health: '74', lockin: 'In LI',     status: 'Monitor' },
+        { name: 'Capgemini South',  am: 'Sneha Iyer',  seats: '220', health: '80', lockin: 'In LI',     status: 'Good' },
+        { name: 'Infosys Kora.',    am: 'Priya Sharma',seats: '320', health: '82', lockin: 'In LI',     status: 'Good' },
+      ] } } },
+      { label: 'Out of Lock-in', value: '7', status: 'warning', highlighted: true, modal: { title: 'Koramangala — Out of Lock-in', type: 'clientList', data: { note: '⚠ 7 clients outside lock-in.', clients: [
+        { name: 'XYZ Fintech',      am: 'Sneha Iyer',  seats: '240', health: '48', lockin: 'Out since Feb 2026', status: 'At Risk' },
+        { name: 'TechCorp India',   am: 'Aditi Nair',  seats: '380', health: '74', lockin: 'Out since Mar 2026', status: 'Monitor' },
+        { name: 'NovaCorp',         am: 'Sneha Iyer',  seats: '120', health: '74', lockin: 'Out since Apr 2026', status: 'Good' },
+        { name: 'DataBridge',       am: 'Priya Sharma',seats: '140', health: '69', lockin: 'Out since Feb 2026', status: 'Monitor' },
+      ] } } },
       { label: 'Under Notice', value: '0', status: 'positive' },
-      { label: 'Unpaid Inv.', value: '28 · ₹1.8Cr', status: 'warning' },
+      { label: 'Unpaid Inv.', value: '28 · ₹1.8Cr', status: 'warning', modal: { title: 'Koramangala — Unpaid Invoices', type: 'invoiceList', data: { invoices: [
+        { id: 'K-INV-001', client: 'XYZ Fintech',     invoiceNo: 'XYZ-MAR-005', category: 'Monthly',  amount: '₹22.4L', dueDate: '25 Mar', overdueDays: 21 },
+        { id: 'K-INV-002', client: 'Cognizant KOR',   invoiceNo: 'COG-APR-004', category: 'Monthly',  amount: '₹18.6L', dueDate: '05 Apr', overdueDays: 10 },
+        { id: 'K-INV-003', client: 'TechCorp India',  invoiceNo: 'TCI-APR-003', category: 'VAS',      amount: '₹12.8L', dueDate: '10 Apr', overdueDays: 5  },
+        { id: 'K-INV-004', client: 'Capgemini South', invoiceNo: 'CAP-APR-004', category: 'Monthly',  amount: '₹8.4L',  dueDate: '15 Apr', overdueDays: 0  },
+      ] } } },
       { label: 'Renewals 90d', value: '2', status: 'info' },
       { label: 'Avg CSAT', value: '8.0', status: 'positive' },
       { label: 'Avg Health', value: '74', status: 'positive' },
-      { label: 'Open Tickets', value: '14 · 3 P1', status: 'warning' },
+      { label: 'Open Tickets', value: '14 · 3 P1', status: 'warning', modal: { title: 'Koramangala — Open Tickets', type: 'ticketList', data: { tickets: [
+        { id: 'TKT-4432', title: 'HVAC fault — server room',   client: 'XYZ Fintech',   category: 'HVAC',       priority: 1, openDays: 3, slaStatus: 'Breached',   assignee: 'Tech Ops' },
+        { id: 'TKT-4428', title: 'Power fluctuation — wing A', client: 'Cognizant KOR', category: 'Electrical', priority: 1, openDays: 1, slaStatus: 'At Risk',    assignee: 'Tech Ops' },
+        { id: 'TKT-4424', title: 'Washroom plumbing issue',    client: 'TechCorp India',category: 'FM',         priority: 1, openDays: 2, slaStatus: 'At Risk',    assignee: 'FM Team' },
+        { id: 'TKT-4420', title: 'Meeting room AV failure',    client: 'Capgemini South',category: 'AV',        priority: 2, openDays: 4, slaStatus: 'Within SLA', assignee: 'IT Ops' },
+      ] } } },
     ],
   },
   {
@@ -1392,14 +1602,37 @@ const reheadCentreCards = [
     status: 'monitor',
     sparkline: [65, 66, 68, 69, 70, 71, 72],
     metrics: [
-      { label: 'Active Clients', value: '18', status: 'info' },
-      { label: 'Out of Lock-in', value: '6', status: 'warning', highlighted: true },
-      { label: 'Under Notice', value: '1', status: 'negative' },
-      { label: 'Unpaid Inv.', value: '24 · ₹1.6Cr', status: 'warning' },
+      { label: 'Active Clients', value: '18', status: 'info', modal: { title: 'Indiranagar — Active Clients', type: 'clientList', data: { clients: [
+        { name: 'HDFC Bank Indi.',  am: 'Anjali Gupta', seats: '280', health: '74', lockin: 'In LI',     status: 'Monitor' },
+        { name: 'Wipro Indi.',      am: 'Rohan Desai',  seats: '240', health: '68', lockin: 'Out of LI', status: 'Monitor' },
+        { name: 'Mindtree',         am: 'Anjali Gupta', seats: '200', health: '72', lockin: 'In LI',     status: 'Monitor' },
+        { name: 'Dell India',       am: 'Vikram Rao',   seats: '320', health: '76', lockin: 'In LI',     status: 'Good' },
+        { name: 'IBM Indi.',        am: 'Rohan Desai',  seats: '180', health: '62', lockin: 'Notice',    status: 'Notice' },
+      ] } } },
+      { label: 'Out of Lock-in', value: '6', status: 'warning', highlighted: true, modal: { title: 'Indiranagar — Out of Lock-in', type: 'clientList', data: { note: '⚠ 6 clients outside lock-in.', clients: [
+        { name: 'Wipro Indi.',      am: 'Rohan Desai',  seats: '240', health: '68', lockin: 'Out since Jan 2026', status: 'Monitor' },
+        { name: 'Dell India',       am: 'Vikram Rao',   seats: '320', health: '76', lockin: 'Out since Mar 2026', status: 'Good' },
+        { name: 'Mindtree',         am: 'Anjali Gupta', seats: '200', health: '72', lockin: 'Out since Feb 2026', status: 'Monitor' },
+        { name: 'IBM Indi.',        am: 'Rohan Desai',  seats: '180', health: '62', lockin: 'Notice served',      status: 'Notice' },
+      ] } } },
+      { label: 'Under Notice', value: '1', status: 'negative', modal: { title: 'Indiranagar — Under Notice', type: 'clientList', data: { note: '⛔ Client has served notice. Coordinate exit with ops and AM.', clients: [
+        { name: 'IBM Indi.', am: 'Rohan Desai', seats: '180', health: '62', lockin: 'Notice served Apr 03', daysNoticed: 12, status: 'Notice' },
+      ] } } },
+      { label: 'Unpaid Inv.', value: '24 · ₹1.6Cr', status: 'warning', modal: { title: 'Indiranagar — Unpaid Invoices', type: 'invoiceList', data: { invoices: [
+        { id: 'I-INV-001', client: 'Wipro Indi.',   invoiceNo: 'WIP-MAR-006', category: 'Monthly',  amount: '₹18.4L', dueDate: '20 Mar', overdueDays: 26 },
+        { id: 'I-INV-002', client: 'HDFC Bank I.',  invoiceNo: 'HDF-APR-002', category: 'Monthly',  amount: '₹14.6L', dueDate: '05 Apr', overdueDays: 10 },
+        { id: 'I-INV-003', client: 'Mindtree',      invoiceNo: 'MDT-APR-001', category: 'VAS',      amount: '₹10.2L', dueDate: '10 Apr', overdueDays: 5  },
+        { id: 'I-INV-004', client: 'Dell India',    invoiceNo: 'DEL-APR-003', category: 'Monthly',  amount: '₹8.8L',  dueDate: '15 Apr', overdueDays: 0  },
+      ] } } },
       { label: 'Renewals 90d', value: '1', status: 'info' },
       { label: 'Avg CSAT', value: '7.8', status: 'warning' },
       { label: 'Avg Health', value: '70', status: 'warning' },
-      { label: 'Open Tickets', value: '11 · 2 P1', status: 'info' },
+      { label: 'Open Tickets', value: '11 · 2 P1', status: 'info', modal: { title: 'Indiranagar — Open Tickets', type: 'ticketList', data: { tickets: [
+        { id: 'TKT-4435', title: 'HVAC breakdown — floor 2',  client: 'IBM Indi.',   category: 'HVAC',       priority: 1, openDays: 3, slaStatus: 'Breached',   assignee: 'Tech Ops' },
+        { id: 'TKT-4431', title: 'Lift stuck — main tower',   client: 'Wipro Indi.', category: 'Mechanical', priority: 1, openDays: 2, slaStatus: 'At Risk',    assignee: 'Facilities' },
+        { id: 'TKT-4427', title: 'Cafeteria equipment fault', client: 'Dell India',  category: 'FM',         priority: 2, openDays: 5, slaStatus: 'Within SLA', assignee: 'FM Team' },
+        { id: 'TKT-4423', title: 'Parking bay allocation',    client: 'HDFC Bank I.',category: 'Admin',      priority: 3, openDays: 4, slaStatus: 'Within SLA', assignee: 'Admin' },
+      ] } } },
     ],
   },
   {
@@ -1409,14 +1642,37 @@ const reheadCentreCards = [
     status: 'monitor',
     sparkline: [62, 63, 65, 66, 68, 69, 70],
     metrics: [
-      { label: 'Active Clients', value: '14', status: 'info' },
-      { label: 'Out of Lock-in', value: '6', status: 'negative', highlighted: true },
-      { label: 'Under Notice', value: '1', status: 'negative' },
-      { label: 'Unpaid Inv.', value: '20 · ₹1.4Cr', status: 'negative' },
+      { label: 'Active Clients', value: '14', status: 'info', modal: { title: 'MG Road — Active Clients', type: 'clientList', data: { clients: [
+        { name: 'ICICI Bank MG',    am: 'Karan Patel',  seats: '260', health: '68', lockin: 'Out of LI', status: 'Monitor' },
+        { name: 'Mphasis MG',       am: 'Sneha Iyer',   seats: '200', health: '74', lockin: 'In LI',     status: 'Monitor' },
+        { name: 'HP India MG',      am: 'Karan Patel',  seats: '180', health: '70', lockin: 'In LI',     status: 'Monitor' },
+        { name: 'Tata Comm. MG',    am: 'Vikram Rao',   seats: '240', health: '65', lockin: 'Notice',    status: 'Notice' },
+        { name: 'LTIMindtree MG',   am: 'Sneha Iyer',   seats: '160', health: '76', lockin: 'In LI',     status: 'Good' },
+      ] } } },
+      { label: 'Out of Lock-in', value: '6', status: 'negative', highlighted: true, modal: { title: 'MG Road — Out of Lock-in', type: 'clientList', data: { note: '⚠ 6 clients outside lock-in — elevated exit risk.', clients: [
+        { name: 'ICICI Bank MG',  am: 'Karan Patel', seats: '260', health: '68', lockin: 'Out since Jan 2026', status: 'Monitor' },
+        { name: 'Tata Comm. MG',  am: 'Vikram Rao',  seats: '240', health: '65', lockin: 'Notice served',      status: 'Notice' },
+        { name: 'HP India MG',    am: 'Karan Patel', seats: '180', health: '70', lockin: 'Out since Feb 2026', status: 'Monitor' },
+        { name: 'CloudEdge',      am: 'Sneha Iyer',  seats: '120', health: '66', lockin: 'Out since Mar 2026', status: 'Monitor' },
+      ] } } },
+      { label: 'Under Notice', value: '1', status: 'negative', modal: { title: 'MG Road — Under Notice', type: 'clientList', data: { note: '⛔ Client has served notice. Coordinate exit checklist with ops.', clients: [
+        { name: 'Tata Comm. MG', am: 'Vikram Rao', seats: '240', health: '65', lockin: 'Notice served Apr 04', daysNoticed: 11, status: 'Notice' },
+      ] } } },
+      { label: 'Unpaid Inv.', value: '20 · ₹1.4Cr', status: 'negative', modal: { title: 'MG Road — Unpaid Invoices', type: 'invoiceList', data: { invoices: [
+        { id: 'M-INV-001', client: 'ICICI Bank MG', invoiceNo: 'ICI-MAR-004', category: 'Monthly',  amount: '₹22.4L', dueDate: '18 Mar', overdueDays: 28 },
+        { id: 'M-INV-002', client: 'Tata Comm. MG', invoiceNo: 'TAT-APR-001', category: 'Monthly',  amount: '₹18.8L', dueDate: '01 Apr', overdueDays: 14 },
+        { id: 'M-INV-003', client: 'HP India MG',   invoiceNo: 'HPI-APR-002', category: 'Monthly',  amount: '₹12.6L', dueDate: '08 Apr', overdueDays: 7  },
+        { id: 'M-INV-004', client: 'Mphasis MG',    invoiceNo: 'MPH-APR-001', category: 'VAS',      amount: '₹8.4L',  dueDate: '12 Apr', overdueDays: 3  },
+      ] } } },
       { label: 'Renewals 90d', value: '1', status: 'info' },
       { label: 'Avg CSAT', value: '7.6', status: 'warning' },
       { label: 'Avg Health', value: '68', status: 'warning' },
-      { label: 'Open Tickets', value: '9 · 2 P1', status: 'info' },
+      { label: 'Open Tickets', value: '9 · 2 P1', status: 'info', modal: { title: 'MG Road — Open Tickets', type: 'ticketList', data: { tickets: [
+        { id: 'TKT-4438', title: 'HVAC — entire floor down',    client: 'Tata Comm. MG', category: 'HVAC',       priority: 1, openDays: 4, slaStatus: 'Breached',   assignee: 'Tech Ops' },
+        { id: 'TKT-4434', title: 'Water leakage — server room', client: 'ICICI Bank MG', category: 'Plumbing',   priority: 1, openDays: 2, slaStatus: 'At Risk',    assignee: 'Tech Ops' },
+        { id: 'TKT-4429', title: 'AV system down — conf rm',    client: 'HP India MG',   category: 'AV',         priority: 2, openDays: 5, slaStatus: 'Within SLA', assignee: 'IT Ops' },
+        { id: 'TKT-4425', title: 'Housekeeping standard drop',  client: 'LTIMindtree MG',category: 'FM',         priority: 2, openDays: 3, slaStatus: 'Within SLA', assignee: 'FM Team' },
+      ] } } },
     ],
   },
   {
@@ -1426,14 +1682,34 @@ const reheadCentreCards = [
     status: 'monitor',
     sparkline: [60, 62, 63, 64, 65, 67, 68],
     metrics: [
-      { label: 'Active Clients', value: '12', status: 'info' },
-      { label: 'Out of Lock-in', value: '5', status: 'negative', highlighted: true },
+      { label: 'Active Clients', value: '12', status: 'info', modal: { title: 'Electronic City — Active Clients', type: 'clientList', data: { clients: [
+        { name: 'NorthStar Bank EC', am: 'Anjali Gupta', seats: '180', health: '52', lockin: 'Out of LI', status: 'At Risk' },
+        { name: 'Wipro EC',          am: 'Anjali Gupta', seats: '220', health: '68', lockin: 'Out of LI', status: 'Monitor' },
+        { name: 'Infosys EC',        am: 'Priya Sharma', seats: '300', health: '76', lockin: 'In LI',     status: 'Good' },
+        { name: 'Siemens India EC',  am: 'Vikram Rao',   seats: '160', health: '74', lockin: 'In LI',     status: 'Monitor' },
+        { name: 'Bosch India EC',    am: 'Anjali Gupta', seats: '140', health: '70', lockin: 'In LI',     status: 'Monitor' },
+      ] } } },
+      { label: 'Out of Lock-in', value: '5', status: 'negative', highlighted: true, modal: { title: 'Electronic City — Out of Lock-in', type: 'clientList', data: { note: '⚠ 5 clients outside lock-in — monitor closely.', clients: [
+        { name: 'NorthStar Bank EC', am: 'Anjali Gupta', seats: '180', health: '52', lockin: 'Out since Jan 2026', status: 'At Risk' },
+        { name: 'Wipro EC',          am: 'Anjali Gupta', seats: '220', health: '68', lockin: 'Out since Feb 2026', status: 'Monitor' },
+        { name: 'Siemens India EC',  am: 'Vikram Rao',   seats: '160', health: '74', lockin: 'Out since Mar 2026', status: 'Monitor' },
+      ] } } },
       { label: 'Under Notice', value: '0', status: 'positive' },
-      { label: 'Unpaid Inv.', value: '16 · ₹1.1Cr', status: 'warning' },
+      { label: 'Unpaid Inv.', value: '16 · ₹1.1Cr', status: 'warning', modal: { title: 'Electronic City — Unpaid Invoices', type: 'invoiceList', data: { invoices: [
+        { id: 'E-INV-001', client: 'NorthStar Bank EC', invoiceNo: 'NSB-MAR-010', category: 'Monthly',  amount: '₹18.4L', dueDate: '15 Mar', overdueDays: 31 },
+        { id: 'E-INV-002', client: 'Wipro EC',           invoiceNo: 'WEC-APR-002', category: 'Monthly',  amount: '₹14.6L', dueDate: '25 Mar', overdueDays: 21 },
+        { id: 'E-INV-003', client: 'Infosys EC',         invoiceNo: 'IEC-APR-003', category: 'Monthly',  amount: '₹10.2L', dueDate: '05 Apr', overdueDays: 10 },
+        { id: 'E-INV-004', client: 'Siemens India EC',   invoiceNo: 'SIE-APR-001', category: 'VAS',      amount: '₹7.8L',  dueDate: '12 Apr', overdueDays: 3  },
+      ] } } },
       { label: 'Renewals 90d', value: '1', status: 'info' },
       { label: 'Avg CSAT', value: '7.5', status: 'warning' },
       { label: 'Avg Health', value: '66', status: 'warning' },
-      { label: 'Open Tickets', value: '7 · 1 P1', status: 'info' },
+      { label: 'Open Tickets', value: '7 · 1 P1', status: 'info', modal: { title: 'Electronic City — Open Tickets', type: 'ticketList', data: { tickets: [
+        { id: 'TKT-4440', title: 'UPS failure — data centre',   client: 'NorthStar Bank EC',category: 'Power',      priority: 1, openDays: 2, slaStatus: 'Breached',   assignee: 'Tech Ops' },
+        { id: 'TKT-4436', title: 'Chiller maintenance overdue', client: 'Infosys EC',        category: 'HVAC',       priority: 2, openDays: 5, slaStatus: 'Within SLA', assignee: 'Tech Ops' },
+        { id: 'TKT-4433', title: 'Security camera offline',     client: 'Wipro EC',          category: 'Security',   priority: 2, openDays: 3, slaStatus: 'Within SLA', assignee: 'Security' },
+        { id: 'TKT-4430', title: 'Parking gate malfunction',    client: 'Siemens India EC',  category: 'Admin',      priority: 3, openDays: 6, slaStatus: 'Within SLA', assignee: 'Admin' },
+      ] } } },
     ],
   },
 ]
@@ -2029,10 +2305,13 @@ export const nexusAMData = {
     hideTasksStrip: true,
     taskComposite: amheadTaskCompositeWithModal,
     meetingComposite: amheadMeetingCompositeWithModal,
-    metrics: amheadMetrics,
+    metrics: amheadMetricsWithModals,
+    // Actions render standalone after composites + metrics, above Zone insights
+    actionsAfterComposites: true,
     actions: amheadActions,
     actionsTitle: 'National Portfolio Decisions',
-    // Zone-based charts: pie (client distribution), grouped bar (outstanding vs collection), line (health trend)
+    // Zone-based charts + topFive wrapped in collapsible "Zone insights" section
+    collapsibleZoneInsights: true,
     charts: amheadZoneCharts,
     // Zone comparison lists instead of AM-specific top/bottom
     topFive: amheadZoneTopFive,
